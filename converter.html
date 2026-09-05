@@ -3,111 +3,254 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>스마트 만능 단위 변환기 | 평수·면적·길이·무게·부피·온도 계산</title>
-  <meta name="description" content="평수-제곱미터(㎡), 피트-미터, 온스/파운드-그램, 입방피트-리터, 섭씨-화씨 등 실생활과 해외 직구 필수 단위를 실시간으로 즉시 변환합니다." />
-  <meta name="keywords" content="단위변환기, 평수계산기, 제곱미터평수, 피트미터변환, 온스그램, 파운드킬로, 화씨섭씨" />
+  <title>스마트 만능 단위 변환기 | 아파트 평수·제곱미터·피트·파운드·온스 계산</title>
+  <meta name="description" content="전용면적 59㎡·84㎡ 아파트 평수 환산부터 해외 직구 파운드(lb)·온스(oz), 인치·피트, 부피, 화씨온도까지 실시간으로 즉시 변환하는 만능 도량형 계산기입니다." />
+  <meta name="keywords" content="단위변환기, 아파트평수계산기, 전용84제곱미터평수, 파운드킬로그램, 온스그램환산, 피트미터, 화씨섭씨변환" />
 
-  <!-- 구조화 데이터 (Schema.org) -->
+  <!-- Schema.org FAQPage 구조화 데이터 -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "스마트 만능 단위 변환기",
-    "applicationCategory": "UtilitiesApplication",
-    "operatingSystem": "All",
-    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "KRW" }
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "아파트 전용면적 84㎡는 몇 평인가요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "순수 전용면적 84㎡를 평으로 환산하면 약 25.4평입니다. 다만 아파트 분양 시 통칭하는 평형은 주거공용면적(계단, 복도, 엘리베이터 등)을 합산한 '공급면적' 기준이므로, 통상 공급 110~114㎡ 수준인 33평형~34평형에 해당합니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "1평(坪)의 정확한 제곱미터(㎡) 기준은 얼마인가요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "계량에 관한 법률에 따른 1평의 공식 환산 기준은 정확히 121분의 400제곱미터(약 3.305785㎡)입니다. 반대로 1㎡는 약 0.3025평입니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "해외 직구 시 파운드(lb)와 온스(oz)는 어떻게 계산하나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "미국 직구 배송대행지 요금의 기준이 되는 1파운드(lb)는 약 453.59g이며, 1온스(oz)는 약 28.35g(1lb = 16oz)입니다. 향수나 액체류에 쓰이는 액량 온스(fl oz)는 약 29.57mL 기준입니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "법정 계량단위 표기 의무는 왜 생겼나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "부동산 거래 및 상거래의 투명성을 확보하고 소비자 혼선을 방지하기 위해 2007년부터 평(坪), 돈, 인치 등의 비법정단위 대신 제곱미터(㎡), 그램(g), 센티미터(cm) 등 국제표준(SI) 단위 사용이 의무화되었습니다."
+        }
+      }
+    ]
   }
   </script>
+
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-[#F1F5F9] text-slate-800 min-h-screen py-6 px-4">
-  <div class="max-w-xl mx-auto bg-white rounded-2xl shadow-sm border border-slate-200 p-5 md:p-7">
+  <div class="max-w-2xl mx-auto">
     
-    <!-- 공통 네비게이션 헤더 -->
-    <div class="flex items-center justify-between pb-4 mb-5 border-b border-slate-100">
-      <div class="flex items-center gap-2">
-        <a href="./index.html" class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors" title="홈으로 이동">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
-          </svg>
-        </a>
-        <h1 class="text-lg md:text-xl font-extrabold text-slate-800">스마트 단위 변환기</h1>
-      </div>
-      <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
-        [2026년 기준 반영]
-      </span>
-    </div>
-
-    <!-- 카테고리 탭 -->
-    <div class="grid grid-cols-5 gap-1 bg-slate-100 p-1 rounded-xl text-xs font-bold text-slate-600 mb-6">
-      <button class="cat-btn py-2 rounded-lg transition-colors bg-white text-blue-600 shadow-sm" data-cat="area">넓이(평)</button>
-      <button class="cat-btn py-2 rounded-lg transition-colors hover:text-slate-900" data-cat="length">길이</button>
-      <button class="cat-btn py-2 rounded-lg transition-colors hover:text-slate-900" data-cat="weight">무게</button>
-      <button class="cat-btn py-2 rounded-lg transition-colors hover:text-slate-900" data-cat="volume">부피</button>
-      <button class="cat-btn py-2 rounded-lg transition-colors hover:text-slate-900" data-cat="temperature">온도</button>
-    </div>
-
-    <!-- 변환 인터페이스 -->
-    <div class="space-y-4">
-      <!-- 변환 전 (From) -->
-      <div class="p-4 bg-slate-50 border border-slate-200/80 rounded-xl space-y-2">
-        <div class="flex justify-between items-center text-xs font-semibold text-slate-500">
-          <span>변환할 값</span>
-          <select id="fromUnit" class="bg-white border border-slate-200 rounded-lg px-2.5 py-1 text-slate-800 font-bold outline-none"></select>
+    <!-- 메인 변환기 카드 -->
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 md:p-7">
+      
+      <!-- 헤더 네비게이션 -->
+      <div class="flex items-center justify-between pb-4 mb-6 border-b border-slate-100">
+        <div class="flex items-center gap-2">
+          <a href="./index.html" class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors" title="홈으로 이동">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+            </svg>
+          </a>
+          <h1 class="text-lg md:text-xl font-extrabold text-slate-800">스마트 단위 변환기</h1>
         </div>
-        <input type="number" id="fromValue" value="84" class="w-full text-2xl font-black bg-transparent text-slate-800 outline-none" placeholder="0" />
+        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+          국제표준 규격
+        </span>
       </div>
 
-      <!-- 전환(Swap) 버튼 -->
-      <div class="flex justify-center -my-2 relative z-10">
-        <button id="swapBtn" class="w-9 h-9 rounded-full bg-white border border-slate-200 shadow-sm hover:border-blue-500 hover:text-blue-600 flex items-center justify-center text-slate-500 transition-all active:scale-95" title="단위 맞바꾸기">
-          ⇅
-        </button>
+      <!-- 카테고리 탭 바 -->
+      <div class="grid grid-cols-5 gap-1 bg-slate-100 p-1 rounded-xl text-xs font-bold text-slate-600 mb-6">
+        <button class="cat-btn py-2 rounded-lg transition-colors bg-white text-blue-600 shadow-sm" data-cat="area">넓이(평)</button>
+        <button class="cat-btn py-2 rounded-lg transition-colors hover:text-slate-900" data-cat="length">길이</button>
+        <button class="cat-btn py-2 rounded-lg transition-colors hover:text-slate-900" data-cat="weight">무게</button>
+        <button class="cat-btn py-2 rounded-lg transition-colors hover:text-slate-900" data-cat="volume">부피</button>
+        <button class="cat-btn py-2 rounded-lg transition-colors hover:text-slate-900" data-cat="temperature">온도</button>
       </div>
 
-      <!-- 변환 후 (To) -->
-      <div class="p-4 bg-blue-50/50 border border-blue-100 rounded-xl space-y-2">
-        <div class="flex justify-between items-center text-xs font-semibold text-blue-600">
-          <span>변환 결과</span>
-          <select id="toUnit" class="bg-white border border-blue-200 rounded-lg px-2.5 py-1 text-blue-900 font-bold outline-none"></select>
+      <!-- 변환 인터페이스 -->
+      <div class="space-y-4">
+        <!-- 변환 전 -->
+        <div class="p-4 bg-slate-50 border border-slate-200/80 rounded-xl space-y-2">
+          <div class="flex justify-between items-center text-xs font-semibold text-slate-500">
+            <span>변환할 값</span>
+            <select id="fromUnit" class="bg-white border border-slate-200 rounded-lg px-2.5 py-1 text-slate-800 font-bold outline-none"></select>
+          </div>
+          <input type="number" id="fromValue" value="84" class="w-full text-2xl font-black bg-transparent text-slate-800 outline-none" placeholder="0" />
         </div>
-        <div id="toValue" class="text-2xl font-black text-blue-600 truncate">0</div>
+
+        <!-- 스왑 버튼 -->
+        <div class="flex justify-center -my-2 relative z-10">
+          <button id="swapBtn" class="w-9 h-9 rounded-full bg-white border border-slate-200 shadow-sm hover:border-blue-500 hover:text-blue-600 flex items-center justify-center text-slate-500 transition-all active:scale-95" title="단위 맞바꾸기">
+            ⇅
+          </button>
+        </div>
+
+        <!-- 변환 후 -->
+        <div class="p-4 bg-blue-50/50 border border-blue-100 rounded-xl space-y-2">
+          <div class="flex justify-between items-center text-xs font-semibold text-blue-600">
+            <span>변환 결과</span>
+            <select id="toUnit" class="bg-white border border-blue-200 rounded-lg px-2.5 py-1 text-blue-900 font-bold outline-none"></select>
+          </div>
+          <div id="toValue" class="text-2xl font-black text-blue-600 truncate">0</div>
+        </div>
       </div>
+
+      <!-- 다중 주요 단위 비교 테이블 -->
+      <div class="mt-6 pt-5 border-t border-slate-100">
+        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2.5">주요 단위 일괄 비교</h3>
+        <div id="multiResults" class="grid grid-cols-2 gap-2 text-xs"></div>
+      </div>
+
     </div>
 
-    <!-- 다중 주요 단위 동시 확인 테이블 -->
-    <div class="mt-6 pt-5 border-t border-slate-100">
-      <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2.5">주요 단위 한눈에 보기</h3>
-      <div id="multiResults" class="grid grid-cols-2 gap-2 text-xs">
-        <!-- JS 동적 렌더링 -->
-      </div>
-    </div>
+    <!-- [SEO / 애드센스 전문 정보 아티클] -->
+    <article class="mt-8 space-y-8 text-sm text-slate-600 leading-relaxed">
+      
+      <!-- 1. 아파트 전용면적 vs 공급면적(평수) 대조표 -->
+      <section class="bg-white rounded-2xl border border-slate-200 p-5 md:p-6 shadow-sm">
+        <h2 class="text-base font-extrabold text-slate-800 mb-3 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-blue-600"></span>
+          대한민국 아파트 대표 전용면적 ↔ 평형 환산 기준표
+        </h2>
+        <p class="text-xs text-slate-500 mb-4">입주자 모집공고의 법정 표기(전용 ㎡)와 실생활에서 통용되는 공급 평형 간의 대조 기준입니다.</p>
+        
+        <div class="overflow-x-auto">
+          <table class="w-full text-xs text-left border-collapse">
+            <thead>
+              <tr class="bg-slate-50 border-b border-slate-200 text-slate-700 font-bold">
+                <th class="p-2.5">전용면적(공식 표기)</th>
+                <th class="p-2.5">순수 전용 평수</th>
+                <th class="p-2.5">통상 공급면적(분양 평형)</th>
+                <th class="p-2.5">특징 및 구조</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100 text-slate-600">
+              <tr>
+                <td class="p-2.5 font-bold text-slate-800">전용 59㎡</td>
+                <td class="p-2.5 text-blue-600 font-medium">약 17.8평</td>
+                <td class="p-2.5 text-slate-700 font-bold">구 24 ~ 25평형</td>
+                <td class="p-2.5 text-slate-500">방 3개, 화장실 2개 표준 소형</td>
+              </tr>
+              <tr>
+                <td class="p-2.5 font-bold text-slate-800">전용 74㎡</td>
+                <td class="p-2.5 text-blue-600 font-medium">약 22.4평</td>
+                <td class="p-2.5 text-slate-700 font-bold">구 29 ~ 30평형</td>
+                <td class="p-2.5 text-slate-500">틈새 중소형 평면</td>
+              </tr>
+              <tr>
+                <td class="p-2.5 font-bold text-slate-800">전용 84㎡</td>
+                <td class="p-2.5 text-blue-600 font-medium">약 25.4평</td>
+                <td class="p-2.5 text-slate-700 font-bold">구 33 ~ 34평형</td>
+                <td class="p-2.5 text-slate-500">국민평형(국평), 선호도 1위</td>
+              </tr>
+              <tr>
+                <td class="p-2.5 font-bold text-slate-800">전용 101㎡</td>
+                <td class="p-2.5 text-blue-600 font-medium">약 30.5평</td>
+                <td class="p-2.5 text-slate-700 font-bold">구 39 ~ 40평형</td>
+                <td class="p-2.5 text-slate-500">추첨제 비율 높은 대형 평형</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
 
-    <!-- SEO 롱테일 가이드 -->
-    <div class="mt-8 pt-5 border-t border-slate-100 text-xs text-slate-500 space-y-2 leading-relaxed">
-      <p class="font-bold text-slate-700">단위 환산 참고 가이드</p>
-      <p>• <strong>아파트 평수</strong>: $1\text{평} \fallingdotseq 3.305785\text{㎡}$이며, 전용 84㎡는 약 25.4평(공급 기준 통상 33~34평형)에 해당합니다.</p>
-      <p>• <strong>해외 직구 부피·무게</strong>: 미국 직구 시 배송대행지 요금은 파운드(lb, 1lb≒453.59g)와 입방피트($\text{ft}^3$, 부피무게) 기준으로 산정됩니다.</p>
-    </div>
+      <!-- 2. 해외 직구 도량형 실무 가이드 -->
+      <section class="bg-white rounded-2xl border border-slate-200 p-5 md:p-6 shadow-sm space-y-4">
+        <h2 class="text-base font-extrabold text-slate-800 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+          해외 직구 배송비 절감을 위한 도량형 환산 가이드
+        </h2>
+        
+        <div class="space-y-3 text-xs leading-relaxed">
+          <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
+            <h3 class="font-bold text-slate-800 mb-1">1. 파운드(lb) 실중량 vs 입방피트(ft³) 부피무게 계산법</h3>
+            <p>미국 배송대행지는 '실제 무게(lb)'와 물품 포장 박스의 가로×세로×높이(inch)를 곱해 166으로 나눈 '부피무게(lb)' 중 더 큰 쪽으로 배송비를 책정합니다. 가벼우면서 부피가 큰 의류, 베개, 완구류는 부피무게 면제 이벤트를 확인해야 배송비 폭탄을 방지할 수 있습니다.</p>
+          </div>
+
+          <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
+            <h3 class="font-bold text-slate-800 mb-1">2. 오븐·에어프라이어 화씨(℉) ↔ 섭씨(℃) 즉시 환산법</h3>
+            <p>외국 요리 레시피의 오븐 온도는 대부분 화씨로 표기됩니다. 암산 시 **[ (화씨 - 30) ÷ 2 ]** 공식을 사용하면 대략적인 섭씨온도를 빠르게 추산할 수 있습니다. (예: 350℉ → (350 - 30) ÷ 2 = 약 160℃, 실제 176.7℃).</p>
+          </div>
+
+          <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
+            <h3 class="font-bold text-slate-800 mb-1">3. 귀금속 '돈'과 정육 '근'의 법정 단위 준수</h3>
+            <p>금 1돈은 정확히 3.75g이며, 고기 1근은 600g(채소는 400g)입니다. 비법정단위 거래 시 가격 왜곡 위험이 있어 계량법상 공식 거래 시 그램(g) 표기가 의무화되어 있습니다.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. 자주 묻는 질문 (FAQ) -->
+      <section class="bg-white rounded-2xl border border-slate-200 p-5 md:p-6 shadow-sm">
+        <h2 class="text-base font-extrabold text-slate-800 mb-4 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-indigo-600"></span>
+          자주 묻는 질문 (FAQ)
+        </h2>
+
+        <div class="space-y-4 text-xs">
+          <div>
+            <h3 class="font-bold text-slate-800 mb-1">Q. 왜 전용 84㎡를 25평이 아니라 34평이라고 부르나요?</h3>
+            <p class="text-slate-600">과거 평형 표기는 현관문 안쪽의 실사용 면적인 '전용면적'과 계단, 엘리베이터 등 공용 공간인 '주거공용면적'을 합산한 '공급면적'을 기준으로 불렀기 때문입니다. 전용 84㎡에 공용면적 약 28㎡를 더하면 약 112㎡(34평)가 됩니다.</p>
+          </div>
+          <div class="border-t border-slate-100 pt-3">
+            <h3 class="font-bold text-slate-800 mb-1">Q. 미국 액량 온스(fl oz)와 영국 액량 온스는 다른가요?</h3>
+            <p class="text-slate-600">네, 차이가 있습니다. 미국 액량 온스(US fl oz)는 약 29.57mL인 반면, 영국 임페리얼 액량 온스(UK fl oz)는 약 28.41mL입니다. 일반적인 수입 공산품이나 커피 용량(온스 컵)은 미국 기준을 따릅니다.</p>
+          </div>
+          <div class="border-t border-slate-100 pt-3">
+            <h3 class="font-bold text-slate-800 mb-1">Q. 토지 대장에 나오는 헥타르(ha)와 에이커(ac)의 차이는 무엇인가요?</h3>
+            <p class="text-slate-600">1헥타르(ha)는 $10,000\text{㎡}$(약 3,025평)이며 한국 토지·임야 대장의 표준 단위입니다. 에이커(ac)는 미국·영국계 토지 단위로 1에이커당 약 $4,046.86\text{㎡}$(약 1,224평)에 해당합니다.</p>
+          </div>
+        </div>
+      </section>
+
+    </article>
+
+    <!-- 표준 법적 푸터 -->
+    <footer class="mt-12 pt-6 pb-8 border-t border-slate-200 text-xs text-slate-400">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-3">
+        <div class="space-y-0.5 text-center md:text-left">
+          <p class="font-bold text-slate-600">Calc Toolkit · 스마트 유틸리티 랩</p>
+          <p class="text-[11px]">본 단위변환기는 국가표준기본법 및 국제도량형총회(CGPM) SI 표준 환산 계수를 준수합니다.</p>
+        </div>
+        <div class="flex items-center gap-3 font-semibold text-slate-500">
+          <a href="./privacy.html" class="hover:text-blue-600 transition-colors">개인정보처리방침</a>
+          <span>·</span>
+          <a href="./terms.html" class="hover:text-blue-600 transition-colors">이용약관 & 면책조항</a>
+        </div>
+      </div>
+    </footer>
 
   </div>
 
+  <!-- 인라인 연산 스크립트 -->
   <script>
-    // 카테고리별 단위 매핑 정의
     const UNIT_DATA = {
       area: {
-        labels: { pyeong: "평", m2: "제곱미터(㎡)", sqft: "스퀘어피트(sq ft)", sqin: "스퀘어인치(sq in)", ha: "헥타르(ha)", ac: "에이커(ac)", km2: "제곱킬로미터(㎢)" },
+        labels: { pyeong: "평(坪)", m2: "제곱미터(㎡)", sqft: "스퀘어피트(sq ft)", sqin: "스퀘어인치(sq in)", ha: "헥타르(ha)", ac: "에이커(ac)", km2: "제곱킬로미터(㎢)" },
         rates: { m2: 1, pyeong: 3.305785, sqft: 0.092903, sqin: 0.00064516, ha: 10000, ac: 4046.856422, km2: 1000000 },
         defaultFrom: "m2", defaultTo: "pyeong", defaultVal: 84
       },
       length: {
-        labels: { m: "미터(m)", cm: "센티미터(cm)", in: "인치(in)", ft: "피트(ft)", yd: "야드(yd)", km: "킬로미터(km)", mi: "마일(mi)" },
-        rates: { m: 1, cm: 0.01, in: 0.0254, ft: 0.3048, yd: 0.9144, km: 1000, mi: 1609.344 },
+        labels: { m: "미터(m)", cm: "센티미터(cm)", mm: "밀리미터(mm)", in: "인치(in)", ft: "피트(ft)", yd: "야드(yd)", km: "킬로미터(km)", mi: "마일(mi)" },
+        rates: { m: 1, cm: 0.01, mm: 0.001, in: 0.0254, ft: 0.3048, yd: 0.9144, km: 1000, mi: 1609.344 },
         defaultFrom: "ft", defaultTo: "cm", defaultVal: 6
       },
       weight: {
         labels: { kg: "킬로그램(kg)", g: "그램(g)", lb: "파운드(lb)", oz: "온스(oz)", don: "돈(3.75g)", geun: "근(600g)" },
-        rates: { kg: 1, g: 0.001, lb: 0.453592, oz: 0.0283495, don: 0.00375, geun: 0.6 },
+        rates: { kg: 1, g: 0.001, lb: 0.45359237, oz: 0.0283495, don: 0.00375, geun: 0.6 },
         defaultFrom: "lb", defaultTo: "kg", defaultVal: 10
       },
       volume: {
@@ -117,7 +260,6 @@
       },
       temperature: {
         labels: { C: "섭씨(℃)", F: "화씨(℉)", K: "절대온도(K)" },
-        type: "temp",
         defaultFrom: "F", defaultTo: "C", defaultVal: 72
       }
     };
@@ -131,9 +273,9 @@
       fromSel.innerHTML = "";
       toSel.innerHTML = "";
 
-      Object.entries(data.labels).forEach(([key, label]) => {
-        fromSel.add(new Option(label, key));
-        toSel.add(new Option(label, key));
+      Object.entries(data.labels).forEach(([k, label]) => {
+        fromSel.add(new Option(label, k));
+        toSel.add(new Option(label, k));
       });
 
       fromSel.value = data.defaultFrom;
@@ -156,8 +298,8 @@
 
       let res = 0;
       if (currentCat === "temperature") {
-        let c = from === "C" ? val : from === "F" ? (val - 32) * 5/9 : val - 273.15;
-        res = to === "C" ? c : to === "F" ? c * 9/5 + 32 : c + 273.15;
+        let c = from === "C" ? val : from === "F" ? (val - 32) * 5 / 9 : val - 273.15;
+        res = to === "C" ? c : to === "F" ? c * 9 / 5 + 32 : c + 273.15;
       } else {
         const rates = UNIT_DATA[currentCat].rates;
         const base = val * rates[from];
@@ -166,15 +308,15 @@
 
       toEl.textContent = res.toLocaleString(undefined, { maximumFractionDigits: 4 });
 
-      // 하단 멀티 단위 비교 렌더링
+      // 하단 다중 단위 즉시 비교 렌더링
       multiEl.innerHTML = "";
       const labels = UNIT_DATA[currentCat].labels;
       Object.keys(labels).forEach(k => {
         if (k !== from) {
           let v = 0;
           if (currentCat === "temperature") {
-            let c = from === "C" ? val : from === "F" ? (val - 32) * 5/9 : val - 273.15;
-            v = k === "C" ? c : k === "F" ? c * 9/5 + 32 : c + 273.15;
+            let c = from === "C" ? val : from === "F" ? (val - 32) * 5 / 9 : val - 273.15;
+            v = k === "C" ? c : k === "F" ? c * 9 / 5 + 32 : c + 273.15;
           } else {
             const rates = UNIT_DATA[currentCat].rates;
             v = (val * rates[from]) / rates[k];
@@ -187,7 +329,7 @@
       });
     }
 
-    // 탭 전환 이벤트
+    // 탭 이벤트
     document.querySelectorAll(".cat-btn").forEach(btn => {
       btn.addEventListener("click", () => {
         document.querySelectorAll(".cat-btn").forEach(b => {
@@ -200,7 +342,7 @@
       });
     });
 
-    // 스왑(단위 맞바꾸기)
+    // 스왑 이벤트
     document.getElementById("swapBtn").addEventListener("click", () => {
       const fromSel = document.getElementById("fromUnit");
       const toSel = document.getElementById("toUnit");
@@ -214,7 +356,6 @@
     document.getElementById("fromUnit").addEventListener("change", calculate);
     document.getElementById("toUnit").addEventListener("change", calculate);
 
-    // 초기화 실행
     populateSelects();
     calculate();
   </script>
