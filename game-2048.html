@@ -1,81 +1,284 @@
-<!-- 구조화 데이터 (Schema.org FAQPage) -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "2048 퍼즐에서 2048 타일을 만드는 핵심 전략은 무엇인가요?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "가장 큰 숫자의 타일을 보드의 4개 모서리 중 하나(예: 우측 하단)에 완전히 고정시키고, 반대 방향(위쪽) 키를 절대로 누르지 않는 모서리 고정(Corner Strategy)이 필수 전략입니다."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "타일이 더 이상 움직이지 않을 때(Game Over) 대처법은?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "빈 타일이 3개 이하로 줄어들었을 때는 무리하게 숫자를 합치려 하지 말고, 낮은 숫자 타일들을 사전에 정리하여 보드 내 여유 공간(Free Tiles)을 최소 4개 이상 확보해야 합니다."
-      }
-    }
-  ]
-}
-</script>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2048 퍼즐 게임 & 고득점 공략 가이드 - Calc Toolkit</title>
+  <meta name="description" content="무설치 웹 2048 퍼즐 게임. 모서리 앵커링 전략 및 지그재그 배열 공략법을 확인하고 고득점을 달성하세요." />
+  <link rel="canonical" href="https://starsign16.com/game-2048.html" />
 
-<!-- SEO & 체류시간 극대화 가이드 섹션 -->
-<section class="mt-8 pt-6 border-t border-slate-200 text-slate-700 text-sm leading-relaxed">
-  <div class="space-y-6">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Schema.org FAQPage 구조화 데이터 (SEO) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "2048 퍼즐에서 2048 타일을 만드는 핵심 전략은 무엇인가요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "가장 큰 숫자의 타일을 한쪽 모서리에 고정시키고, 반대 방향 키의 입력을 피하며 내림차순 체인을 형성하는 코너 전략(Corner Strategy)이 가장 효과적입니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "타일이 더 이상 움직이지 않을 때(Game Over) 대처법은?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "보드의 빈 타일이 3개 이하로 줄어들기 전에 작은 숫자 타일들을 미리 병합하여 여유 공간을 최소 4칸 이상 유지해야 합니다."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    .grid-cell { background-color: rgba(238, 228, 218, 0.35); }
+    .tile-2 { background: #eee4da; color: #776e65; }
+    .tile-4 { background: #ede0c8; color: #776e65; }
+    .tile-8 { background: #f2b179; color: #f9f6f2; }
+    .tile-16 { background: #f59563; color: #f9f6f2; }
+    .tile-32 { background: #f67c5f; color: #f9f6f2; }
+    .tile-64 { background: #f65e3b; color: #f9f6f2; }
+    .tile-128 { background: #edcf72; color: #f9f6f2; font-size: 1.5rem; }
+    .tile-256 { background: #edcc61; color: #f9f6f2; font-size: 1.5rem; }
+    .tile-512 { background: #edc850; color: #f9f6f2; font-size: 1.5rem; }
+    .tile-1024 { background: #edc53f; color: #f9f6f2; font-size: 1.25rem; }
+    .tile-2048 { background: #edc22e; color: #f9f6f2; font-size: 1.25rem; box-shadow: 0 0 15px 3px rgba(243, 215, 116, 0.6); }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 antialiased min-h-screen p-4 sm:p-8">
+  <div class="max-w-md mx-auto bg-white rounded-2xl shadow-sm border border-slate-200 p-5 sm:p-6">
     
-    <!-- 섹션 1: 수학적 알고리즘과 기본 규칙 -->
-    <div>
-      <h3 class="text-base font-bold text-slate-900 mb-2 flex items-center gap-1.5">
-        <span>📖</span> 2048 퍼즐의 수학적 규칙과 원리
-      </h3>
-      <p class="text-slate-600 mb-2">
-        2048은 이탈리아의 웹 개발자 가브리엘레 치룰리(Gabriele Cirulli)가 오픈소스로 공개한 $4 \times 4$ 그리드 기반의 슬라이딩 타일 퍼즐입니다. 
-        매 이동 시 빈칸에 <strong>2</strong>(90% 확률) 또는 <strong>4</strong>(10% 확률) 타일이 무작위로 생성되며, 
-        동일한 지수를 가진 두 타일이 충돌할 때 $2^n + 2^n = 2^{n+1}$ 형태로 합쳐집니다.
-      </p>
-      <div class="bg-slate-50 p-3 rounded-lg border border-slate-100 font-mono text-xs text-slate-600">
-        최종 목표: 2 → 4 → 8 → 16 → 32 → 64 → 128 → 256 → 512 → 1024 → <strong>2048</strong>
+    <!-- 상단 컨트롤 헤더 -->
+    <div class="flex items-center justify-between mb-4">
+      <div class="flex items-center gap-2">
+        <a href="/" class="text-slate-400 hover:text-slate-700 transition-colors" title="홈으로 이동">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+        </a>
+        <h1 class="text-xl font-bold text-slate-900">2048 퍼즐</h1>
+      </div>
+      <div class="flex items-center gap-2">
+        <div class="bg-slate-100 px-3 py-1 rounded-lg text-center">
+          <div class="text-[10px] uppercase font-bold text-slate-400">Score</div>
+          <div id="score" class="text-sm font-bold text-slate-800">0</div>
+        </div>
+        <button id="restart-btn" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-lg transition-colors">
+          다시 시작
+        </button>
       </div>
     </div>
 
-    <!-- 섹션 2: 2048 필승 3대 전략 (구체적 공략법) -->
-    <div>
-      <h3 class="text-base font-bold text-slate-900 mb-2 flex items-center gap-1.5">
-        <span>🏆</span> 고득점 필승 전략: 코너 고정 테크닉
-      </h3>
-      <ul class="space-y-2.5 text-slate-600 list-disc list-inside">
-        <li>
-          <strong class="text-slate-800">모서리 앵커링 (The Corner Strategy):</strong> 
-          가장 높은 숫자의 타일을 <strong>우측 하단(또는 좌측 하단)</strong> 구석에 영구 배치합니다. 
-          이 타일이 모서리에서 밀려나오지 않도록 <strong>위쪽 방향키(↑) 조작을 완전히 봉인</strong>하는 것이 핵심입니다.
-        </li>
-        <li>
-          <strong class="text-slate-800">지그재그 내림차순 배열 (Monotonicity Chain):</strong> 
-          가장 큰 타일이 있는 최하단 줄을 높은 숫자 순서대로 정렬합니다. 
-          (예: <code class="bg-slate-100 px-1 py-0.5 rounded text-xs">2048</code> - <code class="bg-slate-100 px-1 py-0.5 rounded text-xs">1024</code> - <code class="bg-slate-100 px-1 py-0.5 rounded text-xs">512</code> - <code class="bg-slate-100 px-1 py-0.5 rounded text-xs">256</code>) 
-          체인이 완성되면 한 번의 슬라이드로 연쇄 합체(Cascade Combo)가 발생합니다.
-        </li>
-        <li>
-          <strong class="text-slate-800">그리드 룸 관리 (Space Maintenance):</strong> 
-          보드 전체 16개 타일 중 <strong>빈 타일이 3개 이하</strong>로 줄어들면 패배 위험이 급증합니다. 
-          무리하게 512 이상의 큰 타일을 합치려 하지 말고, 작은 숫자(2, 4)들을 빠르게 정리하여 항상 4칸 이상의 빈 공간을 유지하세요.
-        </li>
-      </ul>
+    <!-- 4x4 게임 보드 -->
+    <div id="game-board" class="relative bg-slate-300 p-2 sm:p-3 rounded-xl touch-none select-none">
+      <div class="grid grid-cols-4 gap-2 sm:gap-3">
+        <!-- 16개 배경 타일 슬롯 -->
+        <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-lg grid-cell flex items-center justify-center"></div>
+        <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-lg grid-cell flex items-center justify-center"></div>
+        <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-lg grid-cell flex items-center justify-center"></div>
+        <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-lg grid-cell flex items-center justify-center"></div>
+        <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-lg grid-cell flex items-center justify-center"></div>
+        <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-lg grid-cell flex items-center justify-center"></div>
+        <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-lg grid-cell flex items-center justify-center"></div>
+        <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-lg grid-cell flex items-center justify-center"></div>
+        <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-lg grid-cell flex items-center justify-center"></div>
+        <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-lg grid-cell flex items-center justify-center"></div>
+        <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-lg grid-cell flex items-center justify-center"></div>
+        <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-lg grid-cell flex items-center justify-center"></div>
+        <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-lg grid-cell flex items-center justify-center"></div>
+        <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-lg grid-cell flex items-center justify-center"></div>
+        <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-lg grid-cell flex items-center justify-center"></div>
+        <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-lg grid-cell flex items-center justify-center"></div>
+      </div>
+      <!-- 동적 렌더링 오버레이 레이어 -->
+      <div id="tile-container" class="absolute inset-2 sm:inset-3 grid grid-cols-4 gap-2 sm:gap-3 pointer-events-none"></div>
     </div>
 
-    <!-- 섹션 3: 조작법 & 팁 -->
-    <div class="p-4 bg-blue-50/50 rounded-xl border border-blue-100/60">
-      <h4 class="text-xs font-bold text-blue-900 uppercase tracking-wider mb-2">💡 빠른 조작 가이드</h4>
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-blue-800">
-        <div><strong>PC:</strong> 방향키(←, →, ↑, ↓) 또는 W, A, S, D</div>
-        <div><strong>모바일:</strong> 화면 상하좌우 스와이프(Swipe) 터치</div>
+    <!-- SEO & 체류시간 극대화 가이드 섹션 -->
+    <section class="mt-8 pt-6 border-t border-slate-200 text-slate-700 text-sm leading-relaxed">
+      <div class="space-y-6">
+        
+        <div>
+          <h2 class="text-base font-bold text-slate-900 mb-2 flex items-center gap-1.5">
+            <span>📖</span> 2048 퍼즐의 수학적 규칙과 원리
+          </h2>
+          <p class="text-slate-600 mb-2 text-xs sm:text-sm">
+            2048은 4×4 그리드 기반의 슬라이딩 타일 퍼즐입니다. 매 이동 시 빈칸에 <strong>2</strong>(90% 확률) 또는 <strong>4</strong>(10% 확률) 타일이 무작위로 생성되며, 동일한 지수를 가진 두 타일이 충돌하면 값이 합산되어 상위 거듭제곱 타일로 승급합니다.
+          </p>
+          <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-100 font-mono text-xs text-slate-600">
+            진행 순서: 2 → 4 → 8 → 16 → 32 → 64 → 128 → 256 → 512 → 1024 → <strong>2048</strong>
+          </div>
+        </div>
+
+        <div>
+          <h2 class="text-base font-bold text-slate-900 mb-2 flex items-center gap-1.5">
+            <span>🏆</span> 고득점 필승 전략: 코너 앵커링 테크닉
+          </h2>
+          <ul class="space-y-2 text-xs sm:text-sm text-slate-600 list-disc list-inside">
+            <li>
+              <strong class="text-slate-800">모서리 앵커링 (Corner Strategy):</strong> 가장 큰 숫자의 타일을 <strong>우측 하단(또는 좌측 하단)</strong> 모서리에 고정시키고, 위쪽 방향키(↑) 조작을 최대한 지양합니다.
+            </li>
+            <li>
+              <strong class="text-slate-800">지그재그 내림차순 정렬:</strong> 가장 큰 타일이 있는 라인을 따라 큰 수에서 작은 수 순서로 배열하여 연쇄 합체(Cascade Combo)를 유도합니다.
+            </li>
+            <li>
+              <strong class="text-slate-800">여유 공간 유지:</strong> 빈 칸이 3개 이하로 떨어지면 작은 숫자(2, 4)들을 즉시 병합해 빈 슬롯을 4개 이상 확보합니다.
+            </li>
+          </ul>
+        </div>
+
+        <div class="p-3.5 bg-blue-50/60 rounded-xl border border-blue-100/60 text-xs text-blue-900">
+          <div class="font-bold mb-1">💡 조작 안내</div>
+          <div>• <strong>PC:</strong> 키보드 방향키(↑, ↓, ←, →) 또는 W, A, S, D</div>
+          <div>• <strong>모바일:</strong> 화면 상·하·좌·우 스와이프 터치</div>
+        </div>
+
       </div>
-    </div>
+    </section>
 
   </div>
-</section>
+
+  <script>
+    const GRID_SIZE = 4;
+    let board = [];
+    let score = 0;
+
+    function initGame() {
+      board = Array(GRID_SIZE).fill(null).map(() => Array(GRID_SIZE).fill(0));
+      score = 0;
+      updateScore(0);
+      addRandomTile();
+      addRandomTile();
+      render();
+    }
+
+    function addRandomTile() {
+      const emptyCells = [];
+      for (let r = 0; r < GRID_SIZE; r++) {
+        for (let c = 0; c < GRID_SIZE; c++) {
+          if (board[r][c] === 0) emptyCells.push({ r, c });
+        }
+      }
+      if (emptyCells.length === 0) return;
+      const { r, c } = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+      board[r][c] = Math.random() < 0.9 ? 2 : 4;
+    }
+
+    function updateScore(add) {
+      score += add;
+      document.getElementById('score').innerText = score;
+    }
+
+    function render() {
+      const container = document.getElementById('tile-container');
+      container.innerHTML = '';
+      for (let r = 0; r < GRID_SIZE; r++) {
+        for (let c = 0; c < GRID_SIZE; c++) {
+          const val = board[r][c];
+          const div = document.createElement('div');
+          div.className = 'w-16 h-16 sm:w-20 sm:h-20 rounded-lg flex items-center justify-center font-bold transition-all';
+          if (val > 0) {
+            div.classList.add(`tile-${val}`);
+            div.innerText = val;
+          }
+          container.appendChild(div);
+        }
+      }
+    }
+
+    function slide(row) {
+      let arr = row.filter(val => val);
+      let addScore = 0;
+      for (let i = 0; i < arr.length - 1; i++) {
+        if (arr[i] === arr[i + 1]) {
+          arr[i] *= 2;
+          addScore += arr[i];
+          arr[i + 1] = 0;
+        }
+      }
+      arr = arr.filter(val => val);
+      while (arr.length < GRID_SIZE) arr.push(0);
+      return { newRow: arr, earned: addScore };
+    }
+
+    function moveLeft() {
+      let changed = false;
+      let totalEarned = 0;
+      for (let r = 0; r < GRID_SIZE; r++) {
+        const { newRow, earned } = slide(board[r]);
+        if (newRow.join(',') !== board[r].join(',')) changed = true;
+        board[r] = newRow;
+        totalEarned += earned;
+      }
+      if (changed) {
+        updateScore(totalEarned);
+        addRandomTile();
+        render();
+      }
+    }
+
+    function rotate() {
+      const next = Array(GRID_SIZE).fill(null).map(() => Array(GRID_SIZE).fill(0));
+      for (let r = 0; r < GRID_SIZE; r++) {
+        for (let c = 0; c < GRID_SIZE; c++) {
+          next[c][GRID_SIZE - 1 - r] = board[r][c];
+        }
+      }
+      board = next;
+    }
+
+    function moveRight() {
+      rotate(); rotate();
+      moveLeft();
+      rotate(); rotate();
+    }
+
+    function moveUp() {
+      rotate(); rotate(); rotate();
+      moveLeft();
+      rotate();
+    }
+
+    function moveDown() {
+      rotate();
+      moveLeft();
+      rotate(); rotate(); rotate();
+    }
+
+    // 키보드 이벤트 리스너
+    window.addEventListener('keydown', (e) => {
+      if (['ArrowUp', 'KeyW'].includes(e.code)) { e.preventDefault(); moveUp(); }
+      else if (['ArrowDown', 'KeyS'].includes(e.code)) { e.preventDefault(); moveDown(); }
+      else if (['ArrowLeft', 'KeyA'].includes(e.code)) { e.preventDefault(); moveLeft(); }
+      else if (['ArrowRight', 'KeyD'].includes(e.code)) { e.preventDefault(); moveRight(); }
+    });
+
+    // 모바일 터치 스와이프 리스너
+    let touchStartX = 0, touchStartY = 0;
+    const boardEl = document.getElementById('game-board');
+    boardEl.addEventListener('touchstart', (e) => {
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+    }, { passive: true });
+
+    boardEl.addEventListener('touchend', (e) => {
+      const dx = e.changedTouches[0].clientX - touchStartX;
+      const dy = e.changedTouches[0].clientY - touchStartY;
+      if (Math.abs(dx) > Math.abs(dy)) {
+        if (dx > 30) moveRight();
+        else if (dx < -30) moveLeft();
+      } else {
+        if (dy > 30) moveDown();
+        else if (dy < -30) moveUp();
+      }
+    }, { passive: true });
+
+    document.getElementById('restart-btn').addEventListener('click', initGame);
+    window.onload = initGame;
+  </script>
+</body>
+</html>
