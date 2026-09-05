@@ -3,206 +3,300 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>2026 부동산 중개보수 계산기 | 매매·전월세 복비 상한요율표</title>
-  <meta name="description" content="2026년 공인중개사법 시행규칙 개정 요율 기준 완벽 반영. 아파트, 주택, 오피스텔, 토지 매매 및 전·월세 중개수수료와 부가세를 즉시 계산합니다." />
-  <meta name="keywords" content="부동산복비계산기, 중개수수료계산기, 2026년복비, 전세복비계산, 월세환산보증금" />
+  <title>2026 부동산 중개보수(복비) 계산기 | 아파트·오피스텔·상가 법정 요율표</title>
+  <meta name="description" content="2026년 공인중개사법 개정 기준에 맞춘 부동산 중개수수료(복비) 계산기입니다. 주택 매매, 전월세, 주거용 오피스텔, 상가·토지 요율 및 일반/간이과세자 부가세를 정확히 계산합니다." />
+  <meta name="keywords" content="부동산중개수수료, 중개보수계산기, 복비계산, 전세중개수수료, 월세복비, 오피스텔중개보수, 2026중개보수요율" />
 
-  <!-- Schema.org JSON-LD 구조화 데이터 -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "2026 부동산 중개보수 계산기",
-    "applicationCategory": "RealEstateApplication",
-    "operatingSystem": "All",
-    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "KRW" }
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "월세 거래 시 중개보수 산정 기준금액은 어떻게 계산하나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "월세는 [보증금 + (월차임 × 100)]으로 환산금액을 산출합니다. 단, 산출된 환산금액이 5천만 원 미만일 경우에는 소액 임차인 보호를 위해 [보증금 + (월차임 × 70)]으로 다시 낮추어 계산합니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "중개보수에 부가가치세(VAT)는 별도로 지급해야 하나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "법정 중개보수 한도액에는 부가가치세가 포함되어 있지 않습니다. 공인중개사 사무소가 일반과세자(연매출 1억 400만 원 이상)인 경우 10%, 간이과세자인 경우 4%의 부가세를 적격 영수증 발행과 함께 추가 청구할 수 있습니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "계산된 중개보수는 무조건 전부 지급해야 하나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "아닙니다. 법령에 명시된 요율은 '상한 요율'이므로, 법정 한도 내에서 계약 당사자와 개업공인중개사가 협의하여 결정할 수 있습니다. 수수료율 협의는 가계약금 입금 전이나 계약서 작성 전에 미리 확정하는 것이 분쟁을 예방하는 방법입니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "오피스텔의 중개보수 요율 기준은 어떻게 되나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "전용면적 85㎡ 이하이며 전용 입식 부엌, 화장실, 목욕시설을 갖춘 주거용 오피스텔은 매매 0.5%, 임대차 0.4%의 고정 상한요율이 적용됩니다. 그 외 업무용 오피스텔이나 85㎡ 초과 시 일반 부동산(상가/토지)과 동일하게 0.9% 범위 내 협의 적용됩니다."
+        }
+      }
+    ]
   }
   </script>
+
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-[#F1F5F9] text-slate-800 min-h-screen py-6 px-4">
-  <div class="max-w-xl mx-auto bg-white rounded-2xl shadow-sm border border-slate-200 p-5 md:p-7">
+  <div class="max-w-2xl mx-auto">
     
-    <!-- 헤더 -->
-	<div class="flex items-center justify-between pb-4 mb-6 border-b border-slate-100">
-		<div class="flex items-center gap-2">
-			<a href="./index.html" class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors" title="홈으로">
-				<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
-				</svg>
-			</a>
-			<h1 class="text-lg md:text-xl font-extrabold text-slate-800">부동산 중개보수 계산기</h1>
-		</div>
-		<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
-		[2026년 기준 반영]
-		</span>
-	</div>
-
-
-    <!-- 1. 매물 유형 선택 -->
-    <div class="mt-5">
-      <label class="block text-xs font-semibold text-slate-500 mb-1">매물 대상</label>
-      <select id="categorySelect" class="w-full p-2.5 font-bold text-slate-800 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-white">
-        <option value="HOUSING_SALE">주택 매매·교환</option>
-        <option value="HOUSING_RENT">주택 임대차 (전·월세)</option>
-        <option value="OFFICETEL_LIVING">오피스텔 (주거용)</option>
-        <option value="OTHER">토지·상가·기타</option>
-      </select>
-    </div>
-
-    <!-- 2. 거래 형태 (전세 vs 월세 구분) -->
-    <div class="mt-4" id="rentTypeWrapper" style="display: none;">
-      <label class="block text-xs font-semibold text-slate-500 mb-1">거래 형태</label>
-      <div class="grid grid-cols-2 gap-2">
-        <button type="button" id="btnJeonse" class="py-2 text-xs font-bold rounded-lg bg-blue-600 text-white">전세</button>
-        <button type="button" id="btnMonthly" class="py-2 text-xs font-bold rounded-lg bg-slate-100 text-slate-600">월세</button>
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 md:p-7">
+      
+      <div class="flex items-center justify-between pb-4 mb-6 border-b border-slate-100">
+        <div class="flex items-center gap-2">
+          <a href="./index.html" class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors" title="홈으로 이동">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+            </svg>
+          </a>
+          <h1 class="text-lg md:text-xl font-extrabold text-slate-800">부동산 중개보수 계산기</h1>
+        </div>
+        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+          [2026년 기준 반영]
+        </span>
       </div>
-    </div>
 
-    <!-- 3. 금액 인풋 -->
-    <div class="space-y-4 mt-4">
-      <div>
-        <label id="depositLabel" class="block text-xs font-semibold text-slate-500 mb-1">매매 대금</label>
-        <div class="relative">
-          <input type="number" id="depositInput" value="500000000" step="1000000" class="w-full p-2.5 text-right font-bold text-slate-800 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
-          <span class="absolute left-3 top-2.5 text-slate-400 text-sm">원</span>
+      <div class="space-y-4 text-sm">
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold text-slate-700 mb-1.5">부동산 유형</label>
+            <select id="propType" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-700 outline-none focus:ring-2 focus:ring-blue-500">
+              <option value="housing">주택 (아파트/빌라/단독)</option>
+              <option value="officetel_living">주거용 오피스텔 (전용 85㎡ 이하)</option>
+              <option value="other">상가 / 토지 / 업무용 오피스텔</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-1.5">거래 종류</label>
+            <select id="tradeType" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-700 outline-none focus:ring-2 focus:ring-blue-500">
+              <option value="sale">매매 / 교환</option>
+              <option value="lease">전세</option>
+              <option value="monthly">월세 (보증부월세)</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="priceInputArea">
+          <label id="priceLabel" class="block font-bold text-slate-700 mb-1.5">거래 금액 (원)</label>
+          <input type="number" id="tradePrice" value="500000000" step="1000000" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl font-black text-slate-800 text-lg outline-none focus:ring-2 focus:ring-blue-500" placeholder="금액 입력" />
+          <p id="priceKorean" class="text-xs text-blue-600 font-bold mt-1">5억 원</p>
+        </div>
+
+        <div id="monthlyInputArea" class="hidden">
+          <label class="block font-bold text-slate-700 mb-1.5">월세액 (원)</label>
+          <input type="number" id="monthlyRent" value="500000" step="50000" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl font-black text-slate-800 text-lg outline-none focus:ring-2 focus:ring-blue-500" placeholder="월세 입력" />
+          <p id="rentKorean" class="text-xs text-blue-600 font-bold mt-1">50만 원</p>
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-700 mb-1.5">중개사 부가가치세 (VAT) 구분</label>
+          <div class="grid grid-cols-3 gap-2">
+            <label class="flex items-center justify-center p-2 bg-slate-50 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-100">
+              <input type="radio" name="vatType" value="10" checked class="mr-1.5 text-blue-600" />
+              <span class="text-xs font-bold text-slate-700">일반과세 (10%)</span>
+            </label>
+            <label class="flex items-center justify-center p-2 bg-slate-50 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-100">
+              <input type="radio" name="vatType" value="4" class="mr-1.5 text-blue-600" />
+              <span class="text-xs font-bold text-slate-700">간이과세 (4%)</span>
+            </label>
+            <label class="flex items-center justify-center p-2 bg-slate-50 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-100">
+              <input type="radio" name="vatType" value="0" class="mr-1.5 text-blue-600" />
+              <span class="text-xs font-bold text-slate-700">면세/미포함 (0%)</span>
+            </label>
+          </div>
         </div>
       </div>
 
-      <div id="monthlyWrapper" style="display: none;">
-        <label class="block text-xs font-semibold text-slate-500 mb-1">월 임대료 (월세)</label>
-        <div class="relative">
-          <input type="number" id="monthlyInput" value="500000" step="50000" class="w-full p-2.5 text-right font-bold text-slate-800 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
-          <span class="absolute left-3 top-2.5 text-slate-400 text-sm">원</span>
+      <div class="mt-6 p-4 bg-blue-50/60 border border-blue-100 rounded-xl space-y-3">
+        <div class="flex justify-between items-center text-xs font-bold text-slate-500">
+          <span>적용 상한요율: <strong id="appliedRate" class="text-blue-600 font-black">0.4%</strong></span>
+          <span id="limitNotice" class="text-slate-400">한도액 제한 없음</span>
+        </div>
+        
+        <div class="flex justify-between items-baseline border-b border-blue-100 pb-2">
+          <span class="text-sm font-bold text-slate-700">중개보수 (VAT 별도)</span>
+          <span id="feeAmount" class="text-xl font-black text-slate-800">2,000,000원</span>
+        </div>
+
+        <div class="flex justify-between items-baseline border-b border-blue-100 pb-2 text-xs">
+          <span class="text-slate-500 font-medium">부가가치세 (VAT)</span>
+          <span id="vatAmount" class="font-bold text-slate-700">200,000원</span>
+        </div>
+
+        <div class="flex justify-between items-baseline pt-1">
+          <span class="text-base font-extrabold text-blue-900">총 지급 예상액</span>
+          <span id="totalAmount" class="text-2xl font-black text-blue-600">2,200,000원</span>
         </div>
       </div>
+
     </div>
 
-    <!-- 4. 실시간 연산 결과 -->
-    <div class="mt-6 p-4 bg-slate-50 rounded-xl border border-slate-200/60 space-y-2.5 text-sm">
-      <div class="flex justify-between items-center">
-        <span class="text-slate-500">환산 거래금액</span>
-        <span id="resTotalAmount" class="font-bold text-slate-700">0원</span>
-      </div>
-      <div class="flex justify-between items-center">
-        <span class="text-slate-500">적용 상한요율</span>
-        <span id="resRate" class="font-bold text-slate-700">0.0%</span>
-      </div>
-      <div class="flex justify-between items-center">
-        <span class="text-slate-500">최대 중개보수 (VAT 별도)</span>
-        <span id="resCommission" class="font-bold text-slate-800">0원</span>
-      </div>
-      <div class="flex justify-between items-center text-xs text-slate-400">
-        <span>부가세 (10%)</span>
-        <span id="resVat">0원</span>
-      </div>
-      <div class="pt-2 border-t border-slate-200 flex justify-between items-center">
-        <span class="text-base font-bold text-slate-800">합계 수수료 (VAT 포함)</span>
-        <span id="resTotalPay" class="text-xl font-extrabold text-blue-600">0원</span>
-      </div>
-    </div>
+    <article class="mt-8 space-y-8 text-sm text-slate-600 leading-relaxed">
+      
+      <section class="bg-white rounded-2xl border border-slate-200 p-5 md:p-6 shadow-sm">
+        <h2 class="text-base font-extrabold text-slate-800 mb-3 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-blue-600"></span>
+          2026년 주택(아파트·빌라) 중개보수 법정 요율표
+        </h2>
+        <p class="text-xs text-slate-500 mb-4">공인중개사법 시행규칙 제20조 제1항 기준에 따른 매매 및 임대차 요율 상한선입니다.</p>
+        
+        <div class="overflow-x-auto">
+          <table class="w-full text-xs text-left border-collapse">
+            <thead>
+              <tr class="bg-slate-50 border-b border-slate-200 text-slate-700 font-bold">
+                <th class="p-2.5">거래 금액 구간</th>
+                <th class="p-2.5">매매·교환 상한요율</th>
+                <th class="p-2.5">임대차(전월세) 상한요율</th>
+                <th class="p-2.5">한도액</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100 text-slate-600">
+              <tr>
+                <td class="p-2.5 font-medium">5천만 원 미만</td>
+                <td class="p-2.5 text-blue-600 font-bold">0.6%</td>
+                <td class="p-2.5 text-blue-600 font-bold">0.5%</td>
+                <td class="p-2.5 text-slate-500">매매 25만 / 임대 20만 원</td>
+              </tr>
+              <tr>
+                <td class="p-2.5 font-medium">5천만 ~ 2억 원 미만</td>
+                <td class="p-2.5 text-blue-600 font-bold">0.5%</td>
+                <td class="p-2.5 text-blue-600 font-bold">0.4%</td>
+                <td class="p-2.5 text-slate-500">매매 80만 / 임대 30만 원</td>
+              </tr>
+              <tr>
+                <td class="p-2.5 font-medium">2억 ~ 9억 원 미만</td>
+                <td class="p-2.5 text-blue-600 font-bold">0.4%</td>
+                <td class="p-2.5 text-blue-600 font-bold">0.3%</td>
+                <td class="p-2.5 text-slate-400">한도액 없음</td>
+              </tr>
+              <tr>
+                <td class="p-2.5 font-medium">9억 ~ 12억 원 미만</td>
+                <td class="p-2.5 text-blue-600 font-bold">0.5%</td>
+                <td class="p-2.5 text-blue-600 font-bold">0.4%</td>
+                <td class="p-2.5 text-slate-400">한도액 없음</td>
+              </tr>
+              <tr>
+                <td class="p-2.5 font-medium">12억 ~ 15억 원 미만</td>
+                <td class="p-2.5 text-blue-600 font-bold">0.6%</td>
+                <td class="p-2.5 text-blue-600 font-bold">0.5%</td>
+                <td class="p-2.5 text-slate-400">한도액 없음</td>
+              </tr>
+              <tr>
+                <td class="p-2.5 font-medium">15억 원 이상</td>
+                <td class="p-2.5 text-blue-600 font-bold">0.7%</td>
+                <td class="p-2.5 text-blue-600 font-bold">0.6%</td>
+                <td class="p-2.5 text-slate-400">한도액 없음</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
 
-    <!-- 5. 법적 고지 및 팁 블록 (SEO Dwell Time) -->
-    <div class="mt-6 pt-5 border-t border-slate-100 text-xs text-slate-500 space-y-2 leading-relaxed">
-      <p class="font-semibold text-slate-700">중개보수 계약 전 필독 사항</p>
-      <p>• 계산된 보수는 법정 <strong>상한요율</strong> 기준이며, 공인중개사와 협의하여 그 이하로 정할 수 있습니다.</p>
-      <p>• 일반과세 사업자인 공인중개사는 부가세 10%를 청구할 수 있으나, 간이과세자는 4% 범위 내에서 청구해야 합니다.</p>
-    </div>
+      <section class="bg-white rounded-2xl border border-slate-200 p-5 md:p-6 shadow-sm space-y-4">
+        <h2 class="text-base font-extrabold text-slate-800 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+          부동산 계약 실무 가이드 및 분쟁 예방법
+        </h2>
+        
+        <div class="space-y-3 text-xs leading-relaxed">
+          <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
+            <h3 class="font-bold text-slate-800 mb-1">1. 부가가치세(VAT) 확인 방법 (일반 vs 간이)</h3>
+            <p>공인중개사 사무소의 사업자 등록 형태에 따라 부가세율이 다릅니다. 일반과세자는 10%의 부가세를 청구하며 반드시 **세금계산서나 현금영수증**을 발행해야 합니다. 반면 간이과세자는 부가가치세법에 따라 4% 범위 내에서 청구할 수 있으며, 연매출 4,800만 원 미만 영세 간이과세자는 부가세를 청구할 수 없습니다.</p>
+          </div>
+
+          <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
+            <h3 class="font-bold text-slate-800 mb-1">2. 수수료율 협의 시점</h3>
+            <p>법정 요율은 법으로 정한 '최고 상한선'일 뿐 고정 금액이 아닙니다. 계약 체결 당일 잔금 치를 때 요율을 협의하려고 하면 감정 싸움이 발생하기 쉽습니다. 반드시 **가계약금을 입금하기 전이나 매물의 중개대상물 확인설명서를 교부받을 때** 중개보수 요율을 명확히 확정해 두는 것이 권장됩니다.</p>
+          </div>
+
+          <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
+            <h3 class="font-bold text-slate-800 mb-1">3. 소득공제 및 현금영수증 의무 발급</h3>
+            <p>공인중개업은 10만 원 이상 거래 시 소비자의 요청이 없더라도 **현금영수증 의무 발급 업종**입니다. 지급한 중개보수는 연말정산 시 신용카드 등 사용금액 소득공제 대상이 되며, 부동산 매매의 경우 양도소득세 계산 시 **필요경비(취득비용)**로 인정되어 세금을 크게 줄일 수 있으므로 영수증을 반드시 보관해야 합니다.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="bg-white rounded-2xl border border-slate-200 p-5 md:p-6 shadow-sm">
+        <h2 class="text-base font-extrabold text-slate-800 mb-4 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-indigo-600"></span>
+          자주 묻는 질문 (FAQ)
+        </h2>
+
+        <div class="space-y-4 text-xs">
+          <div>
+            <h3 class="font-bold text-slate-800 mb-1">Q. 월세 계약 시 환산보증금은 어떻게 계산되나요?</h3>
+            <p class="text-slate-600">월세의 산정 기준금액은 <strong>[보증금 + (월차임 × 100)]</strong>입니다. 예를 들어 보증금 1,000만 원에 월세 50만 원이면 환산금액은 6,000만 원(1,000만 + 5,000만)이 됩니다. 단, 계산된 금액이 5천만 원 미만일 경우 소액 임차인 보호를 위해 <strong>[보증금 + (월차임 × 70)]</strong>으로 재산정합니다.</p>
+          </div>
+          <div class="border-t border-slate-100 pt-3">
+            <h3 class="font-bold text-slate-800 mb-1">Q. 중개보수는 거래 당사자 양쪽이 각각 내나요?</h3>
+            <p class="text-slate-600">네, 중개보수는 계약의 일방(매수인 또는 매도인, 임대인 또는 임차인)에게 각각 청구됩니다. 본 계산기에서 산출된 결과 금액은 <strong>'쌍방 중 1인이 부담하는 금액'</strong>입니다.</p>
+          </div>
+          <div class="border-t border-slate-100 pt-3">
+            <h3 class="font-bold text-slate-800 mb-1">Q. 주거용 오피스텔과 일반 상가 건물의 차이는 무엇인가요?</h3>
+            <p class="text-slate-600">전용면적 85㎡ 이하로서 주거 요건(부엌, 욕실 등)을 갖춘 주거용 오피스텔은 매매 0.5%, 임대차 0.4%의 제한된 상한선이 적용됩니다. 반면 근린생활시설(상가), 토지, 업무용 오피스텔은 거래 종류와 무관하게 0.9% 이내에서 상호 협의하여 결정합니다.</p>
+          </div>
+        </div>
+      </section>
+
+    </article>
+
+    <footer class="mt-12 pt-6 pb-8 border-t border-slate-200 text-xs text-slate-400">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-3">
+        <div class="space-y-0.5 text-center md:text-left">
+          <p class="font-bold text-slate-600">Calc Toolkit · 스마트 유틸리티 랩</p>
+          <p class="text-[11px]">본 계산기는 공인중개사법 및 시행규칙 기준 요율을 준수하여 제작되었습니다.</p>
+        </div>
+        <div class="flex items-center gap-3 font-semibold text-slate-500">
+          <a href="./privacy.html" class="hover:text-blue-600 transition-colors">개인정보처리방침</a>
+          <span>·</span>
+          <a href="./terms.html" class="hover:text-blue-600 transition-colors">이용약관 & 면책조항</a>
+        </div>
+      </div>
+    </footer>
+
   </div>
 
   <script>
-    let isMonthly = false;
+    const RATES = {
+      housing_sale: [
+        { limit: 50000000, rate: 0.006, maxFee: 250000 },
+        { limit: 200000000, rate: 0.005, maxFee: 800000 },
+        { limit: 900000000, rate: 0.004, maxFee: null },
+        { limit: 1200000000, rate: 0.005, maxFee: null },
+        { limit: 1500000000, rate: 0.006, maxFee: null },
+        { limit: Infinity, rate: 0.007, maxFee: null }
+      ],
+      housing_lease: [
+        { limit: 50000000, rate: 0.005, maxFee: 200000 },
+        { limit: 100000000, rate: 0.004, maxFee: 300000 },
+        { limit: 900000000, rate: 0.003, maxFee: null },
+        { limit: 1200000000, rate: 0.004, maxFee: null },
+        { limit: 1500000000, rate: 0.005, maxFee: null },
+        { limit: Infinity, rate: 0.006, maxFee: null }
+      ],
+      officetel_living_sale: { rate: 0.005 },
+      officetel_living_lease: { rate: 0.004 },
+      other: { rate: 0.009 }
+    };
 
-    // 인라인 연산 모듈
-    function calculateTrade(deposit, monthly, categoryKey) {
-      let tradeAmount = deposit;
-      if (categoryKey === 'HOUSING_RENT' && isMonthly) {
-        let converted = deposit + (monthly * 100);
-        if (converted < 50000000) converted = deposit + (monthly * 70);
-        tradeAmount = converted;
-      }
-
-      // 2026 요율 브래킷
-      const rates = {
-        HOUSING_SALE: [
-          { max: 50000000, r: 0.006, limit: 250000 },
-          { max: 200000000, r: 0.005, limit: 800000 },
-          { max: 900000000, r: 0.004, limit: null },
-          { max: 1200000000, r: 0.005, limit: null },
-          { max: 1500000000, r: 0.006, limit: null },
-          { max: null, r: 0.007, limit: null }
-        ],
-        HOUSING_RENT: [
-          { max: 50000000, r: 0.005, limit: 200000 },
-          { max: 100000000, r: 0.004, limit: 300000 },
-          { max: 900000000, r: 0.003, limit: null },
-          { max: 1200000000, r: 0.004, limit: null },
-          { max: 1500000000, r: 0.005, limit: null },
-          { max: null, r: 0.006, limit: null }
-        ],
-        OFFICETEL_LIVING: [{ max: null, r: 0.005, limit: null }],
-        OTHER: [{ max: null, r: 0.009, limit: null }]
-      };
-
-      const brackets = rates[categoryKey];
-      let applied = 0.009;
-      let limit = null;
-
-      for (const b of brackets) {
-        if (b.max === null || tradeAmount < b.max) {
-          applied = b.r;
-          limit = b.limit;
-          break;
-        }
-      }
-
-      let commission = Math.floor(tradeAmount * applied);
-      if (limit !== null && commission > limit) commission = limit;
-      const vat = Math.floor(commission * 0.1);
-
-      return { tradeAmount, rate: (applied * 100).toFixed(2), commission, vat, total: commission + vat };
-    }
-
-    function updateView() {
-      const cat = document.getElementById('categorySelect').value;
-      const isRent = cat === 'HOUSING_RENT';
-      
-      document.getElementById('rentTypeWrapper').style.display = isRent ? 'block' : 'none';
-      document.getElementById('monthlyWrapper').style.display = (isRent && isMonthly) ? 'block' : 'none';
-      document.getElementById('depositLabel').textContent = isRent ? (isMonthly ? '보증금' : '전세 보증금') : '매매 대금';
-
-      const dep = Number(document.getElementById('depositInput').value) || 0;
-      const mon = Number(document.getElementById('monthlyInput').value) || 0;
-
-      const res = calculateTrade(dep, mon, cat);
-
-      document.getElementById('resTotalAmount').textContent = res.tradeAmount.toLocaleString() + '원';
-      document.getElementById('resRate').textContent = res.rate + '%';
-      document.getElementById('resCommission').textContent = res.commission.toLocaleString() + '원';
-      document.getElementById('resVat').textContent = res.vat.toLocaleString() + '원';
-      document.getElementById('resTotalPay').textContent = res.total.toLocaleString() + '원';
-    }
-
-    // 이벤트 리스너
-    document.getElementById('categorySelect').addEventListener('change', updateView);
-    document.getElementById('depositInput').addEventListener('input', updateView);
-    document.getElementById('monthlyInput').addEventListener('input', updateView);
-
-    document.getElementById('btnJeonse').addEventListener('click', () => {
-      isMonthly = false;
-      document.getElementById('btnJeonse').className = 'py-2 text-xs font-bold rounded-lg bg-blue-600 text-white';
-      document.getElementById('btnMonthly').className = 'py-2 text-xs font-bold rounded-lg bg-slate-100 text-slate-600';
-      updateView();
-    });
-
-    document.getElementById('btnMonthly').addEventListener('click', () => {
-      isMonthly = true;
-      document.getElementById('btnMonthly').className = 'py-2 text-xs font-bold rounded-lg bg-blue-600 text-white';
-      document.getElementById('btnJeonse').className = 'py-2 text-xs font-bold rounded-lg bg-slate-100 text-slate-600';
-      updateView();
-    });
-
-    updateView();
-  </script>
-</body>
-</html>
+    function formatKoreanMoney(amount) {
+      if (!amount || amount === 0) return '0원';
+      const eok = Math.floor(amount / 100000000);
+      const man = Math.floor((amount % 100000000) / 10000);
+      let res = '';
+      if (eok > 0) res += `${eok}억 `;
+      if (man > 0) res += `${man.toLocaleString()}만 `;
+      return (
