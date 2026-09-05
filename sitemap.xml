@@ -2,80 +2,71 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <!-- 1. 메인 대시보드 -->
   <url>
-    <loc>https://calc-toolkit.vercel.app/</loc>
-    <lastmod>2026-09-05</lastmod>
+    <loc>https://starsign16.com/</loc>
+    <lastmod>2026-09-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
-
   <!-- 2. 예적금 만기 이자 계산기 -->
   <url>
-    <loc>https://calc-toolkit.vercel.app/savings</loc>
-    <lastmod>2026-09-05</lastmod>
+    <loc>https://starsign16.com/savings</loc>
+    <lastmod>2026-09-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-
   <!-- 3. 부동산 중개보수 계산기 -->
   <url>
-    <loc>https://calc-toolkit.vercel.app/real-estate</loc>
-    <lastmod>2026-09-05</lastmod>
+    <loc>https://starsign16.com/real-estate</loc>
+    <lastmod>2026-09-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-
   <!-- 4. 스마트 만능 단위 변환기 -->
   <url>
-    <loc>https://calc-toolkit.vercel.app/converter</loc>
-    <lastmod>2026-09-05</lastmod>
+    <loc>https://starsign16.com/converter</loc>
+    <lastmod>2026-09-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-
   <!-- 5. 퇴직금 & 실수령액 계산기 -->
   <url>
-    <loc>https://calc-toolkit.vercel.app/severance</loc>
-    <lastmod>2026-09-05</lastmod>
+    <loc>https://starsign16.com/severance</loc>
+    <lastmod>2026-09-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-
   <!-- 6. 연봉 실수령액 계산기 -->
   <url>
-    <loc>https://calc-toolkit.vercel.app/salary</loc>
-    <lastmod>2026-09-05</lastmod>
+    <loc>https://starsign16.com/salary</loc>
+    <lastmod>2026-09-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-
   <!-- 7. 시급 & 주휴수당 계산기 -->
   <url>
-    <loc>https://calc-toolkit.vercel.app/hourly</loc>
+    <loc>https://starsign16.com/hourly</loc>
     <lastmod>2026-09-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
-
   <!-- 8. 체류시간 확보용 2048 퍼즐 -->
   <url>
-    <loc>https://calc-toolkit.vercel.app/game-2048</loc>
-    <lastmod>2026-09-05</lastmod>
+    <loc>https://starsign16.com/game-2048</loc>
+    <lastmod>2026-09-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
-
   <!-- 9. 개인정보처리방침 (애드센스 필수) -->
   <url>
-    <loc>https://calc-toolkit.vercel.app/privacy</loc>
-    <lastmod>2026-09-05</lastmod>
+    <loc>https://starsign16.com/privacy</loc>
+    <lastmod>2026-09-06</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
-
   <!-- 10. 이용약관 & 면책조항 (애드센스 필수) -->
   <url>
-    <loc>https://calc-toolkit.vercel.app/terms</loc>
-    <lastmod>2026-09-05</lastmod>
+    <loc>https://starsign16.com/terms</loc>
+    <lastmod>2026-09-06</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
