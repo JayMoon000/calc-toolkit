@@ -139,24 +139,35 @@
   }
   
   "salary": {
-    "baseYear": 2026,
-    "roundingMode": "FLOOR",
-    "nationalPension": {
-      "rate": 0.045,
-      "minMonthlyIncome": 390000,
-      "maxMonthlyIncome": 6170000
+    "version": "2026.1",
+    "nonTaxableMealLimit": 200000,
+    "socialInsurance": {
+      "nationalPension": {
+        "rate": 0.045,
+        "minMonthly": 390000,
+        "maxMonthly": 6170000
+      },
+      "healthInsurance": {
+        "rate": 0.03545
+      },
+      "longTermCare": {
+        "rateOfHealth": 0.1295
+      },
+      "employmentInsurance": {
+        "rate": 0.009
+      }
     },
-    "healthInsurance": {
-      "rate": 0.03545
-    },
-    "longTermCare": {
-      "rateOnHealth": 0.1295
-    },
-    "employmentInsurance": {
-      "rate": 0.009
-    },
-    "defaultNonTaxableLimit": 200000,
-    "localIncomeTaxRate": 0.1
+    "incomeTaxBrackets": [
+      { "limit": 14000000, "rate": 0.06, "quickDeduction": 0 },
+      { "limit": 50000000, "rate": 0.15, "quickDeduction": 1260000 },
+      { "limit": 88000000, "rate": 0.24, "quickDeduction": 5760000 },
+      { "limit": 150000000, "rate": 0.35, "quickDeduction": 15440000 },
+      { "limit": 300000000, "rate": 0.38, "quickDeduction": 19940000 },
+      { "limit": 500000000, "rate": 0.40, "quickDeduction": 25940000 },
+      { "limit": 1000000000, "rate": 0.42, "quickDeduction": 35940000 },
+      { "limit": Infinity, "rate": 0.45, "quickDeduction": 65940000 }
+    ],
+    "localTaxRate": 0.1
   }
   
   "game": {
