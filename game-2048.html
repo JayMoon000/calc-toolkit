@@ -1,174 +1,81 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>2048 퍼즐 게임 | 두뇌 회전 무료 웹게임</title>
-  <meta name="description" content="설치 없이 바로 즐기는 2048 두뇌 퍼즐 게임입니다. 방향키나 터치 스와이프로 타일을 합쳐 2048을 완성해보세요." />
-  <meta property="og:title" content="2048 퍼즐 게임 - 두뇌 트레이닝" />
-  <meta property="og:description" content="무설치 웹 브라우저 2048 퍼즐 게임." />
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-[#F1F5F9] text-slate-800 min-h-screen py-6 px-4">
-  <div class="max-w-md mx-auto bg-white rounded-2xl shadow-sm border border-slate-200 p-5 md:p-6">
+<!-- 구조화 데이터 (Schema.org FAQPage) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "2048 퍼즐에서 2048 타일을 만드는 핵심 전략은 무엇인가요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "가장 큰 숫자의 타일을 보드의 4개 모서리 중 하나(예: 우측 하단)에 완전히 고정시키고, 반대 방향(위쪽) 키를 절대로 누르지 않는 모서리 고정(Corner Strategy)이 필수 전략입니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "타일이 더 이상 움직이지 않을 때(Game Over) 대처법은?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "빈 타일이 3개 이하로 줄어들었을 때는 무리하게 숫자를 합치려 하지 말고, 낮은 숫자 타일들을 사전에 정리하여 보드 내 여유 공간(Free Tiles)을 최소 4개 이상 확보해야 합니다."
+      }
+    }
+  ]
+}
+</script>
+
+<!-- SEO & 체류시간 극대화 가이드 섹션 -->
+<section class="mt-8 pt-6 border-t border-slate-200 text-slate-700 text-sm leading-relaxed">
+  <div class="space-y-6">
     
-   <!-- 공통 네비게이션 헤더 -->
-    <div class="flex items-center justify-between pb-4 mb-4 border-b border-slate-100">
-      <div class="flex items-center gap-2">
-        <a href="./index.html" class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors" title="홈으로">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
-          </svg>
-        </a>
-        <h1 class="text-xl font-extrabold text-slate-800">2048 퍼즐</h1>
-      </div>
-      <div class="flex items-center gap-2">
-        <div class="bg-slate-100 px-3 py-1 rounded-lg text-right">
-          <span class="block text-[10px] font-bold text-slate-400 leading-none">SCORE</span>
-          <span id="score" class="text-sm font-extrabold text-slate-800">0</span>
-        </div>
-        <button id="restartBtn" class="px-3 py-1.5 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 text-xs font-bold transition-colors">다시 시작</button>
+    <!-- 섹션 1: 수학적 알고리즘과 기본 규칙 -->
+    <div>
+      <h3 class="text-base font-bold text-slate-900 mb-2 flex items-center gap-1.5">
+        <span>📖</span> 2048 퍼즐의 수학적 규칙과 원리
+      </h3>
+      <p class="text-slate-600 mb-2">
+        2048은 이탈리아의 웹 개발자 가브리엘레 치룰리(Gabriele Cirulli)가 오픈소스로 공개한 $4 \times 4$ 그리드 기반의 슬라이딩 타일 퍼즐입니다. 
+        매 이동 시 빈칸에 <strong>2</strong>(90% 확률) 또는 <strong>4</strong>(10% 확률) 타일이 무작위로 생성되며, 
+        동일한 지수를 가진 두 타일이 충돌할 때 $2^n + 2^n = 2^{n+1}$ 형태로 합쳐집니다.
+      </p>
+      <div class="bg-slate-50 p-3 rounded-lg border border-slate-100 font-mono text-xs text-slate-600">
+        최종 목표: 2 → 4 → 8 → 16 → 32 → 64 → 128 → 256 → 512 → 1024 → <strong>2048</strong>
       </div>
     </div>
 
-    <!-- 4x4 게임 보드 판 -->
-    <div id="board" class="grid grid-cols-4 gap-2 bg-slate-200 p-2.5 rounded-xl aspect-square w-full select-none touch-none">
-      <!-- 16개 셀 스크립트 렌더링 -->
+    <!-- 섹션 2: 2048 필승 3대 전략 (구체적 공략법) -->
+    <div>
+      <h3 class="text-base font-bold text-slate-900 mb-2 flex items-center gap-1.5">
+        <span>🏆</span> 고득점 필승 전략: 코너 고정 테크닉
+      </h3>
+      <ul class="space-y-2.5 text-slate-600 list-disc list-inside">
+        <li>
+          <strong class="text-slate-800">모서리 앵커링 (The Corner Strategy):</strong> 
+          가장 높은 숫자의 타일을 <strong>우측 하단(또는 좌측 하단)</strong> 구석에 영구 배치합니다. 
+          이 타일이 모서리에서 밀려나오지 않도록 <strong>위쪽 방향키(↑) 조작을 완전히 봉인</strong>하는 것이 핵심입니다.
+        </li>
+        <li>
+          <strong class="text-slate-800">지그재그 내림차순 배열 (Monotonicity Chain):</strong> 
+          가장 큰 타일이 있는 최하단 줄을 높은 숫자 순서대로 정렬합니다. 
+          (예: <code class="bg-slate-100 px-1 py-0.5 rounded text-xs">2048</code> - <code class="bg-slate-100 px-1 py-0.5 rounded text-xs">1024</code> - <code class="bg-slate-100 px-1 py-0.5 rounded text-xs">512</code> - <code class="bg-slate-100 px-1 py-0.5 rounded text-xs">256</code>) 
+          체인이 완성되면 한 번의 슬라이드로 연쇄 합체(Cascade Combo)가 발생합니다.
+        </li>
+        <li>
+          <strong class="text-slate-800">그리드 룸 관리 (Space Maintenance):</strong> 
+          보드 전체 16개 타일 중 <strong>빈 타일이 3개 이하</strong>로 줄어들면 패배 위험이 급증합니다. 
+          무리하게 512 이상의 큰 타일을 합치려 하지 말고, 작은 숫자(2, 4)들을 빠르게 정리하여 항상 4칸 이상의 빈 공간을 유지하세요.
+        </li>
+      </ul>
     </div>
 
-    <!-- SEO 롱테일 공략 & 크롤러 텍스트 (체류 시간 확보) -->
-    <div class="mt-8 pt-6 border-t border-slate-100 text-xs text-slate-500 space-y-2 leading-relaxed">
-      <h2 class="text-sm font-bold text-slate-800">2048 게임 규칙 및 고득점 공략 가이드</h2>
-      <p>• <strong>조작법</strong>: PC에서는 키보드 상/하/좌/우 방향키를 누르고, 모바일 기기에서는 화면을 스와이프하여 타일을 움직입니다.</p>
-      <p>• <strong>기본 규칙</strong>: 같은 숫자가 적힌 두 타일이 충돌하면 하나로 합쳐지며 숫자가 2배(2 &rarr; 4 &rarr; 8 ... &rarr; 2048)가 됩니다.</p>
-      <p>• <strong>공략 팁 (코너 전략)</strong>: 가장 큰 숫자의 타일을 보드의 4개 모서리 중 하나(예: 우측 하단)에 고정해 두고, 반대 방향(위쪽) 키를 가급적 누르지 않는 것이 2048 달성의 정석입니다.</p>
+    <!-- 섹션 3: 조작법 & 팁 -->
+    <div class="p-4 bg-blue-50/50 rounded-xl border border-blue-100/60">
+      <h4 class="text-xs font-bold text-blue-900 uppercase tracking-wider mb-2">💡 빠른 조작 가이드</h4>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-blue-800">
+        <div><strong>PC:</strong> 방향키(←, →, ↑, ↓) 또는 W, A, S, D</div>
+        <div><strong>모바일:</strong> 화면 상하좌우 스와이프(Swipe) 터치</div>
+      </div>
     </div>
 
   </div>
-
-  <script>
-    // ②번 순수 연산 로직 인라인
-    const size = 4;
-    let board = Array.from({ length: size }, () => Array(size).fill(0));
-    let score = 0;
-
-    function addRandomTile() {
-      const empty = [];
-      for (let r = 0; r < size; r++) {
-        for (let c = 0; c < size; c++) {
-          if (board[r][c] === 0) empty.push({ r, c });
-        }
-      }
-      if (empty.length > 0) {
-        const { r, c } = empty[Math.floor(Math.random() * empty.length)];
-        board[r][c] = Math.random() < 0.9 ? 2 : 4;
-      }
-    }
-
-    function initGame() {
-      board = Array.from({ length: size }, () => Array(size).fill(0));
-      score = 0;
-      document.getElementById('score').textContent = score;
-      addRandomTile();
-      addRandomTile();
-      render();
-    }
-
-    function render() {
-      const boardEl = document.getElementById('board');
-      boardEl.innerHTML = '';
-      const colors = {
-        0: 'bg-slate-100 text-transparent',
-        2: 'bg-white text-slate-800 font-bold',
-        4: 'bg-amber-50 text-slate-800 font-bold',
-        8: 'bg-amber-100 text-amber-900 font-bold',
-        16: 'bg-orange-200 text-white font-bold',
-        32: 'bg-orange-400 text-white font-bold',
-        64: 'bg-orange-500 text-white font-bold',
-        128: 'bg-yellow-400 text-white font-extrabold',
-        256: 'bg-yellow-500 text-white font-extrabold',
-        512: 'bg-emerald-500 text-white font-extrabold',
-        1024: 'bg-blue-500 text-white font-extrabold',
-        2048: 'bg-indigo-600 text-white font-extrabold'
-      };
-
-      for (let r = 0; r < size; r++) {
-        for (let c = 0; c < size; c++) {
-          const val = board[r][c];
-          const div = document.createElement('div');
-          div.className = `flex items-center justify-center rounded-lg text-lg md:text-xl transition-all shadow-sm ${colors[val] || 'bg-indigo-800 text-white font-black'}`;
-          div.textContent = val > 0 ? val : '';
-          boardEl.appendChild(div);
-        }
-      }
-    }
-
-    function handleMove(direction) {
-      let moved = false;
-      const rotate = m => m[0].map((_, i) => m.map(row => row[i]).reverse());
-      let rotations = 0;
-      if (direction === 'up') rotations = 3;
-      if (direction === 'right') rotations = 2;
-      if (direction === 'down') rotations = 1;
-
-      for (let i = 0; i < rotations; i++) board = rotate(board);
-
-      for (let i = 0; i < size; i++) {
-        let row = board[i].filter(v => v !== 0);
-        for (let j = 0; j < row.length - 1; j++) {
-          if (row[j] === row[j + 1]) {
-            row[j] *= 2;
-            score += row[j];
-            row[j + 1] = 0;
-          }
-        }
-        row = row.filter(v => v !== 0);
-        while (row.length < size) row.push(0);
-        if (row.some((v, idx) => v !== board[i][idx])) moved = true;
-        board[i] = row;
-      }
-
-      const back = (4 - rotations) % 4;
-      for (let i = 0; i < back; i++) board = rotate(board);
-
-      if (moved) {
-        document.getElementById('score').textContent = score;
-        addRandomTile();
-        render();
-      }
-    }
-
-    // 키보드 조작
-    window.addEventListener('keydown', e => {
-      if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
-        e.preventDefault();
-        handleMove(e.key.replace('Arrow', '').toLowerCase());
-      }
-    });
-
-    // 모바일 터치 스와이프 조작
-    let startX, startY;
-    const boardEl = document.getElementById('board');
-    boardEl.addEventListener('touchstart', e => {
-      startX = e.touches[0].clientX;
-      startY = e.touches[0].clientY;
-    }, { passive: true });
-
-    boardEl.addEventListener('touchend', e => {
-      if (!startX || !startY) return;
-      const diffX = e.changedTouches[0].clientX - startX;
-      const diffY = e.changedTouches[0].clientY - startY;
-      if (Math.abs(diffX) > Math.abs(diffY)) {
-        if (Math.abs(diffX) > 30) handleMove(diffX > 0 ? 'right' : 'left');
-      } else {
-        if (Math.abs(diffY) > 30) handleMove(diffY > 0 ? 'down' : 'up');
-      }
-      startX = null;
-      startY = null;
-    });
-
-    document.getElementById('restartBtn').addEventListener('click', initGame);
-    initGame();
-  </script>
-</body>
-</html>
+</section>
