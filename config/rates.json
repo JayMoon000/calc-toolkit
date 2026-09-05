@@ -1,0 +1,139 @@
+{
+  "version": "2026.1",
+  "baseYear": 2026,
+  "updatedAt": "2026-01-01",
+
+  "savings": {
+    "roundingMode": "FLOOR",
+    "taxRates": {
+      "NORMAL": { "label": "일반과세 (15.4%)", "incomeTaxRate": 0.14, "localTaxRate": 0.014 },
+      "PREFERENTIAL": { "label": "세금우대 (9.5%)", "incomeTaxRate": 0.09, "localTaxRate": 0.005 },
+      "NON_TAXABLE": { "label": "비과세 (0%)", "incomeTaxRate": 0.0, "localTaxRate": 0.0 }
+    }
+  },
+
+  "realEstate": {
+    "vatRate": 0.1,
+    "roundingMode": "FLOOR",
+    "categories": {
+      "HOUSING_SALE": {
+        "label": "주택 매매·교환",
+        "brackets": [
+          { "max": 50000000, "rate": 0.006, "limit": 250000 },
+          { "max": 200000000, "rate": 0.005, "limit": 800000 },
+          { "max": 900000000, "rate": 0.004, "limit": null },
+          { "max": 1200000000, "rate": 0.005, "limit": null },
+          { "max": 1500000000, "rate": 0.006, "limit": null },
+          { "max": null, "rate": 0.007, "limit": null }
+        ]
+      },
+      "HOUSING_RENT": {
+        "label": "주택 임대차(전·월세)",
+        "brackets": [
+          { "max": 50000000, "rate": 0.005, "limit": 200000 },
+          { "max": 100000000, "rate": 0.004, "limit": 300000 },
+          { "max": 900000000, "rate": 0.003, "limit": null },
+          { "max": 1200000000, "rate": 0.004, "limit": null },
+          { "max": 1500000000, "rate": 0.005, "limit": null },
+          { "max": null, "rate": 0.006, "limit": null }
+        ]
+      },
+      "OFFICETEL_LIVING": {
+        "label": "오피스텔 (주거용)",
+        "brackets": [{ "max": null, "rate": 0.005, "limit": null }]
+      },
+      "OTHER": {
+        "label": "토지·상가·기타",
+        "brackets": [{ "max": null, "rate": 0.009, "limit": null }]
+      }
+    }
+  },
+
+  "units": {
+    "area": {
+      "label": "넓이 (면적)",
+      "baseUnit": "m2",
+      "rates": {
+        "m2": { "label": "제곱미터 (㎡)", "ratio": 1.0 },
+        "pyeong": { "label": "평 (坪)", "ratio": 0.3025 },
+        "ft2": { "label": "제곱피트 (ft²)", "ratio": 10.76391 },
+        "ac": { "label": "에이커 (ac)", "ratio": 0.000247105 }
+      }
+    },
+    "length": {
+      "label": "길이",
+      "baseUnit": "m",
+      "rates": {
+        "m": { "label": "미터 (m)", "ratio": 1.0 },
+        "cm": { "label": "센티미터 (cm)", "ratio": 100.0 },
+        "km": { "label": "킬로미터 (km)", "ratio": 0.001 },
+        "in": { "label": "인치 (in)", "ratio": 39.370079 },
+        "ft": { "label": "피트 (ft)", "ratio": 3.28084 }
+      }
+    },
+    "weight": {
+      "label": "무게",
+      "baseUnit": "kg",
+      "rates": {
+        "kg": { "label": "킬로그램 (kg)", "ratio": 1.0 },
+        "g": { "label": "그램 (g)", "ratio": 1000.0 },
+        "lb": { "label": "파운드 (lb)", "ratio": 2.204623 },
+        "oz": { "label": "온스 (oz)", "ratio": 35.273962 },
+        "geun": { "label": "근 (식품용 600g)", "ratio": 1.666667 }
+      }
+    },
+    "volume": {
+      "label": "부피",
+      "baseUnit": "l",
+      "rates": {
+        "l": { "label": "리터 (L)", "ratio": 1.0 },
+        "ml": { "label": "밀리리터 (mL)", "ratio": 1000.0 },
+        "gal": { "label": "갤런 (US gal)", "ratio": 0.264172 }
+      }
+    }
+  }
+  
+  "severance": {
+    "roundingMode": "FLOOR",
+    "baseDays": 30,
+    "serviceYearDeductions": [
+      { "maxYears": 5, "baseDeduction": 0, "ratePerYear": 1000000 },
+      { "maxYears": 10, "baseDeduction": 5000000, "ratePerYear": 2000000 },
+      { "maxYears": 20, "baseDeduction": 15000000, "ratePerYear": 2500000 },
+      { "maxYears": null, "baseDeduction": 40000000, "ratePerYear": 3000000 }
+    ],
+    "conversionTaxBrackets": [
+      { "max": 14000000, "rate": 0.06, "quickDeduction": 0 },
+      { "max": 50000000, "rate": 0.15, "quickDeduction": 1260000 },
+      { "max": 88000000, "rate": 0.24, "quickDeduction": 5760000 },
+      { "max": 150000000, "rate": 0.35, "quickDeduction": 15440000 },
+      { "max": 300000000, "rate": 0.38, "quickDeduction": 19940000 },
+      { "max": 500000000, "rate": 0.40, "quickDeduction": 25940000 },
+      { "max": 1000000000, "rate": 0.42, "quickDeduction": 35940000 },
+      { "max": null, "rate": 0.45, "quickDeduction": 65940000 }
+    ],
+    "localTaxRate": 0.1
+  }
+  
+  "salary": {
+    "baseYear": 2026,
+    "roundingMode": "FLOOR",
+    "nationalPension": {
+      "rate": 0.045,
+      "minMonthlyIncome": 390000,
+      "maxMonthlyIncome": 6170000
+    },
+    "healthInsurance": {
+      "rate": 0.03545
+    },
+    "longTermCare": {
+      "rateOnHealth": 0.1295
+    },
+    "employmentInsurance": {
+      "rate": 0.009
+    },
+    "defaultNonTaxableLimit": 200000,
+    "localIncomeTaxRate": 0.1
+  }
+  
+}

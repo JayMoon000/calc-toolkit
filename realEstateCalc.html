@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2026 부동산 중개보수 계산기 | 매매·전월세 복비 상한요율표</title>
+  <meta name="description" content="2026년 공인중개사법 시행규칙 개정 요율 기준 완벽 반영. 아파트, 주택, 오피스텔, 토지 매매 및 전·월세 중개수수료와 부가세를 즉시 계산합니다." />
+  <meta name="keywords" content="부동산복비계산기, 중개수수료계산기, 2026년복비, 전세복비계산, 월세환산보증금" />
+
+  <!-- Schema.org JSON-LD 구조화 데이터 -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "2026 부동산 중개보수 계산기",
+    "applicationCategory": "RealEstateApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "KRW" }
+  }
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen py-6 px-4">
+  <div class="max-w-xl mx-auto bg-white rounded-2xl shadow-sm border border-slate-200 p-5 md:p-7">
+    
+    <!-- 최신 기준 배지 -->
+    <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+      <h1 class="text-lg md:text-xl font-extrabold text-slate-800">부동산 중개보수 계산기</h1>
+      <span id="baseYearBadge" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+        [2026년 최신 요율]
+      </span>
+    </div>
+
+    <!-- 1. 매물 유형 선택 -->
+    <div class="mt-5">
+      <label class="block text-xs font-semibold text-slate-500 mb-1">매물 대상</label>
+      <select id="categorySelect" class="w-full p-2.5 font-bold text-slate-800 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-white">
+        <option value="HOUSING_SALE">주택 매매·교환</option>
+        <option value="HOUSING_RENT">주택 임대차 (전·월세)</option>
+        <option value="OFFICETEL_LIVING">오피스텔 (주거용)</option>
+        <option value="OTHER">토지·상가·기타</option>
+      </select>
+    </div>
+
+    <!-- 2. 거래 형태 (전세 vs 월세 구분) -->
+    <div class="mt-4" id="rentTypeWrapper" style="display: none;">
+      <label class="block text-xs font-semibold text-slate-500 mb-1">거래 형태</label>
+      <div class="grid grid-cols-2 gap-2">
+        <button type="button" id="btnJeonse" class="py-2 text-xs font-bold rounded-lg bg-blue-600 text-white">전세</button>
+        <button type="button" id="btnMonthly" class="py-2 text-xs font-bold rounded-lg bg-slate-100 text-slate-600">월세</button>
+      </div>
+    </div>
+
+    <!-- 3. 금액 인풋 -->
+    <div class="space-y-4 mt-4">
+      <div>
+        <label id="depositLabel" class="block text-xs font-semibold text-slate-500 mb-1">매매 대금</label>
+        <div class="relative">
+          <input type="number" id="depositInput" value="500000000" step="1000000" class="w-full p-2.5 text-right font-bold text-slate-800 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
+          <span class="absolute left-3 top-2.5 text-slate-400 text-sm">원</span>
+        </div>
+      </div>
+
+      <div id="monthlyWrapper" style="display: none;">
+        <label class="block text-xs font-semibold text-slate-500 mb-1">월 임대료 (월세)</label>
+        <div class="relative">
+          <input type="number" id="monthlyInput" value="500000" step="50000" class="w-full p-2.5 text-right font-bold text-slate-800 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
+          <span class="absolute left-3 top-2.5 text-slate-400 text-sm">원</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. 실시간 연산 결과 -->
+    <div class="mt-6 p-4 bg-slate-50 rounded-xl border border-slate-200/60 space-y-2.5 text-sm">
+      <div class="flex justify-between items-center">
+        <span class="text-slate-500">환산 거래금액</span>
+        <span id="resTotalAmount" class="font-bold text-slate-700">0원</span>
+      </div>
+      <div class="flex justify-between items-center">
+        <span class="text-slate-500">적용 상한요율</span>
+        <span id="resRate" class="font-bold text-slate-700">0.0%</span>
+      </div>
+      <div class="flex justify-between items-center">
+        <span class="text-slate-500">최대 중개보수 (VAT 별도)</span>
+        <span id="resCommission" class="font-bold text-slate-800">0원</span>
+      </div>
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span>부가세 (10%)</span>
+        <span id="resVat">0원</span>
+      </div>
+      <div class="pt-2 border-t border-slate-200 flex justify-between items-center">
+        <span class="text-base font-bold text-slate-800">합계 수수료 (VAT 포함)</span>
+        <span id="resTotalPay" class="text-xl font-extrabold text-blue-600">0원</span>
+      </div>
+    </div>
+
+    <!-- 5. 법적 고지 및 팁 블록 (SEO Dwell Time) -->
+    <div class="mt-6 pt-5 border-t border-slate-100 text-xs text-slate-500 space-y-2 leading-relaxed">
+      <p class="font-semibold text-slate-700">중개보수 계약 전 필독 사항</p>
+      <p>• 계산된 보수는 법정 <strong>상한요율</strong> 기준이며, 공인중개사와 협의하여 그 이하로 정할 수 있습니다.</p>
+      <p>• 일반과세 사업자인 공인중개사는 부가세 10%를 청구할 수 있으나, 간이과세자는 4% 범위 내에서 청구해야 합니다.</p>
+    </div>
+  </div>
+
+  <script>
+    let isMonthly = false;
+
+    // 인라인 연산 모듈
+    function calculateTrade(deposit, monthly, categoryKey) {
+      let tradeAmount = deposit;
+      if (categoryKey === 'HOUSING_RENT' && isMonthly) {
+        let converted = deposit + (monthly * 100);
+        if (converted < 50000000) converted = deposit + (monthly * 70);
+        tradeAmount = converted;
+      }
+
+      // 2026 요율 브래킷
+      const rates = {
+        HOUSING_SALE: [
+          { max: 50000000, r: 0.006, limit: 250000 },
+          { max: 200000000, r: 0.005, limit: 800000 },
+          { max: 900000000, r: 0.004, limit: null },
+          { max: 1200000000, r: 0.005, limit: null },
+          { max: 1500000000, r: 0.006, limit: null },
+          { max: null, r: 0.007, limit: null }
+        ],
+        HOUSING_RENT: [
+          { max: 50000000, r: 0.005, limit: 200000 },
+          { max: 100000000, r: 0.004, limit: 300000 },
+          { max: 900000000, r: 0.003, limit: null },
+          { max: 1200000000, r: 0.004, limit: null },
+          { max: 1500000000, r: 0.005, limit: null },
+          { max: null, r: 0.006, limit: null }
+        ],
+        OFFICETEL_LIVING: [{ max: null, r: 0.005, limit: null }],
+        OTHER: [{ max: null, r: 0.009, limit: null }]
+      };
+
+      const brackets = rates[categoryKey];
+      let applied = 0.009;
+      let limit = null;
+
+      for (const b of brackets) {
+        if (b.max === null || tradeAmount < b.max) {
+          applied = b.r;
+          limit = b.limit;
+          break;
+        }
+      }
+
+      let commission = Math.floor(tradeAmount * applied);
+      if (limit !== null && commission > limit) commission = limit;
+      const vat = Math.floor(commission * 0.1);
+
+      return { tradeAmount, rate: (applied * 100).toFixed(2), commission, vat, total: commission + vat };
+    }
+
+    function updateView() {
+      const cat = document.getElementById('categorySelect').value;
+      const isRent = cat === 'HOUSING_RENT';
+      
+      document.getElementById('rentTypeWrapper').style.display = isRent ? 'block' : 'none';
+      document.getElementById('monthlyWrapper').style.display = (isRent && isMonthly) ? 'block' : 'none';
+      document.getElementById('depositLabel').textContent = isRent ? (isMonthly ? '보증금' : '전세 보증금') : '매매 대금';
+
+      const dep = Number(document.getElementById('depositInput').value) || 0;
+      const mon = Number(document.getElementById('monthlyInput').value) || 0;
+
+      const res = calculateTrade(dep, mon, cat);
+
+      document.getElementById('resTotalAmount').textContent = res.tradeAmount.toLocaleString() + '원';
+      document.getElementById('resRate').textContent = res.rate + '%';
+      document.getElementById('resCommission').textContent = res.commission.toLocaleString() + '원';
+      document.getElementById('resVat').textContent = res.vat.toLocaleString() + '원';
+      document.getElementById('resTotalPay').textContent = res.total.toLocaleString() + '원';
+    }
+
+    // 이벤트 리스너
+    document.getElementById('categorySelect').addEventListener('change', updateView);
+    document.getElementById('depositInput').addEventListener('input', updateView);
+    document.getElementById('monthlyInput').addEventListener('input', updateView);
+
+    document.getElementById('btnJeonse').addEventListener('click', () => {
+      isMonthly = false;
+      document.getElementById('btnJeonse').className = 'py-2 text-xs font-bold rounded-lg bg-blue-600 text-white';
+      document.getElementById('btnMonthly').className = 'py-2 text-xs font-bold rounded-lg bg-slate-100 text-slate-600';
+      updateView();
+    });
+
+    document.getElementById('btnMonthly').addEventListener('click', () => {
+      isMonthly = true;
+      document.getElementById('btnMonthly').className = 'py-2 text-xs font-bold rounded-lg bg-blue-600 text-white';
+      document.getElementById('btnJeonse').className = 'py-2 text-xs font-bold rounded-lg bg-slate-100 text-slate-600';
+      updateView();
+    });
+
+    updateView();
+  </script>
+</body>
+</html>
