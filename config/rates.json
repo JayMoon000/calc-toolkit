@@ -50,45 +50,62 @@
   },
 
   "units": {
-    "area": {
-      "label": "넓이 (면적)",
-      "baseUnit": "m2",
-      "rates": {
-        "m2": { "label": "제곱미터 (㎡)", "ratio": 1.0 },
-        "pyeong": { "label": "평 (坪)", "ratio": 0.3025 },
-        "ft2": { "label": "제곱피트 (ft²)", "ratio": 10.76391 },
-        "ac": { "label": "에이커 (ac)", "ratio": 0.000247105 }
-      }
-    },
-    "length": {
-      "label": "길이",
-      "baseUnit": "m",
-      "rates": {
-        "m": { "label": "미터 (m)", "ratio": 1.0 },
-        "cm": { "label": "센티미터 (cm)", "ratio": 100.0 },
-        "km": { "label": "킬로미터 (km)", "ratio": 0.001 },
-        "in": { "label": "인치 (in)", "ratio": 39.370079 },
-        "ft": { "label": "피트 (ft)", "ratio": 3.28084 }
-      }
-    },
-    "weight": {
-      "label": "무게",
-      "baseUnit": "kg",
-      "rates": {
-        "kg": { "label": "킬로그램 (kg)", "ratio": 1.0 },
-        "g": { "label": "그램 (g)", "ratio": 1000.0 },
-        "lb": { "label": "파운드 (lb)", "ratio": 2.204623 },
-        "oz": { "label": "온스 (oz)", "ratio": 35.273962 },
-        "geun": { "label": "근 (식품용 600g)", "ratio": 1.666667 }
-      }
-    },
-    "volume": {
-      "label": "부피",
-      "baseUnit": "l",
-      "rates": {
-        "l": { "label": "리터 (L)", "ratio": 1.0 },
-        "ml": { "label": "밀리리터 (mL)", "ratio": 1000.0 },
-        "gal": { "label": "갤런 (US gal)", "ratio": 0.264172 }
+    "version": "2026.1",
+    "categories": {
+      "area": {
+        "name": "넓이 (면적)",
+        "base": "m2",
+        "rates": {
+          "m2": 1,
+          "pyeong": 3.305785,
+          "sqft": 0.092903,
+          "sqin": 0.00064516,
+          "ha": 10000,
+          "ac": 4046.856422,
+          "km2": 1000000
+        }
+      },
+      "length": {
+        "name": "길이",
+        "base": "m",
+        "rates": {
+          "m": 1,
+          "cm": 0.01,
+          "mm": 0.001,
+          "km": 1000,
+          "in": 0.0254,
+          "ft": 0.3048,
+          "yd": 0.9144,
+          "mi": 1609.344
+        }
+      },
+      "weight": {
+        "name": "무게",
+        "base": "kg",
+        "rates": {
+          "kg": 1,
+          "g": 0.001,
+          "mg": 0.000001,
+          "lb": 0.453592,
+          "oz": 0.0283495,
+          "don": 0.00375,
+          "geun": 0.6
+        }
+      },
+      "volume": {
+        "name": "부피",
+        "base": "L",
+        "rates": {
+          "L": 1,
+          "mL": 0.001,
+          "m3": 1000,
+          "cuft": 28.3168,
+          "gal": 3.78541
+        }
+      },
+      "temperature": {
+        "name": "온도",
+        "type": "custom"
       }
     }
   }

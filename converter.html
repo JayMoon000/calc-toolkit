@@ -3,18 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>단위 변환기 | 평수·제곱미터(㎡)·길이·무게 환산표</title>
-  <meta name="description" content="아파트 면적(평 ↔ ㎡), 길이, 무게, 부피를 실시간으로 환산합니다. 부동산 중개보수 계산 전 필수 면적 변환 기능 제공." />
-  <meta name="keywords" content="단위변환기, 평수계산기, 제곱미터평변환, 84제곱미터평수, 길이변환, 무게환산" />
-  <meta property="og:title" content="스마트 단위 변환기 (평수·㎡·길이·무게)" />
-  <meta property="og:description" content="수치 입력 즉시 모든 단위 환산 결과를 한눈에 확인하세요." />
-  <meta property="og:type" content="website" />
+  <title>스마트 만능 단위 변환기 | 평수·면적·길이·무게·부피·온도 계산</title>
+  <meta name="description" content="평수-제곱미터(㎡), 피트-미터, 온스/파운드-그램, 입방피트-리터, 섭씨-화씨 등 실생활과 해외 직구 필수 단위를 실시간으로 즉시 변환합니다." />
+  <meta name="keywords" content="단위변환기, 평수계산기, 제곱미터평수, 피트미터변환, 온스그램, 파운드킬로, 화씨섭씨" />
 
+  <!-- 구조화 데이터 (Schema.org) -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "WebApplication",
-    "name": "스마트 단위 변환기",
+    "name": "스마트 만능 단위 변환기",
     "applicationCategory": "UtilitiesApplication",
     "operatingSystem": "All",
     "offers": { "@type": "Offer", "price": "0", "priceCurrency": "KRW" }
@@ -25,10 +23,10 @@
 <body class="bg-slate-50 text-slate-900 min-h-screen py-6 px-4">
   <div class="max-w-xl mx-auto bg-white rounded-2xl shadow-sm border border-slate-200 p-5 md:p-7">
     
-	<!-- 상단 공통 네비게이션 헤더 -->
-    <div class="flex items-center justify-between pb-4 mb-6 border-b border-slate-100">
+    <!-- 공통 네비게이션 헤더 -->
+    <div class="flex items-center justify-between pb-4 mb-5 border-b border-slate-100">
       <div class="flex items-center gap-2">
-        <a href="./index.html" class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors" title="홈으로">
+        <a href="./index.html" class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors" title="홈으로 이동">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
           </svg>
@@ -36,165 +34,189 @@
         <h1 class="text-lg md:text-xl font-extrabold text-slate-800">스마트 단위 변환기</h1>
       </div>
       <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
-        [국제표준기호 반영]
+        [2026년 기준 반영]
       </span>
     </div>
 
-    <!-- 1. 카테고리 탭 -->
-    <div class="grid grid-cols-4 gap-1.5 mt-5" id="catTabs">
-      <button data-cat="area" class="cat-btn py-2 text-xs md:text-sm font-semibold rounded-lg bg-blue-600 text-white">넓이(평)</button>
-      <button data-cat="length" class="cat-btn py-2 text-xs md:text-sm font-semibold rounded-lg bg-slate-100 text-slate-600">길이</button>
-      <button data-cat="weight" class="cat-btn py-2 text-xs md:text-sm font-semibold rounded-lg bg-slate-100 text-slate-600">무게</button>
-      <button data-cat="volume" class="cat-btn py-2 text-xs md:text-sm font-semibold rounded-lg bg-slate-100 text-slate-600">부피</button>
+    <!-- 카테고리 탭 -->
+    <div class="grid grid-cols-5 gap-1 bg-slate-100 p-1 rounded-xl text-xs font-bold text-slate-600 mb-6">
+      <button class="cat-btn py-2 rounded-lg transition-colors bg-white text-blue-600 shadow-sm" data-cat="area">넓이(평)</button>
+      <button class="cat-btn py-2 rounded-lg transition-colors hover:text-slate-900" data-cat="length">길이</button>
+      <button class="cat-btn py-2 rounded-lg transition-colors hover:text-slate-900" data-cat="weight">무게</button>
+      <button class="cat-btn py-2 rounded-lg transition-colors hover:text-slate-900" data-cat="volume">부피</button>
+      <button class="cat-btn py-2 rounded-lg transition-colors hover:text-slate-900" data-cat="temperature">온도</button>
     </div>
 
-    <!-- 2. 입력 및 기준 단위 선택 -->
-    <div class="mt-6 space-y-3">
-      <label class="block text-xs font-semibold text-slate-500">값 및 기준 단위 입력</label>
-      <div class="grid grid-cols-3 gap-2">
-        <div class="col-span-2 relative">
-          <input type="number" id="inputValue" value="84" class="w-full p-2.5 text-right font-bold text-slate-800 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
+    <!-- 변환 인터페이스 -->
+    <div class="space-y-4">
+      <!-- 변환 전 (From) -->
+      <div class="p-4 bg-slate-50 border border-slate-200/80 rounded-xl space-y-2">
+        <div class="flex justify-between items-center text-xs font-semibold text-slate-500">
+          <span>변환할 값</span>
+          <select id="fromUnit" class="bg-white border border-slate-200 rounded-lg px-2.5 py-1 text-slate-800 font-bold outline-none"></select>
         </div>
-        <select id="fromUnitSelect" class="p-2.5 font-bold text-slate-800 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-white text-sm">
-        </select>
+        <input type="number" id="fromValue" value="84" class="w-full text-2xl font-black bg-transparent text-slate-800 outline-none" placeholder="0" />
+      </div>
+
+      <!-- 전환(Swap) 버튼 -->
+      <div class="flex justify-center -my-2 relative z-10">
+        <button id="swapBtn" class="w-9 h-9 rounded-full bg-white border border-slate-200 shadow-sm hover:border-blue-500 hover:text-blue-600 flex items-center justify-center text-slate-500 transition-all active:scale-95" title="단위 맞바꾸기">
+          ⇅
+        </button>
+      </div>
+
+      <!-- 변환 후 (To) -->
+      <div class="p-4 bg-blue-50/50 border border-blue-100 rounded-xl space-y-2">
+        <div class="flex justify-between items-center text-xs font-semibold text-blue-600">
+          <span>변환 결과</span>
+          <select id="toUnit" class="bg-white border border-blue-200 rounded-lg px-2.5 py-1 text-blue-900 font-bold outline-none"></select>
+        </div>
+        <div id="toValue" class="text-2xl font-black text-blue-600 truncate">0</div>
       </div>
     </div>
 
-    <!-- 3. 실시간 전체 환산 결과 그리드 -->
-    <div class="mt-6">
-      <label class="block text-xs font-semibold text-slate-500 mb-2">전체 환산 결과</label>
-      <div id="resultsGrid" class="space-y-2">
-        <!-- 동적 렌더링 -->
+    <!-- 다중 주요 단위 동시 확인 테이블 -->
+    <div class="mt-6 pt-5 border-t border-slate-100">
+      <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2.5">주요 단위 한눈에 보기</h3>
+      <div id="multiResults" class="grid grid-cols-2 gap-2 text-xs">
+        <!-- JS 동적 렌더링 -->
       </div>
     </div>
 
-    <!-- 4. 내부 연계 링크 (체류 시간 극대화) -->
-    <div class="mt-8 p-4 bg-blue-50/60 rounded-xl border border-blue-100 flex items-center justify-between">
-      <div>
-        <p class="text-xs font-bold text-blue-900">부동산 매매·전월세 계산이 필요하신가요?</p>
-        <p class="text-xs text-blue-700 mt-0.5">환산한 면적 기준으로 복비 상한요율을 즉시 확인해보세요.</p>
-      </div>
-      <a href="./real-estate.html" class="px-3 py-1.5 text-xs font-bold bg-blue-600 text-white rounded-lg hover:bg-blue-700 whitespace-nowrap">
-        복비 계산 &rarr;
-      </a>
-    </div>
-
-    <!-- 5. 롱테일 가이드 (SEO 텍스트 밀도 확보) -->
-    <div class="mt-8 pt-6 border-t border-slate-100 text-xs text-slate-500 space-y-2 leading-relaxed">
-      <p class="font-semibold text-slate-700">부동산 면적(평 ↔ ㎡) 상식</p>
-      <p>• <strong>1평(坪)</strong>은 정확히 <strong>121분의 400 ㎡</strong>이며, 약 <strong>3.305785 ㎡</strong>입니다.</p>
-      <p>• 아파트 국민평형으로 불리는 <strong>전용 84㎡</strong>는 약 <strong>25.4평</strong>(공급면적 기준 통상 32~34평형)에 해당합니다.</p>
-      <p>• <strong>1㎡</strong>를 평수로 환산하려면 수치에 <strong>0.3025</strong>를 곱하면 간편합니다.</p>
+    <!-- SEO 롱테일 가이드 -->
+    <div class="mt-8 pt-5 border-t border-slate-100 text-xs text-slate-500 space-y-2 leading-relaxed">
+      <p class="font-bold text-slate-700">단위 환산 참고 가이드</p>
+      <p>• <strong>아파트 평수</strong>: $1\text{평} \fallingdotseq 3.305785\text{㎡}$이며, 전용 84㎡는 약 25.4평(공급 기준 통상 33~34평형)에 해당합니다.</p>
+      <p>• <strong>해외 직구 부피·무게</strong>: 미국 직구 시 배송대행지 요금은 파운드(lb, 1lb≒453.59g)와 입방피트($\text{ft}^3$, 부피무게) 기준으로 산정됩니다.</p>
     </div>
 
   </div>
 
   <script>
-    // ②번 순수 연산 로직 인라인
-    const UnitConverter = {
-      convert(value, category, fromUnit, toUnit, unitsConfig) {
-        if (isNaN(value) || value === null) return 0;
-        const catData = unitsConfig[category];
-        const fromRatio = catData.rates[fromUnit]?.ratio;
-        const toRatio = catData.rates[toUnit]?.ratio;
-        if (!fromRatio || !toRatio) return 0;
-        const baseValue = value / fromRatio;
-        const converted = baseValue * toRatio;
-        return parseFloat(converted.toFixed(6));
+    // 카테고리별 단위 매핑 정의
+    const UNIT_DATA = {
+      area: {
+        labels: { pyeong: "평", m2: "제곱미터(㎡)", sqft: "스퀘어피트(sq ft)", sqin: "스퀘어인치(sq in)", ha: "헥타르(ha)", ac: "에이커(ac)", km2: "제곱킬로미터(㎢)" },
+        rates: { m2: 1, pyeong: 3.305785, sqft: 0.092903, sqin: 0.00064516, ha: 10000, ac: 4046.856422, km2: 1000000 },
+        defaultFrom: "m2", defaultTo: "pyeong", defaultVal: 84
+      },
+      length: {
+        labels: { m: "미터(m)", cm: "센티미터(cm)", in: "인치(in)", ft: "피트(ft)", yd: "야드(yd)", km: "킬로미터(km)", mi: "마일(mi)" },
+        rates: { m: 1, cm: 0.01, in: 0.0254, ft: 0.3048, yd: 0.9144, km: 1000, mi: 1609.344 },
+        defaultFrom: "ft", defaultTo: "cm", defaultVal: 6
+      },
+      weight: {
+        labels: { kg: "킬로그램(kg)", g: "그램(g)", lb: "파운드(lb)", oz: "온스(oz)", don: "돈(3.75g)", geun: "근(600g)" },
+        rates: { kg: 1, g: 0.001, lb: 0.453592, oz: 0.0283495, don: 0.00375, geun: 0.6 },
+        defaultFrom: "lb", defaultTo: "kg", defaultVal: 10
+      },
+      volume: {
+        labels: { L: "리터(L)", mL: "밀리리터(mL)", cuft: "입방피트(ft³)", gal: "갤런(gal)", m3: "입방미터(㎥)" },
+        rates: { L: 1, mL: 0.001, cuft: 28.3168, gal: 3.78541, m3: 1000 },
+        defaultFrom: "cuft", defaultTo: "L", defaultVal: 1
+      },
+      temperature: {
+        labels: { C: "섭씨(℃)", F: "화씨(℉)", K: "절대온도(K)" },
+        type: "temp",
+        defaultFrom: "F", defaultTo: "C", defaultVal: 72
       }
     };
 
-    let unitsConfig = null;
-    let currentCategory = 'area';
+    let currentCat = "area";
 
-    async function init() {
-      try {
-        const res = await fetch('./config/rates.json');
-        const data = await res.json();
-        unitsConfig = data.units;
-      } catch (err) {
-        // Fallback 데이터 (로컬 환경 대응)
-        unitsConfig = {
-          area: {
-            rates: {
-              m2: { label: "제곱미터 (㎡)", ratio: 1.0 },
-              pyeong: { label: "평 (坪)", ratio: 0.3025 },
-              ft2: { label: "제곱피트 (ft²)", ratio: 10.76391 }
-            }
-          },
-          length: {
-            rates: {
-              m: { label: "미터 (m)", ratio: 1.0 },
-              cm: { label: "센티미터 (cm)", ratio: 100.0 },
-              in: { label: "인치 (in)", ratio: 39.370079 }
-            }
-          },
-          weight: {
-            rates: {
-              kg: { label: "킬로그램 (kg)", ratio: 1.0 },
-              g: { label: "그램 (g)", ratio: 1000.0 },
-              lb: { label: "파운드 (lb)", ratio: 2.204623 }
-            }
-          },
-          volume: {
-            rates: {
-              l: { label: "리터 (L)", ratio: 1.0 },
-              ml: { label: "밀리리터 (mL)", ratio: 1000.0 }
-            }
-          }
-        };
-      }
-      renderSelectOptions();
-      updateCalculations();
-      bindEvents();
-    }
+    function populateSelects() {
+      const data = UNIT_DATA[currentCat];
+      const fromSel = document.getElementById("fromUnit");
+      const toSel = document.getElementById("toUnit");
+      fromSel.innerHTML = "";
+      toSel.innerHTML = "";
 
-    function renderSelectOptions() {
-      const select = document.getElementById('fromUnitSelect');
-      const rates = unitsConfig[currentCategory].rates;
-      select.innerHTML = Object.entries(rates)
-        .map(([k, v]) => `<option value="${k}">${v.label}</option>`)
-        .join('');
-    }
-
-    function updateCalculations() {
-      if (!unitsConfig) return;
-      const val = parseFloat(document.getElementById('inputValue').value) || 0;
-      const fromUnit = document.getElementById('fromUnitSelect').value;
-      const rates = unitsConfig[currentCategory].rates;
-      const grid = document.getElementById('resultsGrid');
-
-      grid.innerHTML = Object.entries(rates).map(([k, v]) => {
-        const resVal = UnitConverter.convert(val, currentCategory, fromUnit, k, unitsConfig);
-        const isCurrent = k === fromUnit;
-        return `
-          <div class="flex justify-between items-center p-3 rounded-lg border ${isCurrent ? 'bg-blue-50/50 border-blue-200' : 'bg-slate-50 border-slate-200/60'} text-sm">
-            <span class="font-medium text-slate-600">${v.label}</span>
-            <span class="font-extrabold ${isCurrent ? 'text-blue-600' : 'text-slate-800'}">${resVal.toLocaleString()}</span>
-          </div>
-        `;
-      }).join('');
-    }
-
-    function bindEvents() {
-      document.querySelectorAll('#catTabs .cat-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          document.querySelectorAll('#catTabs .cat-btn').forEach(b => b.className = 'cat-btn py-2 text-xs md:text-sm font-semibold rounded-lg bg-slate-100 text-slate-600');
-          e.target.className = 'cat-btn py-2 text-xs md:text-sm font-semibold rounded-lg bg-blue-600 text-white';
-          currentCategory = e.target.dataset.cat;
-          
-          // 기본값 세팅
-          document.getElementById('inputValue').value = currentCategory === 'area' ? 84 : 100;
-          renderSelectOptions();
-          updateCalculations();
-        });
+      Object.entries(data.labels).forEach(([key, label]) => {
+        fromSel.add(new Option(label, key));
+        toSel.add(new Option(label, key));
       });
 
-      document.getElementById('inputValue').addEventListener('input', updateCalculations);
-      document.getElementById('fromUnitSelect').addEventListener('change', updateCalculations);
+      fromSel.value = data.defaultFrom;
+      toSel.value = data.defaultTo;
+      document.getElementById("fromValue").value = data.defaultVal;
     }
 
-    init();
+    function calculate() {
+      const val = parseFloat(document.getElementById("fromValue").value);
+      const from = document.getElementById("fromUnit").value;
+      const to = document.getElementById("toUnit").value;
+      const toEl = document.getElementById("toValue");
+      const multiEl = document.getElementById("multiResults");
+
+      if (isNaN(val)) {
+        toEl.textContent = "0";
+        multiEl.innerHTML = "";
+        return;
+      }
+
+      let res = 0;
+      if (currentCat === "temperature") {
+        let c = from === "C" ? val : from === "F" ? (val - 32) * 5/9 : val - 273.15;
+        res = to === "C" ? c : to === "F" ? c * 9/5 + 32 : c + 273.15;
+      } else {
+        const rates = UNIT_DATA[currentCat].rates;
+        const base = val * rates[from];
+        res = base / rates[to];
+      }
+
+      toEl.textContent = res.toLocaleString(undefined, { maximumFractionDigits: 4 });
+
+      // 하단 멀티 단위 비교 렌더링
+      multiEl.innerHTML = "";
+      const labels = UNIT_DATA[currentCat].labels;
+      Object.keys(labels).forEach(k => {
+        if (k !== from) {
+          let v = 0;
+          if (currentCat === "temperature") {
+            let c = from === "C" ? val : from === "F" ? (val - 32) * 5/9 : val - 273.15;
+            v = k === "C" ? c : k === "F" ? c * 9/5 + 32 : c + 273.15;
+          } else {
+            const rates = UNIT_DATA[currentCat].rates;
+            v = (val * rates[from]) / rates[k];
+          }
+          const item = document.createElement("div");
+          item.className = "bg-slate-50 p-2 rounded-lg border border-slate-100 flex justify-between";
+          item.innerHTML = `<span class="text-slate-500">${labels[k]}</span><span class="font-bold text-slate-700">${v.toLocaleString(undefined, { maximumFractionDigits: 4 })}</span>`;
+          multiEl.appendChild(item);
+        }
+      });
+    }
+
+    // 탭 전환 이벤트
+    document.querySelectorAll(".cat-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".cat-btn").forEach(b => {
+          b.className = "cat-btn py-2 rounded-lg transition-colors hover:text-slate-900";
+        });
+        btn.className = "cat-btn py-2 rounded-lg transition-colors bg-white text-blue-600 shadow-sm";
+        currentCat = btn.dataset.cat;
+        populateSelects();
+        calculate();
+      });
+    });
+
+    // 스왑(단위 맞바꾸기)
+    document.getElementById("swapBtn").addEventListener("click", () => {
+      const fromSel = document.getElementById("fromUnit");
+      const toSel = document.getElementById("toUnit");
+      const temp = fromSel.value;
+      fromSel.value = toSel.value;
+      toSel.value = temp;
+      calculate();
+    });
+
+    document.getElementById("fromValue").addEventListener("input", calculate);
+    document.getElementById("fromUnit").addEventListener("change", calculate);
+    document.getElementById("toUnit").addEventListener("change", calculate);
+
+    // 초기화 실행
+    populateSelects();
+    calculate();
   </script>
 </body>
 </html>
