@@ -16,20 +16,19 @@
           <span class="text-xl">⚖️</span>
           <h1 class="text-xl font-bold text-slate-900">핵심 법정 요율 간편 관리기</h1>
         </div>
-        <p class="text-xs text-slate-500 mt-1">1년에 1~2회 변동되는 필수 법정 수치만 안전하게 수정합니다.</p>
+        <p class="text-xs text-slate-500 mt-1">정부 고시 및 세법 개정 시 변동되는 핵심 기준값 통합 관리</p>
       </div>
       <button id="save-btn" class="w-full sm:w-auto px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl shadow-sm transition-all flex items-center justify-center gap-2">
         <span>💾</span> 최종 저장 (rates.json)
       </button>
     </div>
 
-    <!-- 알림 바 -->
+    <!-- 상태 알림 바 -->
     <div id="status-bar" class="hidden mt-4 p-3 rounded-lg text-xs font-medium"></div>
 
-    <!-- 핵심 요율 폼 카드 그리드 -->
     <div class="mt-6 space-y-6">
       
-      <!-- 1. 최저임금 및 기준 연도 -->
+      <!-- 1. 기준 연도 & 최저임금 -->
       <div class="p-5 bg-slate-50 rounded-xl border border-slate-100">
         <h2 class="text-sm font-bold text-slate-700 mb-3 flex items-center gap-2">
           <span class="w-2 h-2 rounded-full bg-blue-500"></span> 기준 연도 & 최저임금 (시급·주휴 연동)
@@ -46,44 +45,77 @@
         </div>
       </div>
 
-      <!-- 2. 4대 보험 근로자 부담 요율 -->
+      <!-- 2. 4대 사회보험 요율 및 국민연금 상하한액 -->
       <div class="p-5 bg-slate-50 rounded-xl border border-slate-100">
         <h2 class="text-sm font-bold text-slate-700 mb-3 flex items-center gap-2">
-          <span class="w-2 h-2 rounded-full bg-emerald-500"></span> 4대 사회보험 요율 (연봉·퇴직금 연동)
+          <span class="w-2 h-2 rounded-full bg-emerald-500"></span> 4대 사회보험 요율 & 국민연금 상·하한액
         </h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label class="text-xs text-slate-500 block mb-1">국민연금 (근로자 4.5% = 0.045)</label>
+            <label class="text-xs text-slate-500 block mb-1">국민연금 요율 (근로자 0.045)</label>
             <input type="number" step="0.0001" id="pensionRate" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm font-mono focus:ring-2 focus:ring-blue-500 focus:outline-none" />
           </div>
           <div>
-            <label class="text-xs text-slate-500 block mb-1">건강보험 (근로자 3.545% = 0.03545)</label>
+            <label class="text-xs text-slate-500 block mb-1">건강보험 요율 (근로자 0.03545)</label>
             <input type="number" step="0.0001" id="healthRate" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm font-mono focus:ring-2 focus:ring-blue-500 focus:outline-none" />
           </div>
           <div>
-            <label class="text-xs text-slate-500 block mb-1">장기요양보험 (건보료의 12.95% = 0.1295)</label>
+            <label class="text-xs text-slate-500 block mb-1">장기요양보험 요율 (건보료의 0.1295)</label>
             <input type="number" step="0.0001" id="careRate" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm font-mono focus:ring-2 focus:ring-blue-500 focus:outline-none" />
           </div>
           <div>
-            <label class="text-xs text-slate-500 block mb-1">고용보험 (근로자 0.9% = 0.009)</label>
+            <label class="text-xs text-slate-500 block mb-1">고용보험 요율 (근로자 0.009)</label>
             <input type="number" step="0.0001" id="employRate" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm font-mono focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+          </div>
+          <div>
+            <label class="text-xs text-slate-500 block mb-1">국민연금 하한액 (원/월, 매년 7월 변경)</label>
+            <input type="number" id="pensionMin" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm font-semibold focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+          </div>
+          <div>
+            <label class="text-xs text-slate-500 block mb-1">국민연금 상한액 (원/월, 매년 7월 변경)</label>
+            <input type="number" id="pensionMax" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm font-semibold focus:ring-2 focus:ring-blue-500 focus:outline-none" />
           </div>
         </div>
       </div>
 
-      <!-- 3. 금융 및 프리랜서 세금 -->
+      <!-- 3. 세금 및 공제 기준 -->
       <div class="p-5 bg-slate-50 rounded-xl border border-slate-100">
         <h2 class="text-sm font-bold text-slate-700 mb-3 flex items-center gap-2">
-          <span class="w-2 h-2 rounded-full bg-amber-500"></span> 세금 및 비과세 기준
+          <span class="w-2 h-2 rounded-full bg-amber-500"></span> 세금 & 비과세 기준
         </h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label class="text-xs text-slate-500 block mb-1">예적금 이자과세율 (15.4% = 0.154)</label>
+            <label class="text-xs text-slate-500 block mb-1">예적금 이자과세율 (일반 0.154)</label>
             <input type="number" step="0.001" id="interestTaxRate" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm font-mono focus:ring-2 focus:ring-blue-500 focus:outline-none" />
           </div>
           <div>
             <label class="text-xs text-slate-500 block mb-1">식대 비과세 한도 (원/월)</label>
             <input type="number" id="mealLimit" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm font-semibold focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+          </div>
+          <div>
+            <label class="text-xs text-slate-500 block mb-1">프리랜서 원천징수율 (3.3% = 0.033)</label>
+            <input type="number" step="0.001" id="freelancerRate" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm font-mono focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+          </div>
+          <div>
+            <label class="text-xs text-slate-500 block mb-1">세금우대(조합원) 농특세율 (1.4% = 0.014)</label>
+            <input type="number" step="0.001" id="preferentialTax" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm font-mono focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. 부동산 중개보수 상한 요율 -->
+      <div class="p-5 bg-slate-50 rounded-xl border border-slate-100">
+        <h2 class="text-sm font-bold text-slate-700 mb-3 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-purple-500"></span> 부동산 중개보수 법정 상한 요율
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="text-xs text-slate-500 block mb-1">주택 매매 최고 상한율 (0.007)</label>
+            <input type="number" step="0.001" id="realEstateBuyMax" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm font-mono focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+          </div>
+          <div>
+            <label class="text-xs text-slate-500 block mb-1">주택 임대차 최고 상한율 (0.006)</label>
+            <input type="number" step="0.001" id="realEstateRentMax" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm font-mono focus:ring-2 focus:ring-blue-500 focus:outline-none" />
           </div>
         </div>
       </div>
@@ -94,52 +126,60 @@
   <script>
     let fullConfig = {};
 
-    // 1. JSON 불러와서 필요한 폼에만 값 매핑
     async function initForm() {
       try {
         const res = await fetch('/api/rates');
         fullConfig = await res.json();
 
+        // 1. 기준연도 & 최저임금
         document.getElementById('baseYear').value = fullConfig.baseYear || 2026;
         document.getElementById('hourlyWage').value = fullConfig.minimumWage?.hourly || 10030;
         
+        // 2. 4대보험 & 상하한액
         document.getElementById('pensionRate').value = fullConfig.insuranceRates?.nationalPension || 0.045;
         document.getElementById('healthRate').value = fullConfig.insuranceRates?.healthInsurance || 0.03545;
         document.getElementById('careRate').value = fullConfig.insuranceRates?.longTermCare || 0.1295;
         document.getElementById('employRate').value = fullConfig.insuranceRates?.employmentInsurance || 0.009;
+        document.getElementById('pensionMin').value = fullConfig.salary?.socialInsurance?.nationalPension?.minMonthly || 390000;
+        document.getElementById('pensionMax').value = fullConfig.salary?.socialInsurance?.nationalPension?.maxMonthly || 6170000;
 
+        // 3. 세금
         document.getElementById('interestTaxRate').value = fullConfig.tax?.interestGeneralRate || 0.154;
         document.getElementById('mealLimit').value = fullConfig.salary?.nonTaxableMealLimit || 200000;
+        document.getElementById('freelancerRate').value = fullConfig.tax?.freelancerRate || 0.033;
+        document.getElementById('preferentialTax').value = fullConfig.savings?.taxRates?.preferential?.total || 0.014;
+
+        // 4. 부동산
+        document.getElementById('realEstateBuyMax').value = fullConfig.realEstateBrokerage?.housingBuyMaxRate || 0.007;
+        document.getElementById('realEstateRentMax').value = fullConfig.realEstateBrokerage?.housingRentMaxRate || 0.006;
       } catch (err) {
         showStatus('데이터를 불러오지 못했습니다.', 'error');
       }
     }
 
-    // 2. 폼 수정을 전체 JSON 객체에 안전하게 동기화 후 저장
     document.getElementById('save-btn').addEventListener('click', async () => {
-      const year = Number(document.getElementById('baseYear').value);
-      const wage = Number(document.getElementById('hourlyWage').value);
-      const pension = Number(document.getElementById('pensionRate').value);
-      const health = Number(document.getElementById('healthRate').value);
-      const care = Number(document.getElementById('careRate').value);
-      const employ = Number(document.getElementById('employRate').value);
-      const interest = Number(document.getElementById('interestTaxRate').value);
-      const meal = Number(document.getElementById('mealLimit').value);
-
-      // 1) 루트 및 공통 메타 갱신
-      fullConfig.baseYear = year;
+      // 1. 메타
+      fullConfig.baseYear = Number(document.getElementById('baseYear').value);
       fullConfig.lastUpdated = new Date().toISOString().slice(0, 10);
       fullConfig.updatedAt = fullConfig.lastUpdated;
 
-      // 2) 최저임금 (공통 & 시급 계산기)
+      // 2. 최저임금
+      const wage = Number(document.getElementById('hourlyWage').value);
       if (!fullConfig.minimumWage) fullConfig.minimumWage = {};
       fullConfig.minimumWage.hourly = wage;
       if (fullConfig.hourly) {
         fullConfig.hourly.minHourlyWage = wage;
-        fullConfig.hourly.year = year;
+        fullConfig.hourly.year = fullConfig.baseYear;
       }
 
-      // 3) 4대보험 (공통 & 급여 계산기)
+      // 3. 4대보험 & 상하한액
+      const pension = Number(document.getElementById('pensionRate').value);
+      const health = Number(document.getElementById('healthRate').value);
+      const care = Number(document.getElementById('careRate').value);
+      const employ = Number(document.getElementById('employRate').value);
+      const pMin = Number(document.getElementById('pensionMin').value);
+      const pMax = Number(document.getElementById('pensionMax').value);
+
       if (!fullConfig.insuranceRates) fullConfig.insuranceRates = {};
       fullConfig.insuranceRates.nationalPension = pension;
       fullConfig.insuranceRates.healthInsurance = health;
@@ -148,22 +188,38 @@
 
       if (fullConfig.salary?.socialInsurance) {
         fullConfig.salary.socialInsurance.nationalPension.rate = pension;
+        fullConfig.salary.socialInsurance.nationalPension.minMonthly = pMin;
+        fullConfig.salary.socialInsurance.nationalPension.maxMonthly = pMax;
         fullConfig.salary.socialInsurance.healthInsurance.rate = health;
         fullConfig.salary.socialInsurance.longTermCare.rateOfHealth = care;
         fullConfig.salary.socialInsurance.employmentInsurance.rate = employ;
       }
 
-      // 4) 세금 및 비과세 한도
+      // 4. 세금 & 비과세
+      const interest = Number(document.getElementById('interestTaxRate').value);
+      const meal = Number(document.getElementById('mealLimit').value);
+      const free = Number(document.getElementById('freelancerRate').value);
+      const pref = Number(document.getElementById('preferentialTax').value);
+
       if (!fullConfig.tax) fullConfig.tax = {};
       fullConfig.tax.interestGeneralRate = interest;
-      if (fullConfig.savings?.taxRates?.general) {
-        fullConfig.savings.taxRates.general.total = interest;
-      }
-      if (fullConfig.salary) {
-        fullConfig.salary.nonTaxableMealLimit = meal;
-      }
+      fullConfig.tax.freelancerRate = free;
 
-      // 서버 전송
+      if (fullConfig.savings?.taxRates?.general) fullConfig.savings.taxRates.general.total = interest;
+      if (fullConfig.savings?.taxRates?.preferential) {
+        fullConfig.savings.taxRates.preferential.total = pref;
+        fullConfig.savings.taxRates.preferential.specialRuralTax = pref;
+      }
+      if (fullConfig.salary) fullConfig.salary.nonTaxableMealLimit = meal;
+      if (fullConfig.hourly) fullConfig.hourly.freelancerRate = free;
+
+      // 5. 부동산
+      const bMax = Number(document.getElementById('realEstateBuyMax').value);
+      const rMax = Number(document.getElementById('realEstateRentMax').value);
+      if (!fullConfig.realEstateBrokerage) fullConfig.realEstateBrokerage = {};
+      fullConfig.realEstateBrokerage.housingBuyMaxRate = bMax;
+      fullConfig.realEstateBrokerage.housingRentMaxRate = rMax;
+
       try {
         const res = await fetch('/api/save', {
           method: 'POST',
