@@ -4,12 +4,27 @@
   "updatedAt": "2026-01-01",
 
   "savings": {
-    "roundingMode": "FLOOR",
+    "version": "2026.1",
     "taxRates": {
-      "NORMAL": { "label": "일반과세 (15.4%)", "incomeTaxRate": 0.14, "localTaxRate": 0.014 },
-      "PREFERENTIAL": { "label": "세금우대 (9.5%)", "incomeTaxRate": 0.09, "localTaxRate": 0.005 },
-      "NON_TAXABLE": { "label": "비과세 (0%)", "incomeTaxRate": 0.0, "localTaxRate": 0.0 }
-    }
+      "general": {
+        "incomeTax": 0.14,
+        "localTax": 0.014,
+        "total": 0.154,
+        "label": "일반과세 (15.4%)"
+      },
+      "preferential": {
+        "specialRuralTax": 0.014,
+        "total": 0.014,
+        "label": "세금우대/조합원 (1.4%)"
+      },
+      "nonTaxable": {
+        "total": 0.0,
+        "label": "비과세 (0.0%)"
+      }
+    },
+    "defaultDepositRate": 3.5,
+    "defaultSavingsRate": 4.0
+  }
   },
 
   "realEstate": {

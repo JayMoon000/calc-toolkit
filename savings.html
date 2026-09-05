@@ -3,257 +3,373 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>2026 예적금 계산기 | 정기예금·적금 만기 이자 및 실수령액 비교</title>
-  <meta name="description" content="2026년 최신 이자소득세율(15.4%, 세금우대 9.5%, 비과세) 반영. 정기예금(단리/복리), 정기적금의 만기 이자와 세후 실수령액을 즉시 계산합니다." />
-  <meta name="keywords" content="예금계산기, 적금계산기, 2026년이자소득세, 만기이자계산, 복리계산기, 비과세이자" />
-  <meta property="og:title" content="2026 최신 예적금 만기 이자 계산기" />
-  <meta property="og:description" content="단리/복리/적금별 세후 실수령액을 실시간으로 확인하세요." />
-  <meta property="og:type" content="website" />
+  <title>예금·적금 이자 계산기 | 단리·월복리 세후 실수령액 및 비과세 비교</title>
+  <meta name="description" content="정기예금 및 정기적금의 단리, 월복리 세전·세후 만기 수령액을 즉시 계산합니다. 일반과세(15.4%), 세금우대(1.4%), 비과세 옵션별 이자소득세 차이를 비교해 보세요." />
+  <meta name="keywords" content="예금이자계산기, 적금이자계산기, 정기예금수령액, 정기적금복리, 이자소득세15.4, 세금우대저축, 신협농협세금우대" />
 
-  <!-- Schema.org JSON-LD 구조화 데이터 -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "2026 예적금 만기 이자 계산기",
-    "applicationCategory": "FinanceApplication",
-    "operatingSystem": "All",
-    "browserRequirements": "Requires JavaScript. Requires HTML5.",
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "KRW"
-    }
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "정기예금과 정기적금의 이자 계산 방식 차이는 무엇인가요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "정기예금은 가입 시점에 목돈 전체를 예치하므로 기간 전체에 대해 약정 이율이 100% 적용됩니다. 반면 정기적금은 매월 분할 납입하므로 1회차 납입금은 12개월분 이자가 붙지만 마지막 12회차 납입금은 1개월분 이자만 붙어, 동일 금리일 때 적금의 실질 이자는 예금의 약 절반 수준이 됩니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "예금 이자에 부과되는 세금(15.4%)의 구성은 어떻게 되나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "금융기관 예·적금 이자소득에는 소득세법상 이자소득세 14%와 지방소득세 1.4%(소득세의 10%)가 합산되어 총 15.4%가 원천징수된 후 차액이 지급됩니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "상호금융권(신협, 새마을금고, 농·수협) 세금우대 혜택이란 무엇인가요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "만 19세 이상 거주자가 조합원(준조합원 포함)으로 가입 시 1인당 통합 3,000만 원 한도 내에서 이자소득세 14%가 면제되고 농어촌특별세 1.4%만 부과되어 실질 수익률을 크게 높일 수 있습니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "단리와 월복리 상품 중 어느 쪽이 유리한가요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "복리는 매월 발생하는 이자가 다음 달 원금에 가산되어 다시 이자를 낳는 구조이므로 동일한 표기 금리라면 항상 복리가 유리합니다. 다만 1년 이내의 단기 상품에서는 복리 효과가 크지 않으므로 우대금리 조건을 종합적으로 비교해야 합니다."
+        }
+      }
+    ]
   }
   </script>
 
-  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-[#F1F5F9] text-slate-800 min-h-screen py-6 px-4">
-  <div class="max-w-xl mx-auto bg-white rounded-2xl shadow-sm border border-slate-200 p-5 md:p-7">
-
-    <!-- 헤더 -->		
-	<div class="flex items-center justify-between pb-4 mb-6 border-b border-slate-100">
-	<div class="flex items-center gap-2">
-		<a href="./index.html" class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors" title="홈으로">
-			<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
-			</svg>
-		</a>
-		<h1 class="text-lg md:text-xl font-extrabold text-slate-800">예·적금 만기 이자 계산기</h1>
-		</div>
-		<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
-		  [2026년 기준 반영]
-		</span>
-	</div>
-	
-    <!-- 최신 기준 연도 배지 (rates.json 연동) -->
-    <div class="flex items-center justify-between pb-4 border-b border-slate-100">
-      <h1 class="text-lg md:text-xl font-extrabold text-slate-800">예·적금 만기 이자 계산기</h1>
-      <span id="baseYearBadge" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
-        [최신 기준 로딩 중...]
-      </span>
-    </div>
-
-    <!-- 탭 선택 -->
-    <div class="grid grid-cols-3 gap-2 mt-5" id="typeTabs">
-      <button data-type="DEPOSIT_SIMPLE" class="tab-btn py-2 text-xs md:text-sm font-semibold rounded-lg bg-blue-600 text-white">정기예금(단리)</button>
-      <button data-type="DEPOSIT_COMPOUND" class="tab-btn py-2 text-xs md:text-sm font-semibold rounded-lg bg-slate-100 text-slate-600">정기예금(복리)</button>
-      <button data-type="SAVINGS_SIMPLE" class="tab-btn py-2 text-xs md:text-sm font-semibold rounded-lg bg-slate-100 text-slate-600">정기적금</button>
-    </div>
-
-    <!-- 입력 폼 -->
-    <div class="space-y-4 mt-6">
-      <div>
-        <label id="amountLabel" class="block text-xs font-semibold text-slate-500 mb-1">예치 원금</label>
-        <div class="relative">
-          <input type="number" id="inputAmount" value="10000000" step="100000" class="w-full p-2.5 text-right font-bold text-slate-800 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
-          <span class="absolute left-3 top-2.5 text-slate-400 text-sm">원</span>
+  <div class="max-w-2xl mx-auto">
+    
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 md:p-7">
+      
+      <div class="flex items-center justify-between pb-4 mb-6 border-b border-slate-100">
+        <div class="flex items-center gap-2">
+          <a href="./index.html" class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors" title="홈으로 이동">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+            </svg>
+          </a>
+          <h1 class="text-lg md:text-xl font-extrabold text-slate-800">예금·적금 만기이자 계산기</h1>
         </div>
+        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200">
+          실시간 세후계산
+        </span>
       </div>
 
-      <div class="grid grid-cols-2 gap-3">
+      <div class="flex p-1 bg-slate-100 rounded-xl mb-5 font-bold text-xs">
+        <button id="tabDeposit" class="flex-1 py-2 rounded-lg bg-white text-blue-600 shadow-sm transition-all" onclick="setType('deposit')">
+          정기예금 (목돈 굴리기)
+        </button>
+        <button id="tabSavings" class="flex-1 py-2 rounded-lg text-slate-500 hover:text-slate-700 transition-all" onclick="setType('savings')">
+          정기적금 (목돈 모으기)
+        </button>
+      </div>
+
+      <div class="space-y-4 text-sm">
         <div>
-          <label class="block text-xs font-semibold text-slate-500 mb-1">연이자율 (%)</label>
-          <input type="number" id="inputRate" value="3.5" step="0.1" class="w-full p-2.5 text-right font-bold text-slate-800 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
+          <label id="amountLabel" class="block font-bold text-slate-700 mb-1.5">예치 금액 (원)</label>
+          <input type="number" id="inputAmount" value="10000000" step="1000000" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl font-black text-slate-800 text-lg outline-none focus:ring-2 focus:ring-blue-500" />
+          <p id="amountKorean" class="text-xs text-blue-600 font-bold mt-1">1,000만 원</p>
         </div>
-        <div>
-          <label class="block text-xs font-semibold text-slate-500 mb-1">예치/적립 기간</label>
-          <select id="inputPeriod" class="w-full p-2.5 font-bold text-slate-800 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-white">
-            <option value="6">6개월</option>
-            <option value="12" selected>12개월 (1년)</option>
-            <option value="24">24개월 (2년)</option>
-            <option value="36">36개월 (3년)</option>
-          </select>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold text-slate-700 mb-1.5">가입 기간</label>
+            <div class="relative">
+              <input type="number" id="inputPeriod" value="12" min="1" max="120" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-700 outline-none pr-10" />
+              <span class="absolute right-3 top-2.5 text-xs text-slate-400 font-semibold">개월</span>
+            </div>
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-1.5">연간 약정이율</label>
+            <div class="relative">
+              <input type="number" id="inputRate" value="3.5" step="0.1" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-700 outline-none pr-8" />
+              <span class="absolute right-3 top-2.5 text-xs text-slate-400 font-semibold">%</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3 pt-1">
+          <div>
+            <label class="block font-bold text-slate-700 mb-1.5">이자 계산 방식</label>
+            <select id="interestType" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-700 outline-none">
+              <option value="simple" selected>단리 (기본)</option>
+              <option value="compound">월복리</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-1.5">과세 구분</label>
+            <select id="taxType" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-700 outline-none">
+              <option value="general" selected>일반과세 (15.4%)</option>
+              <option value="preferential">세금우대/조합원 (1.4%)</option>
+              <option value="nonTaxable">비과세 (0.0%)</option>
+            </select>
+          </div>
         </div>
       </div>
 
-      <div>
-        <label class="block text-xs font-semibold text-slate-500 mb-1">과세 조건</label>
-        <div class="grid grid-cols-3 gap-2" id="taxOptions">
-          <!-- rates.json 불러온 후 동적 생성 -->
+      <div class="mt-6 p-4 bg-blue-50/60 border border-blue-100 rounded-xl space-y-3">
+        <div class="flex justify-between items-baseline border-b border-blue-100 pb-2">
+          <span class="text-sm font-bold text-slate-700">원금 합계</span>
+          <span id="resPrincipal" class="text-lg font-black text-slate-800">10,000,000원</span>
+        </div>
+
+        <div class="flex justify-between items-baseline text-xs">
+          <span class="text-slate-500 font-medium">세전 이자</span>
+          <span id="resGrossInterest" class="font-bold text-slate-700">+ 350,000원</span>
+        </div>
+
+        <div class="flex justify-between items-baseline border-b border-blue-100 pb-2 text-xs">
+          <span id="taxLabel" class="text-slate-500 font-medium">이자소득세 (15.4%)</span>
+          <span id="resTaxAmount" class="font-bold text-rose-600">- 53,900원</span>
+        </div>
+
+        <div class="flex justify-between items-baseline pt-1">
+          <div>
+            <span class="text-base font-extrabold text-blue-900 block">만기 실수령액</span>
+            <span class="text-[11px] text-slate-400">원금 + 세후이자</span>
+          </div>
+          <span id="resTotalPayout" class="text-2xl font-black text-blue-600">10,296,100원</span>
         </div>
       </div>
+
+      <div class="mt-4 grid grid-cols-2 gap-2 text-xs">
+        <div class="p-2.5 bg-slate-50 rounded-lg flex justify-between">
+          <span class="text-slate-500">세후 순이자</span>
+          <span id="resNetInterest" class="font-bold text-slate-700">296,100원</span>
+        </div>
+        <div class="p-2.5 bg-slate-50 rounded-lg flex justify-between">
+          <span class="text-slate-500">원금 대비 세후 수익률</span>
+          <span id="resYield" class="font-bold text-emerald-600">2.96%</span>
+        </div>
+      </div>
+
     </div>
 
-    <!-- 결과 패널 -->
-    <div class="mt-6 p-4 bg-slate-50 rounded-xl border border-slate-200/60 space-y-2.5 text-sm">
-      <div class="flex justify-between items-center">
-        <span class="text-slate-500">총 납입원금</span>
-        <span id="resPrincipal" class="font-bold text-slate-700">0원</span>
-      </div>
-      <div class="flex justify-between items-center">
-        <span class="text-slate-500">세전이자</span>
-        <span id="resGross" class="font-bold text-slate-700">0원</span>
-      </div>
-      <div class="flex justify-between items-center">
-        <span id="resTaxLabel" class="text-slate-500">이자과세</span>
-        <span id="resTax" class="font-bold text-rose-500">-0원</span>
-      </div>
-      <div class="pt-2 border-t border-slate-200 flex justify-between items-center">
-        <span class="text-base font-bold text-slate-800">최종 만기 실수령액</span>
-        <span id="resTotal" class="text-xl font-extrabold text-blue-600">0원</span>
-      </div>
-    </div>
+    <article class="mt-8 space-y-8 text-sm text-slate-600 leading-relaxed">
+      
+      <section class="bg-white rounded-2xl border border-slate-200 p-5 md:p-6 shadow-sm">
+        <h2 class="text-base font-extrabold text-slate-800 mb-3 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-blue-600"></span>
+          예금과 적금의 실질 수익률 차이 (같은 4%인데 왜 이자가 다를까?)
+        </h2>
+        <p class="text-xs text-slate-500 mb-4">표기된 금리가 같더라도 돈이 예치되는 기간에 따라 실제 받게 되는 이자는 크게 차이납니다.</p>
+        
+        <div class="overflow-x-auto">
+          <table class="w-full text-xs text-left border-collapse">
+            <thead>
+              <tr class="bg-slate-50 border-b border-slate-200 text-slate-700 font-bold">
+                <th class="p-2.5">구분</th>
+                <th class="p-2.5">정기예금 (1,200만 원 일시 예치)</th>
+                <th class="p-2.5">정기적금 (월 100만 원씩 12회 납입)</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100 text-slate-600">
+              <tr>
+                <td class="p-2.5 font-medium">연 금리 4.0% 기준</td>
+                <td class="p-2.5 text-blue-600 font-bold">세전 이자: 480,000원</td>
+                <td class="p-2.5 text-amber-600 font-bold">세전 이자: 260,000원</td>
+              </tr>
+              <tr>
+                <td class="p-2.5 font-medium">이자 발생 원리</td>
+                <td class="p-2.5 text-slate-500">1,200만 원 전액이 12개월 동안 온전히 거치됨</td>
+                <td class="p-2.5 text-slate-500">첫 달 100만 원은 12개월, 마지막 100만 원은 1개월만 거치됨</td>
+              </tr>
+              <tr>
+                <td class="p-2.5 font-medium">원금 대비 실질 이자율</td>
+                <td class="p-2.5 font-semibold text-slate-700">약 4.0% (표기 금리와 일치)</td>
+                <td class="p-2.5 font-semibold text-slate-700">약 2.16% (표기 금리의 약 절반)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
 
-    <!-- SEO 롱테일 정보 블록 (체류 시간 확보용) -->
-    <div class="mt-8 pt-6 border-t border-slate-100 text-xs text-slate-500 space-y-2 leading-relaxed">
-      <p class="font-semibold text-slate-700">알아두면 유용한 과세 상식</p>
-      <p>• <strong>일반과세(15.4%)</strong>: 이자소득세 14%와 지방소득세 1.4%가 원천징수됩니다.</p>
-      <p>• <strong>세금우대(9.5%)</strong>: 신협, 농협, 수협, 새마을금고 등 조합원 예탁금(1인당 3,000만 원 한도)에 적용됩니다.</p>
-      <p>• <strong>비과세(0%)</strong>: ISA(개인종합자산관리계좌) 순수익 한도 내, 청년도약계좌, 만 65세 이상 비과세종합저축 가입 대상자에게 적용됩니다.</p>
-    </div>
+      <section class="bg-white rounded-2xl border border-slate-200 p-5 md:p-6 shadow-sm space-y-4">
+        <h2 class="text-base font-extrabold text-slate-800 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+          금융소득 절세를 위한 3가지 핵심 체크포인트
+        </h2>
+        
+        <div class="space-y-3 text-xs leading-relaxed">
+          <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
+            <h3 class="font-bold text-slate-800 mb-1">1. 상호금융 3,000만 원 세금우대 (농특세 1.4%만 부과)</h3>
+            <p>신협, 새마을금고, 수협, 단위농협 등 상호금융기관에서 조합원이나 준조합원으로 가입하면 1인당 3,000만 원 한도로 이자소득세(14%)가 비과세되고 농어촌특별세 1.4%만 부과됩니다. 일반 시중은행의 15.4% 세금 대비 이자 실수령액이 약 14% 증가합니다.</p>
+          </div>
+
+          <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
+            <h3 class="font-bold text-slate-800 mb-1">2. ISA (개인종합자산관리계좌) 비과세 한도 활용</h3>
+            <p>ISA 계좌 내에서 예금 및 적금 상품을 운용할 경우, 순소득 기준 일반형 200만 원(서민형 400만 원)까지 비과세가 적용되며, 초과분에 대해서도 9.9% 분리과세가 적용되어 종합과세를 방지할 수 있습니다.</p>
+          </div>
+
+          <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
+            <h3 class="font-bold text-slate-800 mb-1">3. 금융소득종합과세 기준 (연 2,000만 원)</h3>
+            <p>1년 동안 발생한 이자 및 배당소득의 합계액이 2,000만 원을 초과하면 다른 종합소득(근로, 사업소득 등)과 합산되어 최고 45% 누진세율이 적용되고 건강보험료 피부양자 자격이 박탈될 수 있으므로 만기 분산 설계가 필수적입니다.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="bg-white rounded-2xl border border-slate-200 p-5 md:p-6 shadow-sm">
+        <h2 class="text-base font-extrabold text-slate-800 mb-4 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-indigo-600"></span>
+          자주 묻는 질문 (FAQ)
+        </h2>
+
+        <div class="space-y-4 text-xs">
+          <div>
+            <h3 class="font-bold text-slate-800 mb-1">Q. 만기일이 주말이나 공휴일이면 이자는 어떻게 계산되나요?</h3>
+            <p class="text-slate-600">만기일이 공휴일인 경우 그 직전 영업일에 해지하면 중도해지 이율이 아닌 약정 이율이 적용되거나, 익영업일에 해지하면 해당 휴일 일수만큼 약정 이율로 일할 계산되어 이자가 추가 지급됩니다.</p>
+          </div>
+          <div class="border-t border-slate-100 pt-3">
+            <h3 class="font-bold text-slate-800 mb-1">Q. 적금 납입을 하루라도 지연하면 이자가 깎이나요?</h3>
+            <p class="text-slate-600">정기적금의 경우 월 납입이 늦어지면 '지연일수'가 발생하여 만기가 이연되거나 만기 이자에서 지연 배상금이 차감될 수 있습니다. 반대로 미리 넣은 '선납일수'로 이를 상쇄하는 선납이연 전략을 활용할 수 있습니다.</p>
+          </div>
+          <div class="border-t border-slate-100 pt-3">
+            <h3 class="font-bold text-slate-800 mb-1">Q. 예금자보호 한도는 세후 금액 기준인가요?</h3>
+            <p class="text-slate-600">예금자보호법에 따른 1인당 최고 5,000만 원(금융기관별) 한도는 '원금과 소정의 이자(약정이율과 예금보험공사 결정 이율 중 적은 이율)'를 합산한 금액을 기준으로 보호됩니다.</p>
+          </div>
+        </div>
+      </section>
+
+    </article>
+
+    <footer class="mt-12 pt-6 pb-8 border-t border-slate-200 text-xs text-slate-400">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-3">
+        <div class="space-y-0.5 text-center md:text-left">
+          <p class="font-bold text-slate-600">Calc Toolkit · 스마트 유틸리티 랩</p>
+          <p class="text-[11px]">본 계산기는 소득세법 제129조 및 조세특례제한법의 이자소득세 원천징수 규정을 준수합니다.</p>
+        </div>
+        <div class="flex items-center gap-3 font-semibold text-slate-500">
+          <a href="./privacy.html" class="hover:text-blue-600 transition-colors">개인정보처리방침</a>
+          <span>·</span>
+          <a href="./terms.html" class="hover:text-blue-600 transition-colors">이용약관 & 면책조항</a>
+        </div>
+      </div>
+    </footer>
+
   </div>
 
   <script>
-    // ②번 순수 연산 로직 인라인 임베드
-    const Calculator = {
-      roundAmount(amount, mode = 'FLOOR') {
-        return mode === 'FLOOR' ? Math.floor(amount) : Math.round(amount);
-      },
-      depositSimple(principal, annualRate, periodMonths, taxType, ratesConfig) {
-        const rateDecimal = annualRate / 100;
-        const grossInterest = this.roundAmount(principal * rateDecimal * (periodMonths / 12), ratesConfig.roundingMode);
-        return this.formatResult(principal, grossInterest, taxType, ratesConfig);
-      },
-      depositCompound(principal, annualRate, periodMonths, taxType, ratesConfig) {
-        const monthlyRate = annualRate / 100 / 12;
-        const totalWithInterest = principal * Math.pow(1 + monthlyRate, periodMonths);
-        const grossInterest = this.roundAmount(totalWithInterest - principal, ratesConfig.roundingMode);
-        return this.formatResult(principal, grossInterest, taxType, ratesConfig);
-      },
-      savingsSimple(monthlyDeposit, annualRate, periodMonths, taxType, ratesConfig) {
-        const totalPrincipal = monthlyDeposit * periodMonths;
-        const monthlyRate = annualRate / 100 / 12;
-        const monthSum = (periodMonths * (periodMonths + 1)) / 2;
-        const grossInterest = this.roundAmount(monthlyDeposit * monthlyRate * monthSum, ratesConfig.roundingMode);
-        return this.formatResult(totalPrincipal, grossInterest, taxType, ratesConfig);
-      },
-      formatResult(totalPrincipal, grossInterest, taxType, ratesConfig) {
-        const taxConfig = ratesConfig.taxRates[taxType] || ratesConfig.taxRates.NORMAL;
-        const incomeTax = this.roundAmount(grossInterest * taxConfig.incomeTaxRate, ratesConfig.roundingMode);
-        const localTax = this.roundAmount(grossInterest * taxConfig.localTaxRate, ratesConfig.roundingMode);
-        const totalTax = incomeTax + localTax;
-        return {
-          totalPrincipal,
-          grossInterest,
-          totalTax,
-          taxLabel: taxConfig.label,
-          totalPayout: totalPrincipal + (grossInterest - totalTax)
-        };
-      }
+    let currentType = 'deposit'; // 'deposit' | 'savings'
+
+    const TAX_MAP = {
+      general: { rate: 0.154, label: '이자소득세 (15.4%)' },
+      preferential: { rate: 0.014, label: '농특세 (1.4%)' },
+      nonTaxable: { rate: 0.0, label: '비과세 (0%)' }
     };
 
-    // UI 상태 관리
-    let config = null;
-    let currentType = 'DEPOSIT_SIMPLE';
-    let currentTaxType = 'NORMAL';
+    function setType(type) {
+      currentType = type;
+      const btnDep = document.getElementById('tabDeposit');
+      const btnSav = document.getElementById('tabSavings');
+      const label = document.getElementById('amountLabel');
 
-    // rates.json 로드 및 초기화
-    async function init() {
-      try {
-        const res = await fetch('./rates.json');
-        config = await res.json();
-      } catch (err) {
-        // Fallback 데이터 (로컬 파일 직접 실행 시 fetch 에러 방지)
-        config = {
-          baseYear: 2026,
-          roundingMode: 'FLOOR',
-          taxRates: {
-            NORMAL: { label: '일반과세 (15.4%)', incomeTaxRate: 0.14, localTaxRate: 0.014 },
-            PREFERENTIAL: { label: '세금우대 (9.5%)', incomeTaxRate: 0.09, localTaxRate: 0.005 },
-            NON_TAXABLE: { label: '비과세 (0%)', incomeTaxRate: 0.0, localTaxRate: 0.0 }
-          }
-        };
+      if (type === 'deposit') {
+        btnDep.className = 'flex-1 py-2 rounded-lg bg-white text-blue-600 shadow-sm transition-all';
+        btnSav.className = 'flex-1 py-2 rounded-lg text-slate-500 hover:text-slate-700 transition-all';
+        label.textContent = '예치 금액 (원)';
+        document.getElementById('inputAmount').value = 10000000;
+        document.getElementById('inputRate').value = 3.5;
+      } else {
+        btnSav.className = 'flex-1 py-2 rounded-lg bg-white text-blue-600 shadow-sm transition-all';
+        btnDep.className = 'flex-1 py-2 rounded-lg text-slate-500 hover:text-slate-700 transition-all';
+        label.textContent = '월 납입액 (원)';
+        document.getElementById('inputAmount').value = 1000000;
+        document.getElementById('inputRate').value = 4.0;
       }
-
-      // 1. 배지 연도 업데이트
-      document.getElementById('baseYearBadge').textContent = `[${config.baseYear}년 최신 기준 반영]`;
-
-      // 2. 과세 탭 동적 렌더링
-      const taxContainer = document.getElementById('taxOptions');
-      taxContainer.innerHTML = Object.entries(config.taxRates).map(([key, val]) => `
-        <button data-tax="${key}" class="tax-btn p-2 text-xs rounded-lg border text-center font-medium transition-all ${key === 'NORMAL' ? 'border-blue-600 bg-blue-50 text-blue-700 font-bold' : 'border-slate-200 text-slate-600'}">
-          ${val.label}
-        </button>
-      `).join('');
-
-      bindEvents();
       calculate();
     }
 
-    function bindEvents() {
-      // 탭 변경
-      document.querySelectorAll('#typeTabs .tab-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          document.querySelectorAll('#typeTabs .tab-btn').forEach(b => b.className = 'tab-btn py-2 text-xs md:text-sm font-semibold rounded-lg bg-slate-100 text-slate-600');
-          e.target.className = 'tab-btn py-2 text-xs md:text-sm font-semibold rounded-lg bg-blue-600 text-white';
-          currentType = e.target.dataset.type;
-          document.getElementById('amountLabel').textContent = currentType === 'SAVINGS_SIMPLE' ? '월 납입액' : '예치 원금';
-          calculate();
-        });
-      });
-
-      // 과세 유형 변경
-      document.getElementById('taxOptions').addEventListener('click', (e) => {
-        const btn = e.target.closest('.tax-btn');
-        if (!btn) return;
-        document.querySelectorAll('.tax-btn').forEach(b => b.className = 'tax-btn p-2 text-xs rounded-lg border border-slate-200 text-slate-600 font-medium');
-        btn.className = 'tax-btn p-2 text-xs rounded-lg border border-blue-600 bg-blue-50 text-blue-700 font-bold';
-        currentTaxType = btn.dataset.tax;
-        calculate();
-      });
-
-      // 인풋 이벤트
-      ['inputAmount', 'inputRate', 'inputPeriod'].forEach(id => {
-        document.getElementById(id).addEventListener('input', calculate);
-      });
+    function formatKoreanMoney(amount) {
+      if (!amount || amount === 0) return '0원';
+      const eok = Math.floor(amount / 100000000);
+      const man = Math.floor((amount % 100000000) / 10000);
+      let res = '';
+      if (eok > 0) res += `${eok}억 `;
+      if (man > 0) res += `${man.toLocaleString()}만 `;
+      return (res.trim() || '0') + '원';
     }
 
     function calculate() {
-      if (!config) return;
-      const amount = Number(document.getElementById('inputAmount').value) || 0;
-      const rate = Number(document.getElementById('inputRate').value) || 0;
-      const period = Number(document.getElementById('inputPeriod').value) || 12;
+      const amount = parseFloat(document.getElementById('inputAmount').value) || 0;
+      const period = parseInt(document.getElementById('inputPeriod').value) || 0;
+      const rate = parseFloat(document.getElementById('inputRate').value) || 0;
+      const interestType = document.getElementById('interestType').value;
+      const taxType = document.getElementById('taxType').value;
 
-      let res;
-      if (currentType === 'DEPOSIT_SIMPLE') {
-        res = Calculator.depositSimple(amount, rate, period, currentTaxType, config);
-      } else if (currentType === 'DEPOSIT_COMPOUND') {
-        res = Calculator.depositCompound(amount, rate, period, currentTaxType, config);
-      } else {
-        res = Calculator.savingsSimple(amount, rate, period, currentTaxType, config);
+      document.getElementById('amountKorean').textContent = formatKoreanMoney(amount);
+
+      if (amount <= 0 || period <= 0 || rate <= 0) {
+        document.getElementById('resPrincipal').textContent = '0원';
+        document.getElementById('resGrossInterest').textContent = '+ 0원';
+        document.getElementById('resTaxAmount').textContent = '- 0원';
+        document.getElementById('resTotalPayout').textContent = '0원';
+        document.getElementById('resNetInterest').textContent = '0원';
+        document.getElementById('resYield').textContent = '0.00%';
+        return;
       }
 
-      document.getElementById('resPrincipal').textContent = res.totalPrincipal.toLocaleString() + '원';
-      document.getElementById('resGross').textContent = '+' + res.grossInterest.toLocaleString() + '원';
-      document.getElementById('resTaxLabel').textContent = `이자과세 (${res.taxLabel})`;
-      document.getElementById('resTax').textContent = '-' + res.totalTax.toLocaleString() + '원';
-      document.getElementById('resTotal').textContent = res.totalPayout.toLocaleString() + '원';
+      const r = rate / 100;
+      let principal = 0;
+      let grossInterest = 0;
+
+      if (currentType === 'deposit') {
+        principal = amount;
+        if (interestType === 'simple') {
+          grossInterest = principal * r * (period / 12);
+        } else {
+          grossInterest = principal * Math.pow(1 + r / 12, period) - principal;
+        }
+      } else {
+        principal = amount * period;
+        if (interestType === 'simple') {
+          grossInterest = amount * (r / 12) * ((period * (period + 1)) / 2);
+        } else {
+          let sum = 0;
+          const monthlyRate = r / 12;
+          for (let i = 1; i <= period; i++) {
+            sum += amount * Math.pow(1 + monthlyRate, i);
+          }
+          grossInterest = sum - principal;
+        }
+      }
+
+      grossInterest = Math.floor(grossInterest);
+      const taxInfo = TAX_MAP[taxType];
+      const taxAmount = Math.floor(grossInterest * taxInfo.rate);
+      const netInterest = grossInterest - taxAmount;
+      const totalPayout = principal + netInterest;
+      const netYield = principal > 0 ? ((netInterest / principal) * 100).toFixed(2) : '0.00';
+
+      document.getElementById('taxLabel').textContent = taxInfo.label;
+      document.getElementById('resPrincipal').textContent = `${principal.toLocaleString()}원`;
+      document.getElementById('resGrossInterest').textContent = `+ ${grossInterest.toLocaleString()}원`;
+      document.getElementById('resTaxAmount').textContent = `- ${taxAmount.toLocaleString()}원`;
+      document.getElementById('resTotalPayout').textContent = `${totalPayout.toLocaleString()}원`;
+      document.getElementById('resNetInterest').textContent = `${netInterest.toLocaleString()}원`;
+      document.getElementById('resYield').textContent = `${netYield}%`;
     }
 
-    init();
+    document.getElementById('inputAmount').addEventListener('input', calculate);
+    document.getElementById('inputPeriod').addEventListener('input', calculate);
+    document.getElementById('inputRate').addEventListener('input', calculate);
+    document.getElementById('interestType').addEventListener('change', calculate);
+    document.getElementById('taxType').addEventListener('change', calculate);
+
+    calculate();
   </script>
 </body>
 </html>
