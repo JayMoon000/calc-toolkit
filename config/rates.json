@@ -111,23 +111,29 @@
   }
   
   "severance": {
-    "roundingMode": "FLOOR",
-    "baseDays": 30,
-    "serviceYearDeductions": [
-      { "maxYears": 5, "baseDeduction": 0, "ratePerYear": 1000000 },
-      { "maxYears": 10, "baseDeduction": 5000000, "ratePerYear": 2000000 },
-      { "maxYears": 20, "baseDeduction": 15000000, "ratePerYear": 2500000 },
-      { "maxYears": null, "baseDeduction": 40000000, "ratePerYear": 3000000 }
+    "version": "2026.1",
+    "serviceYearDeduction": [
+      { "limit": 5, "base": 0, "rate": 1000000 },
+      { "limit": 10, "base": 5000000, "rate": 2000000 },
+      { "limit": 20, "base": 15000000, "rate": 2500000 },
+      { "limit": Infinity, "base": 40000000, "rate": 3000000 }
     ],
-    "conversionTaxBrackets": [
-      { "max": 14000000, "rate": 0.06, "quickDeduction": 0 },
-      { "max": 50000000, "rate": 0.15, "quickDeduction": 1260000 },
-      { "max": 88000000, "rate": 0.24, "quickDeduction": 5760000 },
-      { "max": 150000000, "rate": 0.35, "quickDeduction": 15440000 },
-      { "max": 300000000, "rate": 0.38, "quickDeduction": 19940000 },
-      { "max": 500000000, "rate": 0.40, "quickDeduction": 25940000 },
-      { "max": 1000000000, "rate": 0.42, "quickDeduction": 35940000 },
-      { "max": null, "rate": 0.45, "quickDeduction": 65940000 }
+    "convertedSalaryDeduction": [
+      { "limit": 8000000, "deductionRate": 1.0, "base": 0 },
+      { "limit": 70000000, "deductionRate": 0.6, "base": 8000000 },
+      { "limit": 100000000, "deductionRate": 0.55, "base": 45200000 },
+      { "limit": 300000000, "deductionRate": 0.45, "base": 61700000 },
+      { "limit": Infinity, "deductionRate": 0.35, "base": 151700000 }
+    ],
+    "incomeTaxBrackets": [
+      { "limit": 14000000, "rate": 0.06, "quickDeduction": 0 },
+      { "limit": 50000000, "rate": 0.15, "quickDeduction": 1260000 },
+      { "limit": 88000000, "rate": 0.24, "quickDeduction": 5760000 },
+      { "limit": 150000000, "rate": 0.35, "quickDeduction": 15440000 },
+      { "limit": 300000000, "rate": 0.38, "quickDeduction": 19940000 },
+      { "limit": 500000000, "rate": 0.40, "quickDeduction": 25940000 },
+      { "limit": 1000000000, "rate": 0.42, "quickDeduction": 35940000 },
+      { "limit": Infinity, "rate": 0.45, "quickDeduction": 65940000 }
     ],
     "localTaxRate": 0.1
   }
