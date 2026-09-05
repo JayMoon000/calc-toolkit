@@ -168,11 +168,26 @@
 	 
     </main>
 
-    <!-- 하단 푸터 (신뢰도 마킹) -->
-    <footer class="mt-16 text-center text-xs text-slate-400 space-y-1">
-      <p>데이터 출처: 대한민국 법제처 국가법령정보센터 및 국세청 고시 요율</p>
-      <p>© 2026 Calc Toolkit. All rights reserved.</p>
-    </footer>
+    <!-- 표준 법적 푸터 컴포넌트 (AdSense 필수) -->
+	  <footer class="mt-16 pt-8 pb-12 border-t border-slate-200 text-xs text-slate-500">
+		<div class="max-w-4xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4">
+		  
+		  <!-- 좌측: 운영 주체 및 면책 요약 -->
+		  <div class="space-y-1 text-center md:text-left">
+			<p class="font-bold text-slate-700">Calc Toolkit · 스마트 유틸리티 랩</p>
+			<p class="text-slate-400">데이터 출처: 대한민국 법제처 국가법령정보센터 및 국세청 고시 요율</p>
+			<p class="text-[11px] text-slate-400">© 2026 Calc Toolkit. All rights reserved.</p>
+		  </div>
+
+		  <!-- 우측: 필수 법적 정책 링크 -->
+		  <div class="flex items-center gap-4 font-semibold text-slate-600">
+			<a href="./privacy.html" class="hover:text-blue-600 underline-offset-4 hover:underline transition-colors">개인정보처리방침</a>
+			<span class="text-slate-300">|</span>
+			<a href="./terms.html" class="hover:text-blue-600 underline-offset-4 hover:underline transition-colors">이용약관 & 면책조항</a>
+		  </div>
+
+		</div>
+	  </footer>
 
   </div>
 
