@@ -1,0 +1,1 @@
+git commit -am "chore: update legal rates" && git push origin main
