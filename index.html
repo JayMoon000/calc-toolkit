@@ -3,32 +3,44 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>2026 스마트 계산기 허브 | 실생활 금융 & 부동산 유틸리티</title>
-  <meta name="description" content="2026년 최신 세법과 부동산 요율을 자동 반영하는 무료 실생활 금융 계산기 모음입니다." />
-  <meta property="og:title" content="2026 스마트 계산기 허브" />
-  <meta property="og:description" content="예적금 이자부터 부동산 중개보수까지, 최신 기준 계산기 컬렉션." />
-  <meta property="og:type" content="website" />
+  <title>스마트 계산기 툴킷 | 2026 법령·세법 반영 금융·노무 계산기</title>
+  <meta name="description" content="예·적금 만기이자, 부동산 중개보수, 단위변환, 퇴직금, 연봉 실수령액, 2026 최저시급 및 주휴수당까지 실시간으로 계산하는 전문 유틸리티 툴킷입니다." />
+  <meta name="keywords" content="계산기툴킷, 예금이자계산기, 부동산중개수수료, 단위변환기, 퇴직금계산기, 연봉실수령액, 주휴수당계산기, 2026최저임금" />
 
+  <!-- 구조화 데이터 (Schema.org WebSite) -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "name": "2026 스마트 계산기 허브",
-    "url": "https://your-domain.vercel.app/"
+    "name": "스마트 계산기 툴킷",
+    "url": "https://calc-toolkit.vercel.app/",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://calc-toolkit.vercel.app/?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
   }
   </script>
 
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-[#F1F5F9] text-slate-800 min-h-screen">
-  <div class="max-w-4xl mx-auto px-4 py-12">
-    
-    <!-- 헤더 영역 -->
-    <header class="text-center mb-12">
+  <div class="max-w-4xl mx-auto px-4 py-10 md:py-14">
+
+    <!-- 상단 헤더 영역 -->
+    <header class="text-center mb-10 relative">
+      <!-- 2048 미니 게임 우측 상단 배치 (체류시간 확보용 서브 버튼) -->
+      <div class="flex justify-end mb-3">
+        <a href="./game-2048.html" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold bg-white border border-slate-200 text-slate-600 shadow-sm hover:border-blue-400 hover:text-blue-600 transition-all">
+          <span>🎮</span> 머리 식히기 (2048 게임)
+        </a>
+      </div>
+
       <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200 mb-4">
         <span class="w-2 h-2 rounded-full bg-blue-600 animate-pulse"></span>
         <span id="globalYearBadge">2026년 법령·세율 자동 반영</span>
       </div>
+
       <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight">
         스마트 계산기 툴킷
       </h1>
@@ -37,170 +49,93 @@
       </p>
     </header>
 
-    <!-- 계산기 카드 그리드 -->
-    <main class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      
-      <!-- 카드 1: 예적금 계산기 -->
+    <!-- 핵심 6대 계산기 카드 그리드 (전문 유틸리티 집중 배치) -->
+    <main class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+      <!-- 카드 1: 예·적금 계산기 -->
       <a href="./savings.html" class="block p-6 bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md hover:border-blue-400 transition-all group">
         <div class="flex items-center justify-between mb-4">
-          <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 font-bold text-lg">
-            ₩
-          </div>
-          <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
-            최신 세법 반영
-          </span>
+          <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 font-bold text-lg">₩</div>
+          <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">최신 세법 반영</span>
         </div>
-        <h2 class="text-xl font-bold text-slate-800 group-hover:text-blue-600 transition-colors">
-          예·적금 만기 이자 계산기
-        </h2>
-        <p class="mt-2 text-sm text-slate-500 leading-relaxed">
-          정기예금(단리/복리), 정기적금의 일반과세(15.4%), 세금우대, 비과세 조건별 세후 수령액을 비교합니다.
-        </p>
-        <div class="mt-5 flex items-center text-xs font-semibold text-blue-600 group-hover:translate-x-1 transition-transform">
-          계산기 바로가기 &rarr;
-        </div>
+        <h2 class="text-lg font-bold text-slate-800 group-hover:text-blue-600 transition-colors">예·적금 만기 이자 계산기</h2>
+        <p class="mt-2 text-xs text-slate-500 leading-relaxed">정기예금(단리/복리), 정기적금의 일반과세(15.4%), 세금우대, 비과세 조건별 세후 수령액을 비교합니다.</p>
+        <div class="mt-4 flex items-center text-xs font-semibold text-blue-600 group-hover:translate-x-1 transition-transform">계산기 바로가기 &rarr;</div>
       </a>
 
       <!-- 카드 2: 부동산 중개보수 계산기 -->
       <a href="./real-estate.html" class="block p-6 bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md hover:border-blue-400 transition-all group">
         <div class="flex items-center justify-between mb-4">
-          <div class="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center text-indigo-600 font-bold text-lg">
-            🏢
-          </div>
-          <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
-            공인중개사법 개정안
-          </span>
+          <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 font-bold text-lg">🏢</div>
+          <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">공인중개사법 개정안</span>
         </div>
-        <h2 class="text-xl font-bold text-slate-800 group-hover:text-indigo-600 transition-colors">
-          부동산 중개보수 계산기
-        </h2>
-        <p class="mt-2 text-sm text-slate-500 leading-relaxed">
-          주택, 오피스텔, 토지 매매 및 전·월세 환산보증금 기준 법정 상한 복비와 부가세(VAT)를 산출합니다.
-        </p>
-        <div class="mt-5 flex items-center text-xs font-semibold text-indigo-600 group-hover:translate-x-1 transition-transform">
-          계산기 바로가기 &rarr;
-        </div>
+        <h2 class="text-lg font-bold text-slate-800 group-hover:text-blue-600 transition-colors">부동산 중개보수 계산기</h2>
+        <p class="mt-2 text-xs text-slate-500 leading-relaxed">주택, 오피스텔, 토지 매매 및 전·월세 환산보증금 기준 법정 상한 복비와 부가세(VAT)를 산출합니다.</p>
+        <div class="mt-4 flex items-center text-xs font-semibold text-blue-600 group-hover:translate-x-1 transition-transform">계산기 바로가기 &rarr;</div>
       </a>
-	  
-	  <!-- 카드 3: 단위 변환기 -->
-	  <a href="./converter.html" class="block p-6 bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md hover:border-blue-400 transition-all group">
-		<div class="flex items-center justify-between mb-4">
-			<div class="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-600 font-bold text-lg">
-			📐
-			</div>
-			<span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200">
-				국제표준규격
-			</span>
-		</div>
-		<h2 class="text-xl font-bold text-slate-800 group-hover:text-blue-600 transition-colors">
-			단위 변환기 (평수·면적·길이·무게)
-		</h2>
-		<p class="mt-2 text-sm text-slate-500 leading-relaxed">
-			아파트 평수 ↔ ㎡ 환산부터 길이, 무게, 부피까지 실시간으로 전체 단위를 일괄 계산합니다.
-		</p>
-		<div class="mt-5 flex items-center text-xs font-semibold text-blue-600 group-hover:translate-x-1 transition-transform">
-			변환기 바로가기 &rarr;
-		</div>
-	  </a>	
-	  
-	  <!-- 카드 4: 퇴직금 계산기 -->
-	  <a href="./severance.html" class="block p-6 bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md hover:border-blue-400 transition-all group">
-		<div class="flex items-center justify-between mb-4">
-			<div class="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center text-amber-600 font-bold text-lg">
-			💼
-			</div>
-			<span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
-			  근로기준법 표준
-			</span>
-		</div>
-		<h2 class="text-xl font-bold text-slate-800 group-hover:text-blue-600 transition-colors">
-		  퇴직금 & 실수령액 계산기
-		</h2>
-		<p class="mt-2 text-sm text-slate-500 leading-relaxed">
-		  입·퇴사일 기준 재직일수 자동 계산 및 2026년 개정 근속연수·환산급여 소득공제를 반영한 세후 실수령액을 산출합니다.
-		</p>
-		<div class="mt-5 flex items-center text-xs font-semibold text-blue-600 group-hover:translate-x-1 transition-transform">
-		  퇴직금 계산하기 &rarr;
-		</div>
-	</a>
-	
-	<!-- 카드 5: 연봉/급여 실수령액 계산기 -->
-	<a href="./salary.html" class="block p-6 bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md hover:border-blue-400 transition-all group">
-		<div class="flex items-center justify-between mb-4">
-			<div class="w-10 h-10 rounded-xl bg-violet-50 flex items-center justify-center text-violet-600 font-bold text-lg">
-			💰
-			</div>
-			<span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
-			  4대보험 최신 요율
-			</span>
-		</div>
-		<h2 class="text-xl font-bold text-slate-800 group-hover:text-blue-600 transition-colors">
-		  연봉 실수령액 & 4대보험 계산기
-		</h2>
-		<p class="mt-2 text-sm text-slate-500 leading-relaxed">
-		  국민연금 상한액, 건강/장기요양/고용보험 및 근로소득 간이세액 공제 후 매월 통장에 입금되는 실제 급여를 계산합니다.
-		</p>
-		<div class="mt-5 flex items-center text-xs font-semibold text-blue-600 group-hover:translate-x-1 transition-transform">
-		  실수령액 계산하기 &rarr;
-		</div>
-	</a>
-	 
-	<!-- 카드 6: 체류 시간 증대용 2048 퍼즐 -->
-	<a href="./game-2048.html" class="block p-6 bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md hover:border-blue-400 transition-all group">
-	  <div class="flex items-center justify-between mb-4">
-		<div class="w-10 h-10 rounded-xl bg-orange-50 flex items-center justify-center text-orange-600 font-bold text-lg">
-		🎮
-		</div>
-		<span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200">
-		  무설치 캐주얼
-		</span>
-	  </div>
-	  <h2 class="text-xl font-bold text-slate-800 group-hover:text-blue-600 transition-colors">
-		2048 두뇌 퍼즐 게임
-	  </h2>
-	  <p class="mt-2 text-sm text-slate-500 leading-relaxed">
-		방향키와 터치로 타일을 합쳐 2048을 달성해보세요. 설치 없이 브라우저에서 바로 즐길 수 있습니다.
-	  </p>
-	  <div class="mt-5 flex items-center text-xs font-semibold text-blue-600 group-hover:translate-x-1 transition-transform">
-		게임 플레이하기 &rarr;
-	  </div>
-	</a>
-	 
+
+      <!-- 카드 3: 단위 변환기 -->
+      <a href="./converter.html" class="block p-6 bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md hover:border-blue-400 transition-all group">
+        <div class="flex items-center justify-between mb-4">
+          <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 font-bold text-lg">📐</div>
+          <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200">국제표준규격</span>
+        </div>
+        <h2 class="text-lg font-bold text-slate-800 group-hover:text-blue-600 transition-colors">스마트 단위 변환기 (평수·도량형)</h2>
+        <p class="mt-2 text-xs text-slate-500 leading-relaxed">아파트 전용 84㎡ ↔ 공급 평형 환산부터 해외 직구 파운드, 온스, 부피, 온도까지 실시간 일괄 변환합니다.</p>
+        <div class="mt-4 flex items-center text-xs font-semibold text-blue-600 group-hover:translate-x-1 transition-transform">변환기 바로가기 &rarr;</div>
+      </a>
+
+      <!-- 카드 4: 퇴직금 계산기 -->
+      <a href="./severance.html" class="block p-6 bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md hover:border-blue-400 transition-all group">
+        <div class="flex items-center justify-between mb-4">
+          <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 font-bold text-lg">💼</div>
+          <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">근로기준법 표준</span>
+        </div>
+        <h2 class="text-lg font-bold text-slate-800 group-hover:text-blue-600 transition-colors">퇴직금 & 실수령액 계산기</h2>
+        <p class="mt-2 text-xs text-slate-500 leading-relaxed">재직일수 자동 계산 및 2026년 개정 근속연수공제·환산급여 소득공제를 반영한 세후 실수령액을 산출합니다.</p>
+        <div class="mt-4 flex items-center text-xs font-semibold text-blue-600 group-hover:translate-x-1 transition-transform">퇴직금 계산하기 &rarr;</div>
+      </a>
+
+      <!-- 카드 5: 연봉 실수령액 계산기 -->
+      <a href="./salary.html" class="block p-6 bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md hover:border-blue-400 transition-all group">
+        <div class="flex items-center justify-between mb-4">
+          <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 font-bold text-lg">💰</div>
+          <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">4대보험 최신 요율</span>
+        </div>
+        <h2 class="text-lg font-bold text-slate-800 group-hover:text-blue-600 transition-colors">연봉 실수령액 & 4대보험 계산기</h2>
+        <p class="mt-2 text-xs text-slate-500 leading-relaxed">국민연금 상한액, 건보·장기요양·고용보험 및 근로소득 간이세액 공제 후 매월 통장에 입금되는 실급여를 계산합니다.</p>
+        <div class="mt-4 flex items-center text-xs font-semibold text-blue-600 group-hover:translate-x-1 transition-transform">실수령액 계산하기 &rarr;</div>
+      </a>
+
+      <!-- 카드 6: 시급 & 주휴수당 계산기 (신규 정식 배치) -->
+      <a href="./hourly.html" class="block p-6 bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md hover:border-blue-400 transition-all group">
+        <div class="flex items-center justify-between mb-4">
+          <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 font-bold text-lg">⏱️</div>
+          <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200">2026 최저 10,030원</span>
+        </div>
+        <h2 class="text-lg font-bold text-slate-800 group-hover:text-blue-600 transition-colors">시급 & 주휴수당 계산기 (알바 급여)</h2>
+        <p class="mt-2 text-xs text-slate-500 leading-relaxed">주 15시간 이상 주휴시간 자동 산정, 월 환산 급여, 프리랜서 3.3% 원천징수 및 4대보험 공제 후 실수령액을 산출합니다.</p>
+        <div class="mt-4 flex items-center text-xs font-semibold text-blue-600 group-hover:translate-x-1 transition-transform">시급 계산하기 &rarr;</div>
+      </a>
+
     </main>
 
-    <!-- 표준 법적 푸터 컴포넌트 (AdSense 필수) -->
-	  <footer class="mt-16 pt-8 pb-12 border-t border-slate-200 text-xs text-slate-500">
-		<div class="max-w-4xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4">
-		  
-		  <!-- 좌측: 운영 주체 및 면책 요약 -->
-		  <div class="space-y-1 text-center md:text-left">
-			<p class="font-bold text-slate-700">Calc Toolkit · 스마트 유틸리티 랩</p>
-			<p class="text-slate-400">데이터 출처: 대한민국 법제처 국가법령정보센터 및 국세청 고시 요율</p>
-			<p class="text-[11px] text-slate-400">© 2026 Calc Toolkit. All rights reserved.</p>
-		  </div>
-
-		<!-- 우측: 필수 법적 정책 링크 -->
-		<div class="flex items-center gap-4 font-semibold text-slate-600">
-			<a href="./privacy.html" class="hover:text-blue-600 underline-offset-4 hover:underline transition-colors">개인정보처리방침</a>
-			<span class="text-slate-300">|</span>
-			<a href="./terms.html" class="hover:text-blue-600 underline-offset-4 hover:underline transition-colors">이용약관 & 면책조항</a>
-		</div>
-
-		</div>
-	  </footer>
+    <!-- 표준 법적 푸터 -->
+    <footer class="mt-16 pt-8 pb-12 border-t border-slate-200 text-xs text-slate-500">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+        <div class="space-y-1 text-center md:text-left">
+          <p class="font-bold text-slate-700">Calc Toolkit · 스마트 유틸리티 랩</p>
+          <p class="text-slate-400">데이터 출처: 대한민국 법제처 국가법령정보센터 및 국세청 고시 요율</p>
+          <p class="text-[11px] text-slate-400">© 2026 Calc Toolkit. All rights reserved.</p>
+        </div>
+        <div class="flex items-center gap-4 font-semibold text-slate-600">
+          <a href="./privacy.html" class="hover:text-blue-600 underline-offset-4 hover:underline transition-colors">개인정보처리방침</a>
+          <span class="text-slate-300">|</span>
+          <a href="./terms.html" class="hover:text-blue-600 underline-offset-4 hover:underline transition-colors">이용약관 & 면책조항</a>
+        </div>
+      </div>
+    </footer>
 
   </div>
-
-  <script>
-    // rates.json 연동하여 기준 연도 동적 동기화
-    fetch('./config/rates.json')
-      .then(res => res.json())
-      .then(data => {
-        if (data.baseYear) {
-          document.getElementById('globalYearBadge').textContent = `${data.baseYear}년 법령·세율 자동 반영`;
-        }
-      })
-      .catch(() => {});
-  </script>
 </body>
 </html>
