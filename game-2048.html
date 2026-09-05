@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2048 퍼즐 게임 | 두뇌 회전 무료 웹게임</title>
+  <meta name="description" content="설치 없이 바로 즐기는 2048 두뇌 퍼즐 게임입니다. 방향키나 터치 스와이프로 타일을 합쳐 2048을 완성해보세요." />
+  <meta property="og:title" content="2048 퍼즐 게임 - 두뇌 트레이닝" />
+  <meta property="og:description" content="무설치 웹 브라우저 2048 퍼즐 게임." />
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen py-6 px-4">
+  <div class="max-w-md mx-auto bg-white rounded-2xl shadow-sm border border-slate-200 p-5 md:p-6">
+    
+    <!-- 공통 네비게이션 헤더 -->
+    <div class="flex items-center justify-between pb-4 mb-4 border-b border-slate-100">
+      <div class="flex items-center gap-2">
+        <a href="./index.html" class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors" title="홈으로 이동">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+          </svg>
+        </a>
+        <h1 class="text-xl font-extrabold text-slate-800">2048 퍼즐</h1>
+      </div>
+      <div class="flex items-center gap-2">
+        <div class="bg-slate-100 px-3 py-1 rounded-lg text-right">
+          <span class="block text-[10px] font-bold text-slate-400 leading-none">SCORE</span>
+          <span id="score" class="text-sm font-extrabold text-slate-800">0</span>
+        </div>
+        <button id="restartBtn" class="p-2 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 text-xs font-bold">다시 시작</button>
+      </div>
+    </div>
+
+    <!-- 4x4 게임 보드 판 -->
+    <div id="board" class="grid grid-cols-4 gap-2 bg-slate-200 p-2.5 rounded-xl aspect-square w-full select-none touch-none">
+      <!-- 16개 셀 스크립트 렌더링 -->
+    </div>
+
+    <!-- SEO 롱테일 공략 & 크롤러 텍스트 (체류 시간 확보) -->
+    <div class="mt-8 pt-6 border-t border-slate-100 text-xs text-slate-500 space-y-2 leading-relaxed">
+      <h2 class="text-sm font-bold text-slate-800">2048 게임 규칙 및 고득점 공략 가이드</h2>
+      <p>• <strong>조작법</strong>: PC에서는 키보드 상/하/좌/우 방향키를 누르고, 모바일 기기에서는 화면을 스와이프하여 타일을 움직입니다.</p>
+      <p>• <strong>기본 규칙</strong>: 같은 숫자가 적힌 두 타일이 충돌하면 하나로 합쳐지며 숫자가 2배(2 &rarr; 4 &rarr; 8 ... &rarr; 2048)가 됩니다.</p>
+      <p>• <strong>공략 팁 (코너 전략)</strong>: 가장 큰 숫자의 타일을 보드의 4개 모서리 중 하나(예: 우측 하단)에 고정해 두고, 반대 방향(위쪽) 키를 가급적 누르지 않는 것이 2048 달성의 정석입니다.</p>
+    </div>
+
+  </div>
+
+  <script>
+    // ②번 순수 연산 로직 인라인
+    const size = 4;
+    let board = Array.from({ length: size }, () => Array(size).fill(0));
+    let score = 0;
+
+    function addRandomTile() {
+      const empty = [];
+      for (let r = 0; r < size; r++) {
+        for (let c = 0; c < size; c++) {
+          if (board[r][c] === 0) empty.push({ r, c });
+        }
+      }
+      if (empty.length > 0) {
+        const { r, c } = empty[Math.floor(Math.random() * empty.length)];
+        board[r][c] = Math.random() < 0.9 ? 2 : 4;
+      }
+    }
+
+    function initGame() {
+      board = Array.from({ length: size }, () => Array(size).fill(0));
+      score = 0;
+      document.getElementById('score').textContent = score;
+      addRandomTile();
+      addRandomTile();
+      render();
+    }
+
+    function render() {
+      const boardEl = document.getElementById('board');
+      boardEl.innerHTML = '';
+      const colors = {
+        0: 'bg-slate-100 text-transparent',
+        2: 'bg-white text-slate-800 font-bold',
+        4: 'bg-amber-50 text-slate-800 font-bold',
+        8: 'bg-amber-100 text-amber-900 font-bold',
+        16: 'bg-orange-200 text-white font-bold',
+        32: 'bg-orange-400 text-white font-bold',
+        64: 'bg-orange-500 text-white font-bold',
+        128: 'bg-yellow-400 text-white font-extrabold',
+        256: 'bg-yellow-500 text-white font-extrabold',
+        512: 'bg-emerald-500 text-white font-extrabold',
+        1024: 'bg-blue-500 text-white font-extrabold',
+        2048: 'bg-indigo-600 text-white font-extrabold'
+      };
+
+      for (let r = 0; r < size; r++) {
+        for (let c = 0; c < size; c++) {
+          const val = board[r][c];
+          const div = document.createElement('div');
+          div.className = `flex items-center justify-center rounded-lg text-lg md:text-xl transition-all shadow-sm ${colors[val] || 'bg-indigo-800 text-white font-black'}`;
+          div.textContent = val > 0 ? val : '';
+          boardEl.appendChild(div);
+        }
+      }
+    }
+
+    function handleMove(direction) {
+      let moved = false;
+      const rotate = m => m[0].map((_, i) => m.map(row => row[i]).reverse());
+      let rotations = 0;
+      if (direction === 'up') rotations = 3;
+      if (direction === 'right') rotations = 2;
+      if (direction === 'down') rotations = 1;
+
+      for (let i = 0; i < rotations; i++) board = rotate(board);
+
+      for (let i = 0; i < size; i++) {
+        let row = board[i].filter(v => v !== 0);
+        for (let j = 0; j < row.length - 1; j++) {
+          if (row[j] === row[j + 1]) {
+            row[j] *= 2;
+            score += row[j];
+            row[j + 1] = 0;
+          }
+        }
+        row = row.filter(v => v !== 0);
+        while (row.length < size) row.push(0);
+        if (row.some((v, idx) => v !== board[i][idx])) moved = true;
+        board[i] = row;
+      }
+
+      const back = (4 - rotations) % 4;
+      for (let i = 0; i < back; i++) board = rotate(board);
+
+      if (moved) {
+        document.getElementById('score').textContent = score;
+        addRandomTile();
+        render();
+      }
+    }
+
+    // 키보드 조작
+    window.addEventListener('keydown', e => {
+      if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+        e.preventDefault();
+        handleMove(e.key.replace('Arrow', '').toLowerCase());
+      }
+    });
+
+    // 모바일 터치 스와이프 조작
+    let startX, startY;
+    const boardEl = document.getElementById('board');
+    boardEl.addEventListener('touchstart', e => {
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+    }, { passive: true });
+
+    boardEl.addEventListener('touchend', e => {
+      if (!startX || !startY) return;
+      const diffX = e.changedTouches[0].clientX - startX;
+      const diffY = e.changedTouches[0].clientY - startY;
+      if (Math.abs(diffX) > Math.abs(diffY)) {
+        if (Math.abs(diffX) > 30) handleMove(diffX > 0 ? 'right' : 'left');
+      } else {
+        if (Math.abs(diffY) > 30) handleMove(diffY > 0 ? 'down' : 'up');
+      }
+      startX = null;
+      startY = null;
+    });
+
+    document.getElementById('restartBtn').addEventListener('click', initGame);
+    initGame();
+  </script>
+</body>
+</html>

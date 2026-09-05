@@ -136,4 +136,9 @@
     "localIncomeTaxRate": 0.1
   }
   
+  "game": {
+    "gridSize": 4,
+    "targetScore": 2048
+  }
+  
 }
