@@ -181,6 +181,17 @@
     "localTaxRate": 0.1
   }
   
+  "hourly": {
+    "version": "2026.1",
+    "year": 2026,
+    "minHourlyWage": 10030,
+    "standardWeeklyHours": 15,
+    "maxWeeklyPaidHours": 40,
+    "freelancerRate": 0.033,
+    "insuranceRate": 0.09395,
+    "monthlyAvgWeeks": 4.34524
+  }
+  
   "game": {
     "gridSize": 4,
     "targetScore": 2048

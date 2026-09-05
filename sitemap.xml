@@ -48,7 +48,15 @@
     <priority>0.8</priority>
   </url>
 
-  <!-- 7. 체류시간 확보용 2048 퍼즐 -->
+  <!-- 7. 시급 & 주휴수당 계산기 -->
+  <url>
+    <loc>https://calc-toolkit.vercel.app/hourly</loc>
+    <lastmod>2026-09-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <!-- 8. 체류시간 확보용 2048 퍼즐 -->
   <url>
     <loc>https://calc-toolkit.vercel.app/game-2048</loc>
     <lastmod>2026-09-05</lastmod>
@@ -56,7 +64,7 @@
     <priority>0.7</priority>
   </url>
 
-  <!-- 8. 개인정보처리방침 (애드센스 필수) -->
+  <!-- 9. 개인정보처리방침 (애드센스 필수) -->
   <url>
     <loc>https://calc-toolkit.vercel.app/privacy</loc>
     <lastmod>2026-09-05</lastmod>
@@ -64,7 +72,7 @@
     <priority>0.3</priority>
   </url>
 
-  <!-- 9. 이용약관 & 면책조항 (애드센스 필수) -->
+  <!-- 10. 이용약관 & 면책조항 (애드센스 필수) -->
   <url>
     <loc>https://calc-toolkit.vercel.app/terms</loc>
     <lastmod>2026-09-05</lastmod>
