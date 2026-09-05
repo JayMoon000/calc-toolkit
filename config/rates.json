@@ -64,7 +64,7 @@
     }
   },
 
-  "units": {
+  "converter": {
     "version": "2026.1",
     "categories": {
       "area": {
@@ -117,10 +117,6 @@
           "cuft": 28.3168,
           "gal": 3.78541
         }
-      },
-      "temperature": {
-        "name": "온도",
-        "type": "custom"
       }
     }
   }
