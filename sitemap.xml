@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- 1. 메인 대시보드 -->
+  <url>
+    <loc>https://calc-toolkit.vercel.app/</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- 2. 예적금 만기 이자 계산기 -->
+  <url>
+    <loc>https://calc-toolkit.vercel.app/savings</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- 3. 부동산 중개보수 계산기 -->
+  <url>
+    <loc>https://calc-toolkit.vercel.app/real-estate</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- 4. 스마트 만능 단위 변환기 -->
+  <url>
+    <loc>https://calc-toolkit.vercel.app/converter</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- 5. 퇴직금 & 실수령액 계산기 -->
+  <url>
+    <loc>https://calc-toolkit.vercel.app/severance</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- 6. 연봉 실수령액 계산기 -->
+  <url>
+    <loc>https://calc-toolkit.vercel.app/salary</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- 7. 체류시간 확보용 2048 퍼즐 -->
+  <url>
+    <loc>https://calc-toolkit.vercel.app/game-2048</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- 8. 개인정보처리방침 (애드센스 필수) -->
+  <url>
+    <loc>https://calc-toolkit.vercel.app/privacy</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+
+  <!-- 9. 이용약관 & 면책조항 (애드센스 필수) -->
+  <url>
+    <loc>https://calc-toolkit.vercel.app/terms</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+</urlset>
