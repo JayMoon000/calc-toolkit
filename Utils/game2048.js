@@ -1,57 +1,39 @@
-/**
- * 2048 순수 연산 로직 (Zero-dependency)
- */
-const Game2048Core = {
-  // 빈 보드 생성
-  createBoard(size = 4) {
-    return Array.from({ length: size }, () => Array(size).fill(0));
-  },
+// utils/game2048.js - 순수 연산 모듈 (1차원 배열 압축 & 합체)
+function slideAndMergeRow(row) {
+  // 1. 0 제거 (밀착)
+  let filtered = row.filter(val => val !== 0);
+  let scoreGained = 0;
 
-  // 한 행 왼쪽 밀기 & 합치기
-  slideAndCombine(row) {
-    let arr = row.filter(val => val !== 0);
-    let scoreGained = 0;
-
-    for (let i = 0; i < arr.length - 1; i++) {
-      if (arr[i] === arr[i + 1]) {
-        arr[i] *= 2;
-        scoreGained += arr[i];
-        arr[i + 1] = 0;
-      }
+  // 2. 왼쪽 기준 인접 타일 병합
+  for (let i = 0; i < filtered.length - 1; i++) {
+    if (filtered[i] === filtered[i + 1]) {
+      filtered[i] *= 2;
+      scoreGained += filtered[i];
+      filtered[i + 1] = 0;
+      i++; // 한 번 합쳐진 타일은 중복 병합 불가
     }
-
-    arr = arr.filter(val => val !== 0);
-    while (arr.length < row.length) {
-      arr.push(0);
-    }
-
-    return { newRow: arr, scoreGained };
-  },
-
-  // 방향별 보드 이동 (left, right, up, down)
-  move(board, direction) {
-    const size = board.length;
-    let newBoard = board.map(r => [...r]);
-    let totalScore = 0;
-
-    const rotate = (matrix) => matrix[0].map((_, i) => matrix.map(row => row[i]).reverse());
-
-    let rotations = 0;
-    if (direction === 'up') rotations = 3;
-    if (direction === 'right') rotations = 2;
-    if (direction === 'down') rotations = 1;
-
-    for (let i = 0; i < rotations; i++) newBoard = rotate(newBoard);
-
-    for (let i = 0; i < size; i++) {
-      const res = this.slideAndCombine(newBoard[i]);
-      newBoard[i] = res.newRow;
-      totalScore += res.scoreGained;
-    }
-
-    const backRotations = (4 - rotations) % 4;
-    for (let i = 0; i < backRotations; i++) newBoard = rotate(newBoard);
-
-    return { newBoard, totalScore };
   }
-};
+
+  // 3. 다시 0 제거 후 4칸 채우기
+  filtered = filtered.filter(val => val !== 0);
+  while (filtered.length < 4) {
+    filtered.push(0);
+  }
+
+  return { newRow: filtered, scoreGained };
+}
+
+// 오른쪽 이동: 행을 반전(reverse) -> 왼쪽 슬라이드 -> 다시 반전
+export function moveRight(board) {
+  let newBoard = [];
+  let totalScore = 0;
+
+  for (let r = 0; r < 4; r++) {
+    const reversed = [...board[r]].reverse();
+    const { newRow, scoreGained } = slideAndMergeRow(reversed);
+    newBoard.push(newRow.reverse());
+    totalScore += scoreGained;
+  }
+
+  return { newBoard, totalScore };
+}
