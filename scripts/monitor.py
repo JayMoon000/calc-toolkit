@@ -5,7 +5,7 @@ import json
 import urllib.request
 import urllib.error
 
-# 1. 환경 변수 정밀 로드 (따옴표 및 공백 제거)
+# 1. 환경 변수 정밀 로드
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "").strip().replace('"', '').replace("'", "")
 TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "").strip().replace('"', '').replace("'", "")
 TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID", "").strip().replace('"', '').replace("'", "")
@@ -18,7 +18,6 @@ def send_telegram_alert(message: str):
         print("[WARN] Telegram 환경 변수가 설정되지 않았습니다.")
         return
 
-    # 'bot' 중복 입력 방어
     token = TELEGRAM_BOT_TOKEN
     if token.startswith("bot"):
         token = token[3:]
@@ -43,14 +42,34 @@ def send_telegram_alert(message: str):
     except Exception as e:
         print(f"[ERROR] 텔레그램 전송 실패: {e}")
 
+def get_available_model() -> str:
+    """해당 API Key에서 실제로 지원하는 generateContent 모델을 동적 탐색"""
+    list_url = f"https://generativelanguage.googleapis.com/v1beta/models?key={GEMINI_API_KEY}"
+    try:
+        with urllib.request.urlopen(list_url, timeout=10) as res:
+            data = json.loads(res.read().decode("utf-8"))
+            models = data.get("models", [])
+            for m in models:
+                methods = m.get("supportedGenerationMethods", [])
+                if "generateContent" in methods:
+                    # 'models/gemini-...' 형식 반환
+                    model_name = m.get("name")
+                    print(f"[INFO] 사용 가능한 Gemini 모델 감지: {model_name}")
+                    return model_name
+    except Exception as e:
+        print(f"[WARN] ListModels 조회 실패: {e}")
+    
+    # 폴백 기본값
+    return "models/gemini-1.5-flash"
+
 def analyze_amendment_with_gemini(news_titles: list) -> str:
-    """Gemini API를 호출하여 rates.json 관련 개정 여부 신속 판별 (Fallback 지원)"""
+    """동적 탐색된 최적 모델로 법령 개정 분석 수행"""
     if not GEMINI_API_KEY:
-        print("[WARN] GEMINI_API_KEY 환경 변수가 설정되지 않았습니다.")
+        print("[WARN] GEMINI_API_KEY 미설정")
         return "GEMINI_API_KEY 미설정으로 자동 요약 건너뜀."
 
-    # 순차적으로 시도할 표준 모델 후보군
-    candidate_models = ["gemini-1.5-flash", "gemini-1.5-pro", "gemini-pro"]
+    target_model = get_available_model()
+    url = f"https://generativelanguage.googleapis.com/v1beta/{target_model}:generateContent?key={GEMINI_API_KEY}"
     
     prompt = f"""
     당신은 한국 세무·부동산 법령 분석 전문가입니다.
@@ -72,32 +91,22 @@ def analyze_amendment_with_gemini(news_titles: list) -> str:
             "parts": [{"text": prompt}]
         }]
     }
-    payload = json.dumps(data).encode("utf-8")
+    
+    req = urllib.request.Request(
+        url,
+        data=json.dumps(data).encode("utf-8"),
+        headers={"Content-Type": "application/json"}
+    )
 
-    last_error = ""
-    for model in candidate_models:
-        url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={GEMINI_API_KEY}"
-        req = urllib.request.Request(
-            url,
-            data=payload,
-            headers={"Content-Type": "application/json"}
-        )
-
-        try:
-            with urllib.request.urlopen(req, timeout=15) as res:
-                res_json = json.loads(res.read().decode("utf-8"))
-                text = res_json["candidates"][0]["content"]["parts"][0]["text"].strip()
-                print(f"[INFO] Gemini 호출 성공 (사용 모델: {model})")
-                return text
-        except urllib.error.HTTPError as e:
-            last_error = e.read().decode("utf-8")
-            print(f"[DEBUG] 모델 {model} 호출 실패 (HTTP {e.code}), 다음 모델 재시도...")
-            continue
-        except Exception as e:
-            last_error = str(e)
-            break
-
-    return f"Gemini 분석 중 오류 발생: {last_error}"
+    try:
+        with urllib.request.urlopen(req, timeout=15) as res:
+            res_json = json.loads(res.read().decode("utf-8"))
+            return res_json["candidates"][0]["content"]["parts"][0]["text"].strip()
+    except urllib.error.HTTPError as e:
+        err_msg = e.read().decode("utf-8")
+        return f"Gemini 분석 중 오류 발생: HTTP Error {e.code} (상세: {err_msg})"
+    except Exception as e:
+        return f"Gemini 분석 중 오류 발생: {e}"
 
 def main():
     print("[INFO] 법령 개정 감시 파이프라인 시작")
@@ -114,9 +123,13 @@ def main():
     analysis = analyze_amendment_with_gemini(sample_news)
     print(f"[분석 결과]\n{analysis}")
 
-    # 연동 확인을 위해 테스트 알림 무조건 발송
-    test_msg = f"🚀 *[Calc Toolkit] 파이프라인 연동 성공*\n\n• 상태: 정상 작동 중\n• Gemini 분석: {analysis[:100]}..."
-    send_telegram_alert(test_msg)
+    # 최종 텔레그램 발송
+    if "오류 발생" not in analysis:
+        msg = f"🚀 *[Calc Toolkit] 파이프라인 정상 가동*\n\n• 상태: 분석 완료\n• 결과: {analysis}"
+    else:
+        msg = f"⚠️ *[Calc Toolkit] 파이프라인 확인 요망*\n\n• 결과: {analysis[:150]}"
+    
+    send_telegram_alert(msg)
 
 if __name__ == "__main__":
     main()
