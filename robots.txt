@@ -1,4 +1,5 @@
+# robots.txt
 User-agent: *
 Allow: /
 
-Sitemap: https://calc-toolkit.vercel.app/sitemap.xml
+Sitemap: https://starsign16.com/sitemap.xml
