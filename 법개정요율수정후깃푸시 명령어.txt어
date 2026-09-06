@@ -1,5 +1,0 @@
-실행전 명령어:
-python admin_server.python
-
-작업 완료후 바뀐 내용 반영
-git commit -am "chore: update legal rates" && git push origin main
