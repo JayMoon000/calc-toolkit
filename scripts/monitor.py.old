@@ -1,14 +1,13 @@
-# scripts/monitor.py
 import os
 import sys
 import json
 import urllib.request
-import urllib.error
+import xml.etree.ElementTree as ET
 
 # 1. 환경 변수 로드 (GitHub Secrets 연동)
-GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "").strip()
-TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "").strip()
-TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID", "").strip()
+GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
+TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
+TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
 
 # 감시 대상 RSS (대한민국 법제처 입법예고 / 주요 공고)
 TARGET_RSS_URL = "https://www.moleg.go.kr/board.es?mid=a10501000000&bid=0100"
@@ -16,7 +15,7 @@ TARGET_RSS_URL = "https://www.moleg.go.kr/board.es?mid=a10501000000&bid=0100"
 def send_telegram_alert(message: str):
     """텔레그램 봇으로 알림 전송 (무료 알림 채널)"""
     if not TELEGRAM_BOT_TOKEN or not TELEGRAM_CHAT_ID:
-        print("[WARN] Telegram 환경 변수가 설정되지 않았습니다 (TELEGRAM_BOT_TOKEN 또는 TELEGRAM_CHAT_ID 누락).")
+        print("[WARN] Telegram 환경 변수가 설정되지 않았습니다.")
         return
 
     url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
@@ -32,20 +31,16 @@ def send_telegram_alert(message: str):
         headers={"Content-Type": "application/json"}
     )
     try:
-        with urllib.request.urlopen(req, timeout=10) as res:
+        with urllib.request.urlopen(req) as res:
             print("[INFO] 텔레그램 전송 성공")
-    except urllib.error.HTTPError as e:
-        print(f"[ERROR] 텔레그램 전송 실패 (HTTP Error {e.code}): {e.read().decode('utf-8')}")
     except Exception as e:
         print(f"[ERROR] 텔레그램 전송 실패: {e}")
 
 def analyze_amendment_with_gemini(news_titles: list) -> str:
     """Gemini API를 호출하여 rates.json 관련 개정 여부 신속 판별"""
     if not GEMINI_API_KEY:
-        print("[WARN] GEMINI_API_KEY 환경 변수가 설정되지 않았습니다.")
         return "GEMINI_API_KEY 미설정으로 자동 요약 건너뜀."
 
-    # Gemini 1.5 Flash 최신 안정 엔드포인트
     url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={GEMINI_API_KEY}"
     
     prompt = f"""
@@ -73,23 +68,16 @@ def analyze_amendment_with_gemini(news_titles: list) -> str:
     )
 
     try:
-        with urllib.request.urlopen(req, timeout=15) as res:
+        with urllib.request.urlopen(req) as res:
             res_json = json.loads(res.read().decode("utf-8"))
             return res_json["candidates"][0]["content"]["parts"][0]["text"].strip()
-    except urllib.error.HTTPError as e:
-        err_msg = e.read().decode('utf-8')
-        return f"Gemini 분석 중 오류 발생: HTTP Error {e.code} (상세: {err_msg})"
     except Exception as e:
         return f"Gemini 분석 중 오류 발생: {e}"
 
 def main():
     print("[INFO] 법령 개정 감시 파이프라인 시작")
     
-    # 환경변수 사전 디버깅 출력 (값 자체는 숨기고 존재 여부만 콘솔에 표시)
-    print(f"[DEBUG] GEMINI_API_KEY 로드 여부: {'성공' if GEMINI_API_KEY else '실패'}")
-    print(f"[DEBUG] TELEGRAM_BOT_TOKEN 로드 여부: {'성공' if TELEGRAM_BOT_TOKEN else '실패'}")
-    print(f"[DEBUG] TELEGRAM_CHAT_ID 로드 여부: {'성공' if TELEGRAM_CHAT_ID else '실패'}")
-
+    # 간이 피드 파싱 샘플 (실제 운용 시 법제처 OpenAPI 또는 공공 RSS 엔드포인트 바인딩)
     sample_news = [
         "[입법예고] 국민연금법 시행령 일부개정령안 (기준소득월액 상·하한액 조정)",
         "[고시] 부동산 중개보수 요율 체계 모니터링 현황",
