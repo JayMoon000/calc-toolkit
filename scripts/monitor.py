@@ -43,24 +43,30 @@ def send_telegram_alert(message: str):
         print(f"[ERROR] 텔레그램 전송 실패: {e}")
 
 def get_available_model() -> str:
-    """해당 API Key에서 실제로 지원하는 generateContent 모델을 동적 탐색"""
+    """구글 권장 최신 모델 우선 탐색 (gemini-3.6-flash 우선)"""
     list_url = f"https://generativelanguage.googleapis.com/v1beta/models?key={GEMINI_API_KEY}"
     try:
         with urllib.request.urlopen(list_url, timeout=10) as res:
             data = json.loads(res.read().decode("utf-8"))
-            models = data.get("models", [])
+            models = [m.get("name") for m in data.get("models", []) if "generateContent" in m.get("supportedGenerationMethods", [])]
+            
+            # 1순위: 구글 권장 최신 모델
+            if "models/gemini-3.6-flash" in models:
+                return "models/gemini-3.6-flash"
+            
+            # 2순위: 3.x 계열 플래시 모델
             for m in models:
-                methods = m.get("supportedGenerationMethods", [])
-                if "generateContent" in methods:
-                    # 'models/gemini-...' 형식 반환
-                    model_name = m.get("name")
-                    print(f"[INFO] 사용 가능한 Gemini 모델 감지: {model_name}")
-                    return model_name
+                if "gemini-3" in m and "flash" in m:
+                    return m
+
+            # 3순위: 그 외 사용 가능한 첫 번째 모델
+            if models:
+                return models[0]
     except Exception as e:
         print(f"[WARN] ListModels 조회 실패: {e}")
     
-    # 폴백 기본값
-    return "models/gemini-1.5-flash"
+    # 기본 권장값
+    return "models/gemini-3.6-flash"
 
 def analyze_amendment_with_gemini(news_titles: list) -> str:
     """동적 탐색된 최적 모델로 법령 개정 분석 수행"""
