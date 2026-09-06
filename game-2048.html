@@ -101,13 +101,12 @@
     <!-- SEO & 체류시간 극대화 가이드 섹션 -->
     <section class="mt-8 pt-6 border-t border-slate-200 text-slate-700 text-sm leading-relaxed">
       <div class="space-y-6">
-        
         <div>
           <h2 class="text-base font-bold text-slate-900 mb-2 flex items-center gap-1.5">
             <span>📖</span> 2048 퍼즐의 수학적 규칙과 원리
           </h2>
           <p class="text-slate-600 mb-2 text-xs sm:text-sm">
-            2048은 4×4 그리드 기반의 슬라이딩 타일 퍼즐입니다. 매 이동 시 빈칸에 <strong>2</strong>(90% 확률) 또는 <strong>4</strong>(10% 확률) 타일이 무작위로 생성되며, 동일한 지수를 가진 두 타일이 충돌하면 값이 합산되어 상위 거듭제곱 타일로 승급합니다.
+            2048은 4×4 그리드 기반의 슬라이딩 타일 퍼즐입니다. 매 이동 시 빈칸에 <strong>2</strong>(90% 확률) 또는 <strong>4</strong>(10% 확률) 타일이 무작위로 생성되며, 동일한 숫자를 가진 두 타일이 충돌하면 값이 합산되어 상위 거듭제곱 타일로 승급합니다.
           </p>
           <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-100 font-mono text-xs text-slate-600">
             진행 순서: 2 → 4 → 8 → 16 → 32 → 64 → 128 → 256 → 512 → 1024 → <strong>2048</strong>
@@ -136,14 +135,15 @@
           <div>• <strong>PC:</strong> 키보드 방향키(↑, ↓, ←, →) 또는 W, A, S, D</div>
           <div>• <strong>모바일:</strong> 화면 상·하·좌·우 스와이프 터치</div>
         </div>
-
       </div>
     </section>
 
   </div>
 
-  <script>
-    const GRID_SIZE = 4;
+  <!-- 순수 모듈 분리 임포트 -->
+  <script type="module">
+    import { GRID_SIZE, move, addRandomTile } from './Utils/game2048.js';
+
     let board = [];
     let score = 0;
 
@@ -151,25 +151,13 @@
       board = Array(GRID_SIZE).fill(null).map(() => Array(GRID_SIZE).fill(0));
       score = 0;
       updateScore(0);
-      addRandomTile();
-      addRandomTile();
+      board = addRandomTile(board);
+      board = addRandomTile(board);
       render();
     }
 
-    function addRandomTile() {
-      const emptyCells = [];
-      for (let r = 0; r < GRID_SIZE; r++) {
-        for (let c = 0; c < GRID_SIZE; c++) {
-          if (board[r][c] === 0) emptyCells.push({ r, c });
-        }
-      }
-      if (emptyCells.length === 0) return;
-      const { r, c } = emptyCells[Math.floor(Math.random() * emptyCells.length)];
-      board[r][c] = Math.random() < 0.9 ? 2 : 4;
-    }
-
-    function updateScore(add) {
-      score += add;
+    function updateScore(earned) {
+      score += earned;
       document.getElementById('score').innerText = score;
     }
 
@@ -190,71 +178,27 @@
       }
     }
 
-    function slide(row) {
-      let arr = row.filter(val => val);
-      let addScore = 0;
-      for (let i = 0; i < arr.length - 1; i++) {
-        if (arr[i] === arr[i + 1]) {
-          arr[i] *= 2;
-          addScore += arr[i];
-          arr[i + 1] = 0;
-        }
-      }
-      arr = arr.filter(val => val);
-      while (arr.length < GRID_SIZE) arr.push(0);
-      return { newRow: arr, earned: addScore };
-    }
-
-    function moveLeft() {
-      let changed = false;
-      let totalEarned = 0;
-      for (let r = 0; r < GRID_SIZE; r++) {
-        const { newRow, earned } = slide(board[r]);
-        if (newRow.join(',') !== board[r].join(',')) changed = true;
-        board[r] = newRow;
-        totalEarned += earned;
-      }
-      if (changed) {
-        updateScore(totalEarned);
-        addRandomTile();
+    function handleInput(dir) {
+      const { newBoard, totalScore, moved } = move(board, dir);
+      if (moved) {
+        board = addRandomTile(newBoard);
+        updateScore(totalScore);
         render();
       }
     }
 
-    function rotate() {
-      const next = Array(GRID_SIZE).fill(null).map(() => Array(GRID_SIZE).fill(0));
-      for (let r = 0; r < GRID_SIZE; r++) {
-        for (let c = 0; c < GRID_SIZE; c++) {
-          next[c][GRID_SIZE - 1 - r] = board[r][c];
-        }
-      }
-      board = next;
-    }
-
-    function moveRight() {
-      rotate(); rotate();
-      moveLeft();
-      rotate(); rotate();
-    }
-
-    function moveUp() {
-      rotate(); rotate(); rotate();
-      moveLeft();
-      rotate();
-    }
-
-    function moveDown() {
-      rotate();
-      moveLeft();
-      rotate(); rotate(); rotate();
-    }
-
-    // 키보드 이벤트 리스너
+    // 키보드 리스너
     window.addEventListener('keydown', (e) => {
-      if (['ArrowUp', 'KeyW'].includes(e.code)) { e.preventDefault(); moveUp(); }
-      else if (['ArrowDown', 'KeyS'].includes(e.code)) { e.preventDefault(); moveDown(); }
-      else if (['ArrowLeft', 'KeyA'].includes(e.code)) { e.preventDefault(); moveLeft(); }
-      else if (['ArrowRight', 'KeyD'].includes(e.code)) { e.preventDefault(); moveRight(); }
+      let dir = null;
+      if (['ArrowUp', 'KeyW'].includes(e.code)) dir = 'UP';
+      else if (['ArrowDown', 'KeyS'].includes(e.code)) dir = 'DOWN';
+      else if (['ArrowLeft', 'KeyA'].includes(e.code)) dir = 'LEFT';
+      else if (['ArrowRight', 'KeyD'].includes(e.code)) dir = 'RIGHT';
+
+      if (dir) {
+        e.preventDefault();
+        handleInput(dir);
+      }
     });
 
     // 모바일 터치 스와이프 리스너
@@ -269,16 +213,16 @@
       const dx = e.changedTouches[0].clientX - touchStartX;
       const dy = e.changedTouches[0].clientY - touchStartY;
       if (Math.abs(dx) > Math.abs(dy)) {
-        if (dx > 30) moveRight();
-        else if (dx < -30) moveLeft();
+        if (dx > 30) handleInput('RIGHT');
+        else if (dx < -30) handleInput('LEFT');
       } else {
-        if (dy > 30) moveDown();
-        else if (dy < -30) moveUp();
+        if (dy > 30) handleInput('DOWN');
+        else if (dy < -30) handleInput('UP');
       }
     }, { passive: true });
 
     document.getElementById('restart-btn').addEventListener('click', initGame);
-    window.onload = initGame;
+    initGame();
   </script>
 </body>
 </html>

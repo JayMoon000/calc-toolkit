@@ -1,39 +1,89 @@
-// utils/game2048.js - 순수 연산 모듈 (1차원 배열 압축 & 합체)
-function slideAndMergeRow(row) {
-  // 1. 0 제거 (밀착)
-  let filtered = row.filter(val => val !== 0);
-  let scoreGained = 0;
+// game2048.js - 순수 연산 모듈 (Zero Framework Dependency)
 
-  // 2. 왼쪽 기준 인접 타일 병합
+export const GRID_SIZE = 4;
+
+// 1. 단일 라인 압축 & 합체 (순수 함수)
+export function slideAndMerge(line) {
+  let filtered = line.filter(val => val !== 0);
+  let score = 0;
+
   for (let i = 0; i < filtered.length - 1; i++) {
     if (filtered[i] === filtered[i + 1]) {
       filtered[i] *= 2;
-      scoreGained += filtered[i];
+      score += filtered[i];
       filtered[i + 1] = 0;
-      i++; // 한 번 합쳐진 타일은 중복 병합 불가
+      i++; // 1턴 1회 병합 원칙
     }
   }
 
-  // 3. 다시 0 제거 후 4칸 채우기
   filtered = filtered.filter(val => val !== 0);
-  while (filtered.length < 4) {
+  while (filtered.length < GRID_SIZE) {
     filtered.push(0);
   }
 
-  return { newRow: filtered, scoreGained };
+  return { newLine: filtered, score };
 }
 
-// 오른쪽 이동: 행을 반전(reverse) -> 왼쪽 슬라이드 -> 다시 반전
-export function moveRight(board) {
-  let newBoard = [];
+// 2. 4방향 계산 함수 (행/열 매핑 절대 안 꼬이게 작성)
+export function move(board, direction) {
+  let newBoard = Array.from({ length: GRID_SIZE }, () => Array(GRID_SIZE).fill(0));
   let totalScore = 0;
 
-  for (let r = 0; r < 4; r++) {
-    const reversed = [...board[r]].reverse();
-    const { newRow, scoreGained } = slideAndMergeRow(reversed);
-    newBoard.push(newRow.reverse());
-    totalScore += scoreGained;
+  if (direction === 'LEFT') {
+    for (let r = 0; r < GRID_SIZE; r++) {
+      const { newLine, score } = slideAndMerge(board[r]);
+      newBoard[r] = newLine;
+      totalScore += score;
+    }
+  } else if (direction === 'RIGHT') {
+    for (let r = 0; r < GRID_SIZE; r++) {
+      const reversed = [...board[r]].reverse();
+      const { newLine, score } = slideAndMerge(reversed);
+      newBoard[r] = newLine.reverse();
+      totalScore += score;
+    }
+  } else if (direction === 'UP') {
+    for (let c = 0; c < GRID_SIZE; c++) {
+      const column = [board[0][c], board[1][c], board[2][c], board[3][c]];
+      const { newLine, score } = slideAndMerge(column);
+      for (let r = 0; r < GRID_SIZE; r++) newBoard[r][c] = newLine[r];
+      totalScore += score;
+    }
+  } else if (direction === 'DOWN') {
+    for (let c = 0; c < GRID_SIZE; c++) {
+      const column = [board[3][c], board[2][c], board[1][c], board[0][c]];
+      const { newLine, score } = slideAndMerge(column);
+      for (let r = 0; r < GRID_SIZE; r++) newBoard[3 - r][c] = newLine[r];
+      totalScore += score;
+    }
   }
 
-  return { newBoard, totalScore };
+  // 보드 변화 감지
+  let moved = false;
+  for (let r = 0; r < GRID_SIZE; r++) {
+    for (let c = 0; c < GRID_SIZE; c++) {
+      if (board[r][c] !== newBoard[r][c]) {
+        moved = true;
+        break;
+      }
+    }
+  }
+
+  return { newBoard, totalScore, moved };
+}
+
+// 3. 빈칸 랜덤 타일 생성
+export function addRandomTile(board) {
+  const emptyCoords = [];
+  for (let r = 0; r < GRID_SIZE; r++) {
+    for (let c = 0; c < GRID_SIZE; c++) {
+      if (board[r][c] === 0) emptyCoords.push({ r, c });
+    }
+  }
+  if (emptyCoords.length === 0) return board;
+
+  const { r, c } = emptyCoords[Math.floor(Math.random() * emptyCoords.length)];
+  const nextBoard = board.map(row => [...row]);
+  nextBoard[r][c] = Math.random() < 0.9 ? 2 : 4;
+  return nextBoard;
 }
