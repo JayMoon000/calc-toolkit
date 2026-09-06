@@ -44,13 +44,13 @@ def send_telegram_alert(message: str):
         print(f"[ERROR] 텔레그램 전송 실패: {e}")
 
 def analyze_amendment_with_gemini(news_titles: list) -> str:
-    """Gemini API 호출 (호환 엔드포인트)"""
+    """Gemini API를 호출하여 rates.json 관련 개정 여부 신속 판별 (Fallback 지원)"""
     if not GEMINI_API_KEY:
         print("[WARN] GEMINI_API_KEY 환경 변수가 설정되지 않았습니다.")
         return "GEMINI_API_KEY 미설정으로 자동 요약 건너뜀."
 
-    # gemini-1.5-flash-latest 엔드포인트 적용
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key={GEMINI_API_KEY}"
+    # 순차적으로 시도할 표준 모델 후보군
+    candidate_models = ["gemini-1.5-flash", "gemini-1.5-pro", "gemini-pro"]
     
     prompt = f"""
     당신은 한국 세무·부동산 법령 분석 전문가입니다.
@@ -72,22 +72,32 @@ def analyze_amendment_with_gemini(news_titles: list) -> str:
             "parts": [{"text": prompt}]
         }]
     }
-    
-    req = urllib.request.Request(
-        url,
-        data=json.dumps(data).encode("utf-8"),
-        headers={"Content-Type": "application/json"}
-    )
+    payload = json.dumps(data).encode("utf-8")
 
-    try:
-        with urllib.request.urlopen(req, timeout=15) as res:
-            res_json = json.loads(res.read().decode("utf-8"))
-            return res_json["candidates"][0]["content"]["parts"][0]["text"].strip()
-    except urllib.error.HTTPError as e:
-        err_msg = e.read().decode("utf-8")
-        return f"Gemini 분석 중 오류 발생: HTTP Error {e.code} (상세: {err_msg})"
-    except Exception as e:
-        return f"Gemini 분석 중 오류 발생: {e}"
+    last_error = ""
+    for model in candidate_models:
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={GEMINI_API_KEY}"
+        req = urllib.request.Request(
+            url,
+            data=payload,
+            headers={"Content-Type": "application/json"}
+        )
+
+        try:
+            with urllib.request.urlopen(req, timeout=15) as res:
+                res_json = json.loads(res.read().decode("utf-8"))
+                text = res_json["candidates"][0]["content"]["parts"][0]["text"].strip()
+                print(f"[INFO] Gemini 호출 성공 (사용 모델: {model})")
+                return text
+        except urllib.error.HTTPError as e:
+            last_error = e.read().decode("utf-8")
+            print(f"[DEBUG] 모델 {model} 호출 실패 (HTTP {e.code}), 다음 모델 재시도...")
+            continue
+        except Exception as e:
+            last_error = str(e)
+            break
+
+    return f"Gemini 분석 중 오류 발생: {last_error}"
 
 def main():
     print("[INFO] 법령 개정 감시 파이프라인 시작")
