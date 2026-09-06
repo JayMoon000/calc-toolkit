@@ -13,13 +13,20 @@ TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID", "").strip()
 # 감시 대상 RSS (대한민국 법제처 입법예고 / 주요 공고)
 TARGET_RSS_URL = "https://www.moleg.go.kr/board.es?mid=a10501000000&bid=0100"
 
+# scripts/monitor.py (핵심 함수 수정본)
+
 def send_telegram_alert(message: str):
     """텔레그램 봇으로 알림 전송 (무료 알림 채널)"""
     if not TELEGRAM_BOT_TOKEN or not TELEGRAM_CHAT_ID:
-        print("[WARN] Telegram 환경 변수가 설정되지 않았습니다 (TELEGRAM_BOT_TOKEN 또는 TELEGRAM_CHAT_ID 누락).")
+        print("[WARN] Telegram 환경 변수가 설정되지 않았습니다.")
         return
 
-    url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
+    # 토큰 앞단 'bot' 중복 등록 시 자동 제거 방어 코드
+    clean_token = TELEGRAM_BOT_TOKEN
+    if clean_token.startswith("bot"):
+        clean_token = clean_token[3:]
+
+    url = f"https://api.telegram.org/bot{clean_token}/sendMessage"
     payload = json.dumps({
         "chat_id": TELEGRAM_CHAT_ID,
         "text": message,
@@ -45,8 +52,8 @@ def analyze_amendment_with_gemini(news_titles: list) -> str:
         print("[WARN] GEMINI_API_KEY 환경 변수가 설정되지 않았습니다.")
         return "GEMINI_API_KEY 미설정으로 자동 요약 건너뜀."
 
-    # Gemini 1.5 Flash 최신 안정 엔드포인트
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={GEMINI_API_KEY}"
+    # Gemini 1.5 Flash 최신 안정 v1 엔드포인트
+    url = f"https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key={GEMINI_API_KEY}"
     
     prompt = f"""
     당신은 한국 세무·부동산 법령 분석 전문가입니다.
