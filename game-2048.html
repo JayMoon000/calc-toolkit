@@ -1,16 +1,14 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-YLJ01C9RJQ"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-YLJ01C9RJQ');
-</script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-YLJ01C9RJQ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-YLJ01C9RJQ');
+  </script>
 
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -105,8 +103,26 @@
         <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-lg grid-cell flex items-center justify-center"></div>
         <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-lg grid-cell flex items-center justify-center"></div>
       </div>
+      
       <!-- 동적 렌더링 오버레이 레이어 -->
       <div id="tile-container" class="absolute inset-2 sm:inset-3 grid grid-cols-4 gap-2 sm:gap-3 pointer-events-none"></div>
+
+      <!-- 게임 오버 중앙 모달 팝업 -->
+      <div id="game-over" class="hidden absolute inset-0 bg-slate-900/75 backdrop-blur-sm rounded-xl flex flex-col items-center justify-center p-4 text-center z-30 transition-all">
+        <div class="bg-white rounded-2xl p-6 shadow-2xl max-w-[240px] w-full flex flex-col items-center">
+          <span class="text-xs font-bold text-rose-500 uppercase tracking-wider mb-1">Game Over</span>
+          <h2 class="text-xl font-extrabold text-slate-800 mb-2">게임 종료</h2>
+          
+          <div class="bg-slate-50 border border-slate-200 rounded-xl py-2 px-4 w-full mb-4">
+            <span class="text-[10px] text-slate-400 font-bold uppercase block">최종 점수</span>
+            <span id="final-score" class="text-lg font-black text-blue-600 font-mono">0</span>
+          </div>
+
+          <button id="modal-retry-btn" class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 active:scale-95 text-white text-xs font-bold rounded-xl transition-all shadow-md">
+            다시 시작
+          </button>
+        </div>
+      </div>
     </div>
 
     <!-- SEO & 체류시간 극대화 가이드 섹션 -->
@@ -143,7 +159,7 @@
 
         <div class="p-3.5 bg-blue-50/60 rounded-xl border border-blue-100/60 text-xs text-blue-900">
           <div class="font-bold mb-1">💡 조작 안내</div>
-          <div>• <strong>PC:</strong> 키보드 방향키(↑, ↓, ←, →) 또는 W, A, S, D</div>
+          <div>• <strong>PC:</strong> 키보드 방향키(↑, ↓, ←, →) 또는 W, A, S, D (스페이스/엔터로 재시작)</div>
           <div>• <strong>모바일:</strong> 화면 상·하·좌·우 스와이프 터치</div>
         </div>
       </div>
@@ -153,23 +169,23 @@
 
   <!-- 순수 모듈 분리 임포트 -->
   <script type="module">
-    import { GRID_SIZE, move, addRandomTile } from './Utils/game2048.js';
+    import { GRID_SIZE, move, addRandomTile, isGameOver } from './Utils/game2048.js';
 
     let board = [];
     let score = 0;
+    const scoreEl = document.getElementById('score');
+    const finalScoreEl = document.getElementById('final-score');
+    const gameOverEl = document.getElementById('game-over');
 
     function initGame() {
       board = Array(GRID_SIZE).fill(null).map(() => Array(GRID_SIZE).fill(0));
       score = 0;
-      updateScore(0);
+      scoreEl.innerText = '0';
+      gameOverEl.classList.add('hidden');
+
       board = addRandomTile(board);
       board = addRandomTile(board);
       render();
-    }
-
-    function updateScore(earned) {
-      score += earned;
-      document.getElementById('score').innerText = score;
     }
 
     function render() {
@@ -190,16 +206,32 @@
     }
 
     function handleInput(dir) {
+      if (!gameOverEl.classList.contains('hidden')) return;
+
       const { newBoard, totalScore, moved } = move(board, dir);
       if (moved) {
         board = addRandomTile(newBoard);
-        updateScore(totalScore);
+        score += totalScore;
+        scoreEl.innerText = score.toLocaleString();
         render();
+
+        if (isGameOver(board)) {
+          finalScoreEl.innerText = score.toLocaleString();
+          gameOverEl.classList.remove('hidden');
+        }
       }
     }
 
     // 키보드 리스너
     window.addEventListener('keydown', (e) => {
+      if (!gameOverEl.classList.contains('hidden')) {
+        if (['Enter', 'Space'].includes(e.code)) {
+          e.preventDefault();
+          initGame();
+          return;
+        }
+      }
+
       let dir = null;
       if (['ArrowUp', 'KeyW'].includes(e.code)) dir = 'UP';
       else if (['ArrowDown', 'KeyS'].includes(e.code)) dir = 'DOWN';
@@ -233,6 +265,8 @@
     }, { passive: true });
 
     document.getElementById('restart-btn').addEventListener('click', initGame);
+    document.getElementById('modal-retry-btn').addEventListener('click', initGame);
+    
     initGame();
   </script>
 </body>

@@ -1,4 +1,5 @@
 // game2048.js - 순수 연산 모듈 (Zero Framework Dependency)
+// Path: Utils/game2048.js
 
 export const GRID_SIZE = 4;
 
@@ -24,7 +25,7 @@ export function slideAndMerge(line) {
   return { newLine: filtered, score };
 }
 
-// 2. 4방향 계산 함수 (행/열 매핑 절대 안 꼬이게 작성)
+// 2. 4방향 계산 함수
 export function move(board, direction) {
   let newBoard = Array.from({ length: GRID_SIZE }, () => Array(GRID_SIZE).fill(0));
   let totalScore = 0;
@@ -58,7 +59,6 @@ export function move(board, direction) {
     }
   }
 
-  // 보드 변화 감지
   let moved = false;
   for (let r = 0; r < GRID_SIZE; r++) {
     for (let c = 0; c < GRID_SIZE; c++) {
@@ -86,4 +86,16 @@ export function addRandomTile(board) {
   const nextBoard = board.map(row => [...row]);
   nextBoard[r][c] = Math.random() < 0.9 ? 2 : 4;
   return nextBoard;
+}
+
+// 4. 게임 오버 체크 (순수 함수 추가)
+export function isGameOver(board) {
+  for (let r = 0; r < GRID_SIZE; r++) {
+    for (let c = 0; c < GRID_SIZE; c++) {
+      if (board[r][c] === 0) return false;
+      if (c < GRID_SIZE - 1 && board[r][c] === board[r][c + 1]) return false;
+      if (r < GRID_SIZE - 1 && board[r][c] === board[r + 1][c]) return false;
+    }
+  }
+  return true;
 }
