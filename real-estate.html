@@ -264,21 +264,10 @@
 
     </article>
 
-    <footer class="mt-12 pt-6 pb-8 border-t border-slate-200 text-xs text-slate-400">
-      <div class="flex flex-col md:flex-row items-center justify-between gap-3">
-        <div class="space-y-0.5 text-center md:text-left">
-          <p class="font-bold text-slate-600">Calc Toolkit · 스마트 유틸리티 랩</p>
-          <p class="text-[11px]">본 계산기는 공인중개사법 및 시행규칙 기준 요율을 준수하여 제작되었습니다.</p>
-        </div>
-        <div class="flex items-center gap-3 font-semibold text-slate-500">
-          <a href="./privacy.html" class="hover:text-blue-600 transition-colors">개인정보처리방침</a>
-          <span>·</span>
-          <a href="./terms.html" class="hover:text-blue-600 transition-colors">이용약관 & 면책조항</a>
-        </div>
-      </div>
-    </footer>
+<!-- [상호 내부 링크 & 공통 푸터 자동 렌더링 컨테이너] -->
+    <div id="related-tools-container"></div>
 
-  </div>
+  </div><!-- .max-w-2xl 종료 -->
 
   <script>
     const RATES = {
@@ -310,4 +299,93 @@
       let res = '';
       if (eok > 0) res += `${eok}억 `;
       if (man > 0) res += `${man.toLocaleString()}만 `;
-      return (
+      return (res.trim() + '원');
+    }
+
+    function calculate() {
+      const propType = document.getElementById('propType').value;
+      const tradeType = document.getElementById('tradeType').value;
+      const tradePrice = parseFloat(document.getElementById('tradePrice').value) || 0;
+      const monthlyRent = parseFloat(document.getElementById('monthlyRent').value) || 0;
+      const vatRate = parseFloat(document.querySelector('input[name="vatType"]:checked').value) / 100;
+
+      // 한글 금액 표기
+      document.getElementById('priceKorean').textContent = formatKoreanMoney(tradePrice);
+      if (tradeType === 'monthly') {
+        document.getElementById('rentKorean').textContent = formatKoreanMoney(monthlyRent);
+      }
+
+      // 산정 기준금액 결정
+      let baseAmount = tradePrice;
+      if (tradeType === 'monthly') {
+        baseAmount = tradePrice + (monthlyRent * 100);
+        // 소액 임차인 특례 (5천만원 미만 시 70배 적용)
+        if (baseAmount < 50000000) {
+          baseAmount = tradePrice + (monthlyRent * 70);
+        }
+      }
+
+      let rate = 0;
+      let limit = null;
+
+      if (propType === 'housing') {
+        const brackets = tradeType === 'sale' ? RATES.housing_sale : RATES.housing_lease;
+        for (const b of brackets) {
+          if (baseAmount <= b.limit) {
+            rate = b.rate;
+            limit = b.maxFee;
+            break;
+          }
+        }
+      } else if (propType === 'officetel_living') {
+        rate = tradeType === 'sale' ? RATES.officetel_living_sale.rate : RATES.officetel_living_lease.rate;
+      } else {
+        rate = RATES.other.rate;
+      }
+
+      let fee = Math.floor(baseAmount * rate);
+      if (limit !== null && fee > limit) {
+        fee = limit;
+        document.getElementById('limitNotice').textContent = `한도액 적용 (${limit.toLocaleString()}원)`;
+      } else {
+        document.getElementById('limitNotice').textContent = '한도액 제한 없음';
+      }
+
+      const vat = Math.floor(fee * vatRate);
+      const total = fee + vat;
+
+      document.getElementById('appliedRate').textContent = `${(rate * 100).toFixed(1)}%`;
+      document.getElementById('feeAmount').textContent = `${fee.toLocaleString()}원`;
+      document.getElementById('vatAmount').textContent = `${vat.toLocaleString()}원`;
+      document.getElementById('totalAmount').textContent = `${total.toLocaleString()}원`;
+    }
+
+    // 거래 유형 변경 시 월세 인풋 활성화 토글
+    document.getElementById('tradeType').addEventListener('change', function () {
+      const isMonthly = this.value === 'monthly';
+      const monthlyArea = document.getElementById('monthlyInputArea');
+      const priceLabel = document.getElementById('priceLabel');
+
+      if (isMonthly) {
+        monthlyArea.classList.remove('hidden');
+        priceLabel.textContent = '보증금 (원)';
+      } else {
+        monthlyArea.classList.add('hidden');
+        priceLabel.textContent = '거래 금액 (원)';
+      }
+      calculate();
+    });
+
+    document.getElementById('propType').addEventListener('change', calculate);
+    document.getElementById('tradePrice').addEventListener('input', calculate);
+    document.getElementById('monthlyRent').addEventListener('input', calculate);
+    document.querySelectorAll('input[name="vatType"]').forEach(r => r.addEventListener('change', calculate));
+
+    // 최초 1회 실행
+    calculate();
+  </script>
+
+  <!-- 상호 내부 링크(Mesh Interlinking) 및 공통 푸터 동적 주입 -->
+  <script src="./Utils/relatedTools.js"></script>
+</body>
+</html>

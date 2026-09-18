@@ -205,5 +205,10 @@
   "game": {
     "gridSize": 4,
     "targetScore": 2048
-  }
+  },
+  "familyLinks": [
+    { "name": "한국어 블로그", "url": "https://ko.starsign16.com" },
+    { "name": "Global Blog", "url": "https://en.starsign16.com" },
+    { "name": "유틸리티 도구 모음", "url": "https://tool.starsign16.com" }
+  ]
 }
