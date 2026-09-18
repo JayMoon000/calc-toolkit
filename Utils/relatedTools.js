@@ -1,23 +1,31 @@
 /**
  * Related Tools & Common Footer Injector
- * - 크롤러 상호 인덱싱(Mesh Interlinking) 자동화
- * - 현재 도구 자동 제외 및 연관 도구 3개 노출
+ * - 현재 도구 정확한 감지 및 중복 노출 차단 (확장자 유무 대응)
+ * - 피셔-예이츠 셔플 기반 동적 3개 추천
  */
 (function () {
   const tools = [
-    { id: 'savings.html', name: '예·적금 계산기', desc: '이자소득세 15.4%·비과세 만기 수령액 비교', icon: '₩' },
-    { id: 'real-estate.html', name: '부동산 중개보수', desc: '2026 공인중개사법 매매·임대차 상한 복비', icon: '🏢' },
-    { id: 'salary.html', name: '연봉 실수령액', desc: '4대보험 최신 요율·근로소득 간이세액 공제', icon: '💰' },
-    { id: 'severance.html', name: '퇴직금 계산기', desc: '근속연수공제·환산급여 개정세법 세후 수령액', icon: '💼' },
-    { id: 'hourly.html', name: '시급·주휴수당', desc: '2026년 최저시급 10,030원·주휴시간 자동 산출', icon: '⏱️' },
-    { id: 'converter.html', name: '스마트 단위 변환기', desc: '아파트 전용 84㎡ 평수 환산·글로벌 도량형', icon: '📐' }
+    { slug: 'savings', path: 'savings.html', name: '예·적금 계산기', desc: '이자소득세 15.4%·비과세 만기 수령액 비교', icon: '₩' },
+    { slug: 'real-estate', path: 'real-estate.html', name: '부동산 중개보수', desc: '2026 공인중개사법 매매·임대차 상한 복비', icon: '🏢' },
+    { slug: 'salary', path: 'salary.html', name: '연봉 실수령액', desc: '4대보험 최신 요율·근로소득 간이세액 공제', icon: '💰' },
+    { slug: 'severance', path: 'severance.html', name: '퇴직금 계산기', desc: '근속연수공제·환산급여 개정세법 세후 수령액', icon: '💼' },
+    { slug: 'hourly', path: 'hourly.html', name: '시급·주휴수당', desc: '2026년 최저시급 10,030원·주휴시간 자동 산출', icon: '⏱️' },
+    { slug: 'converter', path: 'converter.html', name: '스마트 단위 변환기', desc: '아파트 전용 84㎡ 평수 환산·글로벌 도량형', icon: '📐' }
   ];
 
-  // 현재 파일명 추출
-  const currentPath = window.location.pathname.split('/').pop() || 'index.html';
+  // 1. 현재 URL에서 slug(확장자 제거된 파일명) 정밀 추출
+  const rawFile = window.location.pathname.split('/').pop() || 'index.html';
+  const currentSlug = rawFile.replace(/\.html$/, '').toLowerCase();
 
-  // 현재 도구를 제외한 나머지 중 3개 추출
-  const related = tools.filter(tool => tool.id !== currentPath).slice(0, 3);
+  // 2. 현재 도구 완벽 제외 (slug 기준 비교)
+  const candidateTools = tools.filter(tool => tool.slug !== currentSlug);
+
+  // 3. 피셔-예이츠(Fisher-Yates) 셔플로 방문 시마다 다양한 3개 도구 노출
+  for (let i = candidateTools.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [candidateTools[i], candidateTools[j]] = [candidateTools[j], candidateTools[i]];
+  }
+  const selectedTools = candidateTools.slice(0, 3);
 
   const container = document.getElementById('related-tools-container');
   if (!container) return;
@@ -30,8 +38,8 @@
         <a href="./game-2048.html" class="text-xs font-semibold text-blue-600 hover:underline">🎮 머리 식히기 (2048)</a>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        ${related.map(item => `
-          <a href="./${item.id}" class="block p-4 bg-white rounded-xl border border-slate-200 hover:border-blue-400 hover:shadow-sm transition-all group">
+        ${selectedTools.map(item => `
+          <a href="./${item.path}" class="block p-4 bg-white rounded-xl border border-slate-200 hover:border-blue-400 hover:shadow-sm transition-all group">
             <div class="flex items-center gap-2 mb-1.5">
               <span class="w-6 h-6 rounded-md bg-blue-50 text-blue-600 flex items-center justify-center text-xs font-bold">${item.icon}</span>
               <span class="text-xs font-bold text-slate-800 group-hover:text-blue-600 transition-colors">${item.name}</span>
