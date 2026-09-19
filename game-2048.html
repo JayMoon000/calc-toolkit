@@ -61,12 +61,13 @@
   </style>
 </head>
 <body class="bg-slate-100 text-slate-800 antialiased min-h-screen p-4 sm:p-8">
+  <!-- 게임 본체 컨테이너 (max-w-md) -->
   <div class="max-w-md mx-auto bg-white rounded-2xl shadow-sm border border-slate-200 p-5 sm:p-6">
     
     <!-- 상단 컨트롤 헤더 -->
     <div class="flex items-center justify-between mb-4">
       <div class="flex items-center gap-2">
-        <a href="/" class="text-slate-400 hover:text-slate-700 transition-colors" title="홈으로 이동">
+        <a href="./index.html" class="text-slate-400 hover:text-slate-700 transition-colors" title="홈으로 이동">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
         </a>
         <h1 class="text-xl font-bold text-slate-900">2048 퍼즐</h1>
@@ -165,6 +166,11 @@
       </div>
     </section>
 
+  </div><!-- .max-w-md 본체 종료 -->
+
+  <!-- 상호 내부 링크(Related Tools) 및 공통 푸터 렌더링 컨테이너 (시각적 폭 확보용 max-w-2xl) -->
+  <div class="max-w-2xl mx-auto px-2">
+    <div id="related-tools-container"></div>
   </div>
 
   <!-- 순수 모듈 분리 임포트 -->
@@ -269,5 +275,8 @@
     
     initGame();
   </script>
+
+  <!-- 상호 내부 링크(Mesh Interlinking) 및 공통 푸터 동적 주입 -->
+  <script src="./Utils/relatedTools.js"></script>
 </body>
 </html>
