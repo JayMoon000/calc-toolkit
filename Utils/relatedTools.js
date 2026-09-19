@@ -1,7 +1,8 @@
 /**
  * Related Tools & Common Footer Injector
- * - 현재 도구 정확한 감지 및 중복 노출 차단 (확장자 유무 대응)
+ * - 현재 도구 중복 노출 차단 (확장자 유무 완벽 대응)
  * - 피셔-예이츠 셔플 기반 동적 3개 추천
+ * - 2048 게임 페이지 판별 시 중복 링크 및 법정 문구 자동 제거
  */
 (function () {
   const tools = [
@@ -13,14 +14,16 @@
     { slug: 'converter', path: 'converter.html', name: '스마트 단위 변환기', desc: '아파트 전용 84㎡ 평수 환산·글로벌 도량형', icon: '📐' }
   ];
 
-  // 1. 현재 URL에서 slug(확장자 제거된 파일명) 정밀 추출
-  const rawFile = window.location.pathname.split('/').pop() || 'index.html';
-  const currentSlug = rawFile.replace(/\.html$/, '').toLowerCase();
+  // 1. 현재 URL 경로에서 slug 추출 및 게임 페이지 여부 판별
+  const currentPath = window.location.pathname.toLowerCase();
+  const rawFile = currentPath.split('/').pop() || 'index.html';
+  const currentSlug = rawFile.replace(/\.html$/, '');
+  const isGamePage = currentPath.includes('2048') || currentSlug.includes('2048');
 
-  // 2. 현재 도구 완벽 제외 (slug 기준 비교)
+  // 2. 현재 도구 제외 (slug 기준)
   const candidateTools = tools.filter(tool => tool.slug !== currentSlug);
 
-  // 3. 피셔-예이츠(Fisher-Yates) 셔플로 방문 시마다 다양한 3개 도구 노출
+  // 3. 피셔-예이츠 셔플
   for (let i = candidateTools.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [candidateTools[i], candidateTools[j]] = [candidateTools[j], candidateTools[i]];
@@ -30,12 +33,21 @@
   const container = document.getElementById('related-tools-container');
   if (!container) return;
 
+  // 4. 게임 페이지 전용 분기: 머리식히기 링크 제거 및 푸터 문구 중립화
+  const gameLinkHtml = isGamePage 
+    ? '' 
+    : '<a href="./game-2048.html" class="text-xs font-semibold text-blue-600 hover:underline">🎮 머리 식히기 (2048)</a>';
+
+  const footerSubText = isGamePage
+    ? '© 2026 Starsign16. All rights reserved.'
+    : '© 2026 Starsign16. 2026년 법정 기준 준수.';
+
   const html = `
     <!-- 상호 내부 링크 (Related Tools) -->
     <section class="mt-14 pt-8 border-t border-slate-200">
       <div class="flex items-center justify-between mb-4">
         <h3 class="text-sm font-bold text-slate-800">함께 많이 활용하는 연산 도구</h3>
-        <a href="./game-2048.html" class="text-xs font-semibold text-blue-600 hover:underline">🎮 머리 식히기 (2048)</a>
+        ${gameLinkHtml}
       </div>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         ${selectedTools.map(item => `
@@ -50,12 +62,12 @@
       </div>
     </section>
 
-    <!-- 공통 상세 페이지 푸터 -->
+    <!-- 공통 푸터 -->
     <footer class="mt-12 pt-6 pb-8 border-t border-slate-200 text-xs text-slate-500">
       <div class="flex flex-col md:flex-row items-center justify-between gap-4">
         <div>
           <a href="./index.html" class="font-bold text-slate-700 hover:text-blue-600 transition-colors">← 스마트 계산기 툴킷 홈으로</a>
-          <p class="text-[11px] text-slate-400 mt-0.5">© 2026 Starsign16. 2026년 법정 기준 준수.</p>
+          <p class="text-[11px] text-slate-400 mt-0.5">${footerSubText}</p>
         </div>
         <div class="flex items-center gap-3 font-semibold text-slate-600">
           <a href="./about.html" class="hover:text-blue-600">소개</a>
