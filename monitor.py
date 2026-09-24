@@ -1,5 +1,6 @@
 import os
 import json
+import time
 import urllib.request
 import xml.etree.ElementTree as ET
 import requests
@@ -11,40 +12,60 @@ TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
 TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
 
 TARGET_KEYWORDS = ["최저임금", "부동산 중개", "중개보수", "소득세법", "퇴직급여", "건강보험료율", "국민연금"]
-FEED_URL = "https://www.moleg.go.kr/board.es?mid=a10501000000&bid=0028&act=rss"  # 법제처 주요 입법동향 RSS
+FEED_URL = "https://www.moleg.go.kr/board.es?mid=a10501000000&bid=0028&act=rss"
 
 def send_telegram(msg: str):
     url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
     payload = {"chat_id": TELEGRAM_CHAT_ID, "text": msg, "parse_mode": "Markdown"}
-    requests.post(url, json=payload, timeout=10)
+    try:
+        requests.post(url, json=payload, timeout=10)
+    except Exception as e:
+        print(f"텔레그램 발송 실패: {e}")
+
+def call_gemini_with_retry(model, prompt: str, max_retries: int = 3) -> str:
+    """타임아웃(120s) 및 지수 백오프 재시도 로직"""
+    for attempt in range(1, max_retries + 1):
+        try:
+            # 유지보수 포인트: 기본 60초 -> 120초로 타임아웃 명시적 확장
+            response = model.generate_content(
+                prompt,
+                request_options={"timeout": 120}
+            )
+            return response.text.strip()
+        except Exception as e:
+            if attempt == max_retries:
+                raise e
+            wait_time = attempt * 5  # 5초, 10초 대기
+            print(f"[재시도 {attempt}/{max_retries}] 에러 발생: {e} -> {wait_time}초 후 재시도")
+            time.sleep(wait_time)
 
 def check_law_updates():
-    # 1. 현재 서비스 중인 기준 데이터 로드
-    with open("config/rates.json", "r", encoding="utf-8") as f:
-        current_rates = json.load(f)
+    try:
+        # 1. 기준 데이터 로드
+        with open("config/rates.json", "r", encoding="utf-8") as f:
+            current_rates = json.load(f)
 
-    # 2. 공공 피드 파싱
-    req = urllib.request.Request(FEED_URL, headers={'User-Agent': 'Mozilla/5.0'})
-    xml_data = urllib.request.urlopen(req, timeout=15).read()
-    root = ET.fromstring(xml_data)
+        # 2. 공공 피드 파싱
+        req = urllib.request.Request(FEED_URL, headers={'User-Agent': 'Mozilla/5.0'})
+        xml_data = urllib.request.urlopen(req, timeout=15).read()
+        root = ET.fromstring(xml_data)
 
-    collected_notices = []
-    for item in root.findall(".//item"):
-        title = item.find("title").text or ""
-        link = item.find("link").text or ""
-        # 키워드 필터링
-        if any(kw in title for kw in TARGET_KEYWORDS):
-            collected_notices.append(f"- 제목: {title}\n  링크: {link}")
+        collected_notices = []
+        for item in root.findall(".//item"):
+            title = item.find("title").text or ""
+            link = item.find("link").text or ""
+            if any(kw in title for kw in TARGET_KEYWORDS):
+                collected_notices.append(f"- 제목: {title}\n  링크: {link}")
 
-    if not collected_notices:
-        print("관련 법 개정 안건 없음.")
-        return
+        if not collected_notices:
+            print("관련 법 개정 안건 없음.")
+            return
 
-    # 3. Gemini API를 통한 영향도 분석
-    genai.configure(api_key=GEMINI_API_KEY)
-    model = genai.GenerativeModel("gemini-1.5-flash")
+        # 3. Gemini API 분석 호출
+        genai.configure(api_key=GEMINI_API_KEY)
+        model = genai.GenerativeModel("gemini-1.5-flash")
 
-    prompt = f"""
+        prompt = f"""
 당신은 대한민국 세법/노무/부동산 법률 변경 분석가입니다.
 아래 수집된 법제처 공고 목록을 검토하고, 현재 계산기 웹사이트의 기준 데이터(JSON)에 변경이 필요한지 분석하세요.
 
@@ -60,14 +81,18 @@ def check_law_updates():
 3. config/rates.json 에서 수정해야 할 필드명을 Markdown 형태로 보고하세요.
 단순 용어 개정이나 무관한 내용이면 "수정 불필요"라고만 답하세요.
 """
-    response = model.generate_content(prompt)
-    report = response.text.strip()
+        report = call_gemini_with_retry(model, prompt)
 
-    if "수정 불필요" not in report:
-        send_telegram(f"🚨 *[Calc Toolkit 법 개정 감지]*\n\n{report}")
-        print("알림 발송 완료.")
-    else:
-        print("특이사항 없음.")
+        if "수정 불필요" not in report:
+            send_telegram(f"🚨 *[Calc Toolkit 법 개정 감지]*\n\n{report}")
+            print("알림 발송 완료.")
+        else:
+            print("특이사항 없음.")
+
+    except Exception as e:
+        error_msg = f"⚠️ *[Calc Toolkit] 파이프라인 확인 요망*\n\n• 결과: Gemini 분석 중 오류 발생: {e}"
+        send_telegram(error_msg)
+        print(error_msg)
 
 if __name__ == "__main__":
     check_law_updates()
