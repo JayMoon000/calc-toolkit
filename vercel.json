@@ -1,35 +1,81 @@
 {
   "cleanUrls": true,
   "trailingSlash": false,
-  "redirects": [
+  "headers": [
     {
-      "source": "/:year(\\d{4})/:month(\\d{2})/:slug*",
-      "destination": "https://ko.starsign16.com/:year/:month/:slug*/",
-      "permanent": true
-    },
-    {
-      "source": "/category/:slug*",
-      "destination": "https://ko.starsign16.com/category/:slug*/",
-      "permanent": true
-    },
-    {
-      "source": "/contact-us",
-      "destination": "https://ko.starsign16.com/contact-us/",
-      "permanent": true
-    },
-    {
-      "source": "/starsign-16-임시로고",
-      "destination": "https://ko.starsign16.com/",
-      "permanent": true
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        }
+      ]
     }
   ],
-  "rewrites": [
-    { "source": "/robots.txt", "destination": "/robots.txt" },
-    { "source": "/sitemap.xml", "destination": "/sitemap.xml" },
-    { "source": "/about", "destination": "/about.html" },
-    { "source": "/contact", "destination": "/contact.html" },
-    { "source": "/privacy", "destination": "/privacy.html" },
-    { "source": "/terms", "destination": "/terms.html" },
-    { "source": "/hourly", "destination": "/hourly.html" }
+  "redirects": [
+    {
+      "source": "/:path*.html",
+      "destination": "/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/real-estate",
+      "destination": "/ko/real-estate",
+      "permanent": true
+    },
+    {
+      "source": "/salary",
+      "destination": "/ko/salary",
+      "permanent": true
+    },
+    {
+      "source": "/hourly",
+      "destination": "/ko/hourly",
+      "permanent": true
+    },
+    {
+      "source": "/severance",
+      "destination": "/ko/severance",
+      "permanent": true
+    },
+    {
+      "source": "/savings",
+      "destination": "/ko/savings",
+      "permanent": true
+    },
+    {
+      "source": "/converter",
+      "destination": "/tools/converter",
+      "permanent": true
+    },
+    {
+      "source": "/game-2048",
+      "destination": "/tools/game-2048",
+      "permanent": true
+    },
+    {
+      "source": "/about",
+      "destination": "/legal/about",
+      "permanent": true
+    },
+    {
+      "source": "/contact",
+      "destination": "/legal/contact",
+      "permanent": true
+    },
+    {
+      "source": "/privacy",
+      "destination": "/legal/privacy",
+      "permanent": true
+    },
+    {
+      "source": "/terms",
+      "destination": "/legal/terms",
+      "permanent": true
+    }
   ]
 }

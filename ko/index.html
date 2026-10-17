@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>스타사인16 금융 계산기 | 부동산, 연봉, 대출, 생활 스마트 툴킷</title>
+  <meta name="description" content="2026년 최신 세법 및 법정 요율을 반영한 무료 금융 및 생산성 계산기 모음. 부동산 중개보수, 취득세, 연봉 실수령액, 주휴수당, 퇴직금, 할인율, 글자수 세기 실시간 지원.">
+  <link rel="canonical" href="https://starsign16.com/ko">
+  <link rel="stylesheet" href="../assets/css/style.css">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "계산 공식과 적용 요율은 2026년 최신 기준인가요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "네, 2026년 1월부터 적용되는 최저시급(10,030원), 개정 공인중개사법 중개보수 상한 요율, 국민연금 및 건강보험 최신 요율 기준 데이터를 실시간 반영하고 있습니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "입력한 금융 정보나 개인 데이터가 서버에 저장되나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "아닙니다. 스타사인16의 모든 도구는 100% 클라이언트 사이드(브라우저 내부)에서만 연산됩니다. 입력값은 외부 서버로 전송되지 않으며 페이지를 닫는 즉시 완전히 파기됩니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "계산 결과는 법적 효력을 갖나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "본 서비스는 공인된 법령 및 고시를 준수하여 설계되었으나, 개인별 비과세 항목 차이나 특약 사항에 따라 실제 청구액과 미세한 차이가 발생할 수 있으므로 최종 결정 전 참고 지표로 활용하시기 바랍니다."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    .hub-title { margin-bottom: 8px; font-size: 1.75rem; font-weight: 700; color: var(--text-main); }
+    .hub-desc { color: var(--text-muted); margin-bottom: 28px; font-size: 1rem; }
+    .category-title { font-size: 1.25rem; font-weight: 600; color: var(--text-main); margin: 36px 0 16px 0; }
+    .tool-grid { display: grid; grid-template-columns: 1fr; gap: 18px; }
+    @media (min-width: 640px) { .tool-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 900px) { .tool-grid { grid-template-columns: repeat(3, 1fr); } }
+    .tool-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 20px;
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.2s ease;
+    }
+    .tool-card:hover { border-color: var(--accent-blue); transform: translateY(-2px); }
+    .tool-tag {
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 4px;
+      width: fit-content;
+      margin-bottom: 10px;
+      background-color: rgba(59, 130, 246, 0.15);
+      color: var(--accent-blue);
+    }
+    .tool-tag.green { background-color: rgba(16, 185, 129, 0.15); color: var(--accent-green); }
+    .tool-tag.purple { background-color: rgba(168, 85, 247, 0.15); color: #C084FC; }
+    .tool-name { font-size: 1.15rem; font-weight: 700; color: var(--text-main); margin-bottom: 6px; }
+    .tool-summary { font-size: 0.88rem; color: var(--text-muted); line-height: 1.45; }
+    .arrow-link { margin-top: 14px; font-size: 0.82rem; font-weight: 600; color: var(--accent-gold); }
+    
+    .header-right { display: flex; align-items: center; gap: 10px; }
+    .btn-game {
+      font-size: 0.82rem;
+      color: var(--accent-gold);
+      text-decoration: none;
+      padding: 6px 12px;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      border-radius: 6px;
+      background-color: rgba(245, 158, 11, 0.08);
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+    .btn-game:hover { background-color: rgba(245, 158, 11, 0.2); }
+
+    /* 특장점 3단 그리드 */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      margin: 24px 0 32px 0;
+    }
+    @media (min-width: 768px) {
+      .feature-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    .feature-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 20px;
+    }
+    .feature-card h3 {
+      font-size: 1rem;
+      color: var(--text-main);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .feature-card p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container header-content">
+      <a href="/ko" class="logo"><span>★</span> Starsign16 <span>Financial</span></a>
+      <div class="header-right">
+        <a href="/ko/game-2048" class="btn-game">2048 퍼즐 🎮</a>
+        <a href="/" class="lang-switch">Global (EN) 🌐</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1 class="hub-title">스마트 금융 & 실용 툴킷</h1>
+    <p class="hub-desc">2026년 최신 기준 반영, 브라우저에서 100% 안전하게 연산되는 무료 웹 유틸리티입니다.</p>
+
+    <!-- 세무 및 급여 -->
+    <h2 class="category-title">💼 세무 · 부동산 · 급여</h2>
+    <div class="tool-grid">
+      <a href="/ko/real-estate" class="tool-card">
+        <div>
+          <span class="tool-tag">부동산/세무</span>
+          <h3 class="tool-name">부동산 복비 & 취득세</h3>
+          <p class="tool-summary">매매, 전세, 월세 중개보수 상한 요율과 주택 취득세 실시간 산출.</p>
+        </div>
+        <div class="arrow-link">계산기 열기 →</div>
+      </a>
+      <a href="/ko/salary" class="tool-card">
+        <div>
+          <span class="tool-tag">급여/노무</span>
+          <h3 class="tool-name">연봉 실수령액 계산기</h3>
+          <p class="tool-summary">4대 보험 및 근로소득 간이세액 공제 후 실제 월급 계산.</p>
+        </div>
+        <div class="arrow-link">계산기 열기 →</div>
+      </a>
+      <a href="/ko/severance" class="tool-card">
+        <div>
+          <span class="tool-tag">노무/퇴직</span>
+          <h3 class="tool-name">법정 퇴직금 계산기</h3>
+          <p class="tool-summary">최근 3개월 급여와 연차/상여금 기준 1일 평균임금 및 퇴직금 산출.</p>
+        </div>
+        <div class="arrow-link">계산기 열기 →</div>
+      </a>
+      <a href="/ko/hourly" class="tool-card">
+        <div>
+          <span class="tool-tag">급여/알바</span>
+          <h3 class="tool-name">시급 & 주휴수당</h3>
+          <p class="tool-summary">주 15시간 이상 근무 시 발생하는 법정 주휴수당 및 주급/월급 환산.</p>
+        </div>
+        <div class="arrow-link">계산기 열기 →</div>
+      </a>
+      <a href="/ko/savings" class="tool-card">
+        <div>
+          <span class="tool-tag">재테크</span>
+          <h3 class="tool-name">예금 & 적금 이자</h3>
+          <p class="tool-summary">단리/복리 및 일반과세(15.4%), 비과세 적용 후 만기 실수령액 비교.</p>
+        </div>
+        <div class="arrow-link">계산기 열기 →</div>
+      </a>
+      <a href="/ko/discount-calc" class="tool-card">
+        <div>
+          <span class="tool-tag">비즈니스</span>
+          <h3 class="tool-name">할인율 & 부가세 & 마진</h3>
+          <p class="tool-summary">공급가액/부가세 분리 및 소상공인 마진율과 최종 판매가 계산.</p>
+        </div>
+        <div class="arrow-link">계산기 열기 →</div>
+      </a>
+    </div>
+
+    <!-- 일상 및 업무 생산성 -->
+    <h2 class="category-title">⚡ 일상 · 생산성 유틸리티</h2>
+    <div class="tool-grid">
+      <a href="/ko/word-counter" class="tool-card">
+        <div>
+          <span class="tool-tag green">텍스트</span>
+          <h3 class="tool-name">글자수 & 바이트 세기</h3>
+          <p class="tool-summary">공백 포함/제외 글자수와 한글 완성형 바이트 실시간 측정.</p>
+        </div>
+        <div class="arrow-link">툴 열기 →</div>
+      </a>
+      <a href="/ko/dday-calculator" class="tool-card">
+        <div>
+          <span class="tool-tag green">일정</span>
+          <h3 class="tool-name">디데이 & 영업일 계산</h3>
+          <p class="tool-summary">기념일 D-Day 카운트다운 및 주말 제외 영업일 수 계산.</p>
+        </div>
+        <div class="arrow-link">툴 열기 →</div>
+      </a>
+      <a href="/ko/qr-generator" class="tool-card">
+        <div>
+          <span class="tool-tag green">유틸</span>
+          <h3 class="tool-name">초고속 QR코드 생성기</h3>
+          <p class="tool-summary">URL, 텍스트, Wi-Fi 접속 정보를 즉시 SVG/PNG QR코드로 변환.</p>
+        </div>
+        <div class="arrow-link">툴 열기 →</div>
+      </a>
+      <a href="/ko/game-2048" class="tool-card">
+        <div>
+          <span class="tool-tag purple">두뇌 퍼즐</span>
+          <h3 class="tool-name">2048 클래식 퍼즐</h3>
+          <p class="tool-summary">동일한 숫자를 슬라이드해 합쳐나가는 힐링 브레인 숫자 게임.</p>
+        </div>
+        <div class="arrow-link">게임 시작 →</div>
+      </a>
+    </div>
+
+    <!-- SEO & 특장점 및 FAQ 섹션 (대폭 보강) -->
+    <section class="seo-section">
+      <h2>스마트 계산기 툴킷: 정확한 기준 데이터와 실생활 연산의 결합</h2>
+      <p>본 툴킷은 일상에서 마주하는 복잡한 세법 규정과 법정 수수료를 한곳에서 쉽고 빠르게 검증할 수 있도록 제작된 무료 웹 유틸리티 모음입니다. 매년 바뀌는 최저임금 기준부터 부동산 복비 상한 요율, 퇴직소득세 근속연수공제에 이르기까지 2026년 공시 데이터를 기반으로 정밀한 수식을 제공합니다.</p>
+
+      <!-- 3단 특장점 박스 -->
+      <div class="feature-grid">
+        <div class="feature-card">
+          <h3>⚡ 독립적 로직 분리</h3>
+          <p>법정 요율과 세법 데이터가 모듈화되어 있어 법 개정 시 실시간으로 최신의 정확한 수치를 반영합니다.</p>
+        </div>
+        <div class="feature-card">
+          <h3>🔒 철저한 개인정보 보호</h3>
+          <p>모든 금융 및 급여 계산은 사용자의 로컬 브라우저 메모리상에서만 연산되며 외부 서버로 절대 전송되지 않습니다.</p>
+        </div>
+        <div class="feature-card">
+          <h3>📱 크로스 플랫폼 최적화</h3>
+          <p>모바일, 태블릿, PC 등 모든 디바이스에서 별도 앱 설치 없이 반응형 UI로 즉시 사용할 수 있습니다.</p>
+        </div>
+      </div>
+
+      <!-- 자주 묻는 질문 (FAQ) -->
+      <h3 style="font-size: 1.15rem; color: var(--text-main); margin: 32px 0 16px 0;">자주 묻는 질문 (FAQ)</h3>
+      <div class="faq-item">
+        <div class="faq-question">Q. 계산 공식과 적용 요율은 2026년 최신 기준인가요?</div>
+        <div class="faq-answer">네, 2026년 1월부터 적용되는 최저시급(10,030원), 개정 공인중개사법 중개보수 상한 요율, 국민연금 및 건강보험 최신 요율 기준 데이터를 실시간 반영하고 있습니다.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">Q. 모든 도구를 제한 없이 무료로 이용할 수 있나요?</div>
+        <div class="faq-answer">별도의 회원가입이나 유료 결제 없이 누구나 자유롭게 모든 계산기와 단위 변환기를 무제한으로 이용하실 수 있습니다.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">Q. 계산 결과가 법적 효력을 갖나요?</div>
+        <div class="faq-answer">본 계산기는 공인된 법령과 고시를 준수하여 설계되었으나, 개인별 비과세 항목 차이나 특약 사항에 따라 실제 청구액과 미세한 차이가 발생할 수 있으므로 최종 결정 전 참고 지표로 활용하시기 바랍니다.</div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>© 2026 Starsign16. All rights reserved.</p>
+      <p style="margin-top: 8px;">
+        <a href="/legal/ko/about" style="color: var(--text-muted); text-decoration: none; margin: 0 8px;">소개</a> | 
+        <a href="/legal/ko/privacy" style="color: var(--text-muted); text-decoration: none; margin: 0 8px;">개인정보처리방침</a> | 
+        <a href="/legal/ko/terms" style="color: var(--text-muted); text-decoration: none; margin: 0 8px;">이용약관</a> | 
+        <a href="/legal/ko/contact" style="color: var(--text-muted); text-decoration: none; margin: 0 8px;">문의</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

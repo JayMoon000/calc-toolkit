@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Loan & Compound Interest Calculator | Free Financial Toolkit - ToolLab</title>
+  <meta name="description" content="Calculate monthly fixed loan amortization, total interest, and investment compound interest with regular contributions. 100% private, client-side financial engine." />
+  <meta name="keywords" content="loan calculator, mortgage amortization, compound interest calculator, monthly payment, investment growth, ToolLab" />
+  
+      <!-- Tailwind CDN & Config -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class'
+    }
+  </script>
+
+  <!-- Open Graph & Rich Snippets -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="ToolLab" />
+  <meta property="og:title" content="Loan & Compound Engine | ToolLab" />
+  <meta property="og:description" content="Simulate fixed monthly mortgage schedules and multi-year compound interest growth with zero login." />
+  <meta property="og:url" content="https://Starsign16 Toolkit/tools/loan-compound-calc.html" />
+  <meta property="og:image" content="https://Starsign16 Toolkit/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Loan & Compound Engine | ToolLab" />
+  <meta name="twitter:description" content="Simulate fixed monthly mortgage schedules and multi-year compound interest growth with zero login." />
+  <meta name="twitter:image" content="https://Starsign16 Toolkit/og-image.png" />
+  <link rel="canonical" href="https://starsign16.com/tools/loan-compound-calc">
+
+  <!-- ToolLab Analytics Tracker -->
+  <script src="/js/analytics.js"></script>
+
+</head>
+<body class="bg-slate-950 text-slate-200 min-h-screen py-6 px-4 font-sans antialiased">
+  <div class="max-w-2xl mx-auto">
+    
+    <!-- Main Card -->
+    <div class="bg-slate-900 rounded-2xl shadow-xl border border-slate-800 p-5 md:p-7">
+      
+      <!-- Top Bar -->
+      <div class="flex items-center justify-between pb-4 mb-6 border-b border-slate-800">
+        <div class="flex items-center gap-2.5">
+          <a href="../index.html" class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors" title="ToolLab Home">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+            </svg>
+          </a>
+          <div>
+            <span class="text-[10px] font-bold tracking-wider text-blue-400 uppercase block">Starsign16 Toolkit</span>
+            <h1 class="text-lg md:text-xl font-extrabold text-slate-100">Loan & Compound Engine</h1>
+          </div>
+        </div>
+        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-950/80 text-blue-400 border border-blue-800">
+          Client-Side Core
+        </span>
+      </div>
+
+      <!-- Mode Selector -->
+      <div class="grid grid-cols-2 gap-1 bg-slate-950 p-1 rounded-xl text-xs font-bold text-slate-400 mb-6 border border-slate-800/80">
+        <button id="btnLoan" class="py-2.5 rounded-lg transition-colors bg-blue-600 text-white shadow">Loan Payment (Mortgage)</button>
+        <button id="btnCompound" class="py-2.5 rounded-lg transition-colors hover:text-slate-200">Compound Growth</button>
+      </div>
+
+      <!-- Loan Section Inputs -->
+      <div id="loanInputs" class="space-y-4">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div class="p-3.5 bg-slate-950/70 border border-slate-800 rounded-xl">
+            <label class="block text-[11px] font-semibold text-slate-400 mb-1">Loan Amount ($)</label>
+            <input type="number" id="loanPrincipal" value="300000" class="w-full text-xl font-black bg-transparent text-slate-100 outline-none focus:text-blue-400" />
+          </div>
+          <div class="p-3.5 bg-slate-950/70 border border-slate-800 rounded-xl">
+            <label class="block text-[11px] font-semibold text-slate-400 mb-1">Annual Interest (%)</label>
+            <input type="number" step="0.1" id="loanRate" value="6.5" class="w-full text-xl font-black bg-transparent text-slate-100 outline-none focus:text-blue-400" />
+          </div>
+          <div class="p-3.5 bg-slate-950/70 border border-slate-800 rounded-xl">
+            <label class="block text-[11px] font-semibold text-slate-400 mb-1">Loan Term (Years)</label>
+            <input type="number" id="loanYears" value="30" class="w-full text-xl font-black bg-transparent text-slate-100 outline-none focus:text-blue-400" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Compound Section Inputs -->
+      <div id="compoundInputs" class="space-y-4 hidden">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="p-3.5 bg-slate-950/70 border border-slate-800 rounded-xl">
+            <label class="block text-[11px] font-semibold text-slate-400 mb-1">Initial Principal ($)</label>
+            <input type="number" id="cmpPrincipal" value="10000" class="w-full text-xl font-black bg-transparent text-slate-100 outline-none focus:text-blue-400" />
+          </div>
+          <div class="p-3.5 bg-slate-950/70 border border-slate-800 rounded-xl">
+            <label class="block text-[11px] font-semibold text-slate-400 mb-1">Monthly Deposit ($)</label>
+            <input type="number" id="cmpMonthly" value="500" class="w-full text-xl font-black bg-transparent text-slate-100 outline-none focus:text-blue-400" />
+          </div>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="p-3.5 bg-slate-950/70 border border-slate-800 rounded-xl">
+            <label class="block text-[11px] font-semibold text-slate-400 mb-1">Estimated Return Rate (%)</label>
+            <input type="number" step="0.1" id="cmpRate" value="8" class="w-full text-xl font-black bg-transparent text-slate-100 outline-none focus:text-blue-400" />
+          </div>
+          <div class="p-3.5 bg-slate-950/70 border border-slate-800 rounded-xl">
+            <label class="block text-[11px] font-semibold text-slate-400 mb-1">Investment Horizon (Years)</label>
+            <input type="number" id="cmpYears" value="10" class="w-full text-xl font-black bg-transparent text-slate-100 outline-none focus:text-blue-400" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Primary Metrics Output Card -->
+      <div class="mt-6 p-4 bg-blue-950/30 border border-blue-900/60 rounded-xl space-y-2">
+        <span class="text-xs font-semibold text-blue-400 block" id="primaryMetricTitle">Monthly Payment</span>
+        <div id="primaryMetricVal" class="text-3xl font-black text-blue-400 truncate">$0.00</div>
+        <div id="secondaryMetricVal" class="text-xs text-slate-400 pt-2 border-t border-blue-900/40 flex justify-between">
+          <span id="secItem1">Total Interest: $0.00</span>
+          <span id="secItem2">Total Repaid: $0.00</span>
+        </div>
+      </div>
+
+      <!-- Quick Schedule Preview -->
+      <div class="mt-6 pt-5 border-t border-slate-800">
+        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2.5" id="previewTableTitle">Amortization Milestone Snapshot</h3>
+        <div class="overflow-x-auto">
+          <table class="w-full text-xs text-left border-collapse">
+            <thead>
+              <tr class="bg-slate-950 border-b border-slate-800 text-slate-300 font-bold" id="tableHeaderRow">
+                <th class="p-2">Period</th>
+                <th class="p-2">Principal</th>
+                <th class="p-2">Interest</th>
+                <th class="p-2">Ending Balance</th>
+              </tr>
+            </thead>
+            <tbody id="scheduleRows" class="divide-y divide-slate-800/60 text-slate-300">
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Technical SEO & Educational Guide -->
+    <article class="mt-8 space-y-6 text-xs md:text-sm text-slate-400 leading-relaxed">
+      
+      <!-- Mortgage Benchmark Reference Table -->
+      <section class="bg-slate-900 rounded-2xl border border-slate-800 p-5 md:p-6 shadow-md">
+        <h2 class="text-base font-extrabold text-slate-100 mb-3 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+          30-Year Fixed Loan Amortization Matrix ($100,000 Basis)
+        </h2>
+        <p class="text-xs text-slate-400 mb-4">Historical benchmark illustrating interest sensitivity and cumulative financial outlay over 360 monthly payments.</p>
+        
+        <div class="overflow-x-auto">
+          <table class="w-full text-xs text-left border-collapse">
+            <thead>
+              <tr class="bg-slate-950 border-b border-slate-800 text-slate-300 font-bold">
+                <th class="p-2.5">Interest Rate</th>
+                <th class="p-2.5">Monthly Payment</th>
+                <th class="p-2.5">Total Interest Paid</th>
+                <th class="p-2.5">Total Cost of Loan</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-800/60 text-slate-300">
+              <tr>
+                <td class="p-2.5 font-bold text-slate-100">4.5%</td>
+                <td class="p-2.5 text-blue-400 font-medium">$506.69</td>
+                <td class="p-2.5 text-slate-400">$82,407</td>
+                <td class="p-2.5 text-slate-200 font-bold">$182,407</td>
+              </tr>
+              <tr>
+                <td class="p-2.5 font-bold text-slate-100">5.5%</td>
+                <td class="p-2.5 text-blue-400 font-medium">$567.79</td>
+                <td class="p-2.5 text-slate-400">$104,404</td>
+                <td class="p-2.5 text-slate-200 font-bold">$204,404</td>
+              </tr>
+              <tr>
+                <td class="p-2.5 font-bold text-slate-100">6.5%</td>
+                <td class="p-2.5 text-blue-400 font-medium">$632.07</td>
+                <td class="p-2.5 text-slate-400">$127,544</td>
+                <td class="p-2.5 text-slate-200 font-bold">$227,544</td>
+              </tr>
+              <tr>
+                <td class="p-2.5 font-bold text-slate-100">7.5%</td>
+                <td class="p-2.5 text-blue-400 font-medium">$699.21</td>
+                <td class="p-2.5 text-slate-400">$151,717</td>
+                <td class="p-2.5 text-slate-200 font-bold">$251,717</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Practical Strategy Guides -->
+      <section class="bg-slate-900 rounded-2xl border border-slate-800 p-5 md:p-6 shadow-md space-y-3">
+        <h2 class="text-base font-extrabold text-slate-100 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+          Financial Optimization Frameworks
+        </h2>
+        
+        <div class="space-y-2.5 text-xs leading-relaxed">
+          <div class="p-3 bg-slate-950/60 rounded-xl border border-slate-800/80">
+            <h3 class="font-bold text-slate-200 mb-1">1. The Power of Early Principal Prepayment</h3>
+            <p>Because standard amortization schedules front-load interest obligations, additional principal payments during the initial 5 to 7 years directly bypass cumulative compounding, substantially reducing both the loan duration and total interest.</p>
+          </div>
+
+          <div class="p-3 bg-slate-950/60 rounded-xl border border-slate-800/80">
+            <h3 class="font-bold text-slate-200 mb-1">2. Dollar-Cost Averaging & Compounding</h3>
+            <p>Regular monthly deposits leverage time-in-the-market rather than timing-the-market. Consistently reinvesting accrued dividends and interest compounds growth non-linearly across multi-decade holding periods.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ToolLab Clean Ad Unit -->
+
+      <!-- FAQ -->
+      <section class="bg-slate-900 rounded-2xl border border-slate-800 p-5 md:p-6 shadow-md">
+        <h2 class="text-base font-extrabold text-slate-100 mb-4 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-indigo-400"></span>
+          Frequently Asked Questions
+        </h2>
+
+        <div class="space-y-3.5 text-xs">
+          <div>
+            <h3 class="font-bold text-slate-200 mb-1">Q. Does this calculator incorporate property taxes or home insurance?</h3>
+            <p class="text-slate-400">This engine computes pure Principal & Interest (P&I) amortization. Escrow charges such as property taxes, PMI, and homeowner's insurance vary across municipalities and are omitted from baseline interest models.</p>
+          </div>
+          <div class="border-t border-slate-800 pt-3">
+            <h3 class="font-bold text-slate-200 mb-1">Q. How is compounding frequency handled for investments?</h3>
+            <p class="text-slate-400">Investment compounding simulates standard monthly compounding alongside concurrent recurring monthly contributions.</p>
+          </div>
+        </div>
+      </section>
+
+    </article>
+
+    <!-- Standard Minimal Footer -->
+    <footer class="mt-12 pt-6 pb-8 border-t border-slate-800 text-xs text-slate-500">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-3 text-center md:text-left">
+        <div class="space-y-0.5">
+          <p class="font-bold text-slate-400">Starsign16 Toolkit · Smart Web Utilities</p>
+          <p class="text-[11px]">Zero server latency · Client-side computational execution</p>
+        </div>
+        <div class="flex items-center gap-3 font-semibold text-slate-400">
+          <a href="../about.html" class="hover:text-emerald-400 transition-colors">About</a>
+        <span>·</span>
+        <a href="../contact.html" class="hover:text-emerald-400 transition-colors">Contact</a>
+        <span>·</span>
+        <a href="../privacy.html" class="hover:text-emerald-400 transition-colors">Privacy</a>
+        <span>·</span>
+        <a href="../terms.html" class="hover:text-emerald-400 transition-colors">Terms</a>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="../js/utils/loanCompoundCalc.js"></script>
+  <script>
+    let mode = "loan";
+
+    const btnLoan = document.getElementById("btnLoan");
+    const btnCompound = document.getElementById("btnCompound");
+    const loanInputs = document.getElementById("loanInputs");
+    const compoundInputs = document.getElementById("compoundInputs");
+
+    btnLoan.addEventListener("click", () => {
+      mode = "loan";
+      btnLoan.className = "py-2.5 rounded-lg transition-colors bg-blue-600 text-white shadow";
+      btnCompound.className = "py-2.5 rounded-lg transition-colors hover:text-slate-200";
+      loanInputs.classList.remove("hidden");
+      compoundInputs.classList.add("hidden");
+      recalc();
+    });
+
+    btnCompound.addEventListener("click", () => {
+      mode = "compound";
+      btnCompound.className = "py-2.5 rounded-lg transition-colors bg-blue-600 text-white shadow";
+      btnLoan.className = "py-2.5 rounded-lg transition-colors hover:text-slate-200";
+      compoundInputs.classList.remove("hidden");
+      loanInputs.classList.add("hidden");
+      recalc();
+    });
+
+    const inputs = [
+      "loanPrincipal", "loanRate", "loanYears",
+      "cmpPrincipal", "cmpMonthly", "cmpRate", "cmpYears"
+    ];
+
+    inputs.forEach(id => {
+      document.getElementById(id).addEventListener("input", recalc);
+    });
+
+    function recalc() {
+      const pTitle = document.getElementById("primaryMetricTitle");
+      const pVal = document.getElementById("primaryMetricVal");
+      const sec1 = document.getElementById("secItem1");
+      const sec2 = document.getElementById("secItem2");
+      const tableTitle = document.getElementById("previewTableTitle");
+      const tableHead = document.getElementById("tableHeaderRow");
+      const tbody = document.getElementById("scheduleRows");
+
+      tbody.innerHTML = "";
+
+      if (mode === "loan") {
+        const principal = parseFloat(document.getElementById("loanPrincipal").value) || 0;
+        const rate = parseFloat(document.getElementById("loanRate").value) || 0;
+        const years = parseFloat(document.getElementById("loanYears").value) || 0;
+
+        const res = LoanCompoundCalc.calculateLoan(principal, rate, years);
+
+        pTitle.textContent = "Estimated Monthly Payment";
+        pVal.textContent = `$${res.monthlyPayment.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        sec1.textContent = `Total Interest: $${res.totalInterest.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        sec2.textContent = `Total Paid: $${res.totalPayment.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
+        tableTitle.textContent = "Annual Amortization Snapshot";
+        tableHead.innerHTML = `
+          <th class="p-2">Year</th>
+          <th class="p-2">Principal Paid</th>
+          <th class="p-2">Interest Paid</th>
+          <th class="p-2">Balance</th>
+        `;
+
+        // Filter yearly milestones
+        const totalMonths = res.schedule.length;
+        for (let y = 1; y <= Math.ceil(totalMonths / 12); y++) {
+          const mIdx = Math.min(y * 12 - 1, totalMonths - 1);
+          const item = res.schedule[mIdx];
+          if (!item) break;
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td class="p-2 font-bold text-slate-100">Year ${y}</td>
+            <td class="p-2 text-slate-300">$${item.principalPart.toLocaleString()}</td>
+            <td class="p-2 text-slate-300">$${item.interestPart.toLocaleString()}</td>
+            <td class="p-2 font-bold text-blue-400">$${item.remainingBalance.toLocaleString()}</td>
+          `;
+          tbody.appendChild(tr);
+          if (y >= 10 && totalMonths > 120) {
+            // Cap preview rows to keep DOM ultra-light
+            break;
+          }
+        }
+
+      } else {
+        const principal = parseFloat(document.getElementById("cmpPrincipal").value) || 0;
+        const monthly = parseFloat(document.getElementById("cmpMonthly").value) || 0;
+        const rate = parseFloat(document.getElementById("cmpRate").value) || 0;
+        const years = parseFloat(document.getElementById("cmpYears").value) || 0;
+
+        const res = LoanCompoundCalc.calculateCompound(principal, monthly, rate, years);
+
+        pTitle.textContent = "Total Future Value";
+        pVal.textContent = `$${res.futureValue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        sec1.textContent = `Total Principal Invested: $${res.totalDeposits.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        sec2.textContent = `Total Interest Earned: $${res.totalInterest.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
+        tableTitle.textContent = "Year-by-Year Growth Schedule";
+        tableHead.innerHTML = `
+          <th class="p-2">Year</th>
+          <th class="p-2">Total Invested</th>
+          <th class="p-2">Interest Earned</th>
+          <th class="p-2">Portfolio Value</th>
+        `;
+
+        res.yearlyBreakdown.forEach(row => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td class="p-2 font-bold text-slate-100">Year ${row.year}</td>
+            <td class="p-2 text-slate-300">$${row.totalInvested.toLocaleString()}</td>
+            <td class="p-2 text-emerald-400">+$${row.interestEarned.toLocaleString()}</td>
+            <td class="p-2 font-bold text-blue-400">$${row.balance.toLocaleString()}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      }
+    }
+
+    recalc();
+  </script>
+  <script src="../js/related-tools.js"></script>
+</body>
+</html>

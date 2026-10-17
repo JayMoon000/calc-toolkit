@@ -1,0 +1,434 @@
+<!-- File: ko/word-counter.html -->
+<!-- Action: 글자수/바이트 계산기 다크모드 통합 및 자소서/SNS 플랫폼별 기준 가이드 탑재 -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>글자수 & 바이트 세기 | 자기소개서·SNS 글자수 측정기 - 스타사인16</title>
+  <meta name="description" content="공백 포함/제외 글자 수, 단어 수, 한글 완성형(EUC-KR 2Byte) 및 UTF-8(3Byte) 용량을 실시간으로 측정합니다. 자기소개서 및 블로그, 인스타그램 캡션 맞춤형 툴.">
+  <link rel="canonical" href="https://starsign16.com/ko/word-counter">
+  <link rel="stylesheet" href="../assets/css/style.css">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "채용 사이트마다 글자 수와 바이트 수가 다른 이유는 무엇인가요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "한글 인코딩 규격의 차이 때문입니다. 사람인이나 잡코리아, 공공기관 채용 시스템은 전통적인 EUC-KR/CP949 방식을 기준으로 한글 1자를 2바이트, 줄바꿈을 2바이트로 계산하는 경우가 많습니다. 반면 현대 웹 표준인 UTF-8 방식은 한글 1자를 3바이트로 처리합니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "공백(띄어쓰기)과 줄바꿈(엔터)은 용량에 어떻게 반영되나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "단순 띄어쓰기(스페이스)는 영문과 동일하게 1글자이자 1바이트로 계산됩니다. 줄바꿈의 경우 윈도우 기반 시스템에서는 CRLF(2바이트), 유닉스/웹 환경에서는 LF(1바이트)로 처리되므로 자소서 접수 마감 직전 여유 용량을 10~20바이트 이상 남겨두는 것이 안전합니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "작성한 글 내용이 서버에 저장되거나 유출될 위험이 있나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "전혀 없습니다. 입력창에 입력한 모든 텍스트는 외부 서버로 전송되지 않고 사용자의 웹 브라우저 메모리상에서만 자바스크립트로 즉시 연산됩니다."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    .counter-textarea {
+      width: 100%;
+      height: 220px;
+      padding: 16px;
+      background-color: var(--bg-input);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      color: var(--text-main);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      resize: vertical;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .counter-textarea:focus {
+      border-color: var(--border-focus);
+    }
+    .btn-clean {
+      padding: 6px 14px;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 0.82rem;
+      transition: all 0.2s;
+    }
+    .btn-clean:hover {
+      color: var(--text-main);
+      border-color: var(--text-muted);
+    }
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-top: 20px;
+    }
+    @media (min-width: 640px) {
+      .stat-grid { grid-template-columns: repeat(4, 1fr); }
+    }
+    .stat-box {
+      background-color: #0E1522;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 14px;
+      text-align: center;
+    }
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    .stat-val {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--accent-gold);
+    }
+
+    .rate-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 14px;
+      font-size: 0.88rem;
+    }
+    .rate-table th, .rate-table td {
+      padding: 10px 8px;
+      text-align: center;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .rate-table th {
+      background-color: var(--bg-input);
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+    .rate-table td { color: var(--text-main); }
+    .rate-table td.highlight { color: var(--accent-blue); font-weight: 600; }
+
+    .guide-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 24px;
+      margin-top: 24px;
+    }
+    .guide-item { margin-bottom: 20px; }
+    .guide-item:last-child { margin-bottom: 0; }
+    .guide-item h3 {
+      font-size: 0.98rem;
+      color: var(--text-main);
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+    .guide-item p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .related-section {
+      margin-top: 40px;
+      padding-top: 28px;
+      border-top: 1px solid var(--border-color);
+    }
+    .related-title {
+      font-size: 1.1rem;
+      color: var(--text-main);
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .related-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+    @media (min-width: 640px) {
+      .related-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    .related-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 16px;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .related-card:hover {
+      border-color: var(--accent-blue);
+      transform: translateY(-2px);
+    }
+    .related-card-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 4px;
+    }
+    .related-card-desc {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container header-content">
+      <a href="/ko" class="logo"><span>★</span> Starsign16 <span>Financial</span></a>
+      <a href="/ko" class="lang-switch">← 한국어 허브</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+        <h1 style="font-size: 1.5rem; color: var(--text-main);">글자수 & 바이트 세기</h1>
+        <div style="display: flex; gap: 8px;">
+          <button class="btn-clean" onclick="copyText()">복사하기</button>
+          <button class="btn-clean" onclick="clearText()">지우기</button>
+        </div>
+      </div>
+      <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 18px;">공백 포함/제외 글자 수 및 자소서 전용 바이트(2Byte / 3Byte) 실시간 측정</p>
+
+      <textarea id="textInput" class="counter-textarea" placeholder="여기에 글을 입력하거나 붙여넣으세요..." oninput="updateStats()"></textarea>
+
+      <!-- 결과 4단 그리드 -->
+      <div class="stat-grid">
+        <div class="stat-box">
+          <div class="stat-label">공백 포함 글자 수</div>
+          <div class="stat-val" id="cnt-with-space">0</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">공백 제외 글자 수</div>
+          <div class="stat-val" id="cnt-no-space" style="color: var(--accent-blue);">0</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">자소서 바이트 (한글 2B)</div>
+          <div class="stat-val" id="cnt-byte-euckr" style="color: var(--accent-green);">0 B</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">웹 바이트 (UTF-8 3B)</div>
+          <div class="stat-val" id="cnt-byte-utf8" style="color: #A855F7;">0 B</div>
+        </div>
+      </div>
+
+      <!-- 세부 지표 -->
+      <div class="result-card" style="margin-top: 14px; padding: 14px 20px;">
+        <div class="result-row" style="padding: 6px 0;">
+          <span style="color: var(--text-muted); font-size: 0.88rem;">단어 수 (어절 기준)</span>
+          <span id="cnt-words" style="color: var(--text-main); font-weight: 600;">0 개</span>
+        </div>
+        <div class="result-row" style="padding: 6px 0;">
+          <span style="color: var(--text-muted); font-size: 0.88rem;">줄(행) 수 / 문단 수</span>
+          <span id="cnt-lines" style="color: var(--text-main); font-weight: 600;">0 줄 / 0 문단</span>
+        </div>
+        <div class="result-row" style="padding: 6px 0;">
+          <span style="color: var(--text-muted); font-size: 0.88rem;">예상 읽기 소요 시간</span>
+          <span id="cnt-readtime" style="color: var(--accent-gold); font-weight: 600;">약 0초</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 1. 주요 채용 사이트 및 플랫폼별 바이트/글자수 기준표 -->
+    <div class="card" style="margin-top: 24px;">
+      <h2 style="font-size: 1.15rem; color: var(--text-main); margin-bottom: 6px;">● 주요 채용 플랫폼 및 SNS 권장 기준표</h2>
+      <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 12px;">시스템 환경에 따라 한글 글자 수와 바이트 적용 방식이 다릅니다.</p>
+      
+      <table class="rate-table">
+        <thead>
+          <tr>
+            <th>구분 / 플랫폼</th>
+            <th>한글 1자 기준</th>
+            <th>공백(띄어쓰기)</th>
+            <th>줄바꿈(엔터)</th>
+            <th>주요 사용처</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>자소서 표준 (EUC-KR)</td>
+            <td class="highlight">2 Byte</td>
+            <td>1 Byte</td>
+            <td>2 Byte (CRLF)</td>
+            <td>사람인, 잡코리아, 공공기관 채용</td>
+          </tr>
+          <tr>
+            <td>웹 표준 (UTF-8)</td>
+            <td class="highlight">3 Byte</td>
+            <td>1 Byte</td>
+            <td>1 Byte (LF)</td>
+            <td>포털 블로그, 브런치, 글로벌 웹</td>
+          </tr>
+          <tr>
+            <td>인스타그램 캡션</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>최대 2,200자 (권장 300~500자)</td>
+          </tr>
+          <tr>
+            <td>쓰레드 (Threads)</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>최대 500자 (한눈에 읽기 최적)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 2. 자소서 작성 실무 가이드 -->
+    <div class="guide-card">
+      <h2 style="font-size: 1.15rem; color: var(--text-main); margin-bottom: 18px;">● 자기소개서 바이트 관리 및 글쓰기 실무 팁</h2>
+      
+      <div class="guide-item">
+        <h3>1. 자소서 접수 마감 직전 바이트 초과 방지</h3>
+        <p>채용 포털 양식기는 워드나 한글 프로그램에서 복사·붙여넣기할 때 보이지 않는 공백 문자나 줄바꿈 태그가 추가되어 <strong>10~20바이트가 갑자기 늘어나는 현상</strong>이 발생합니다. 규정 용량이 1,000바이트라면 안전하게 950~970바이트 내외로 맞추는 것이 접수 오류를 방지하는 방법입니다.</p>
+      </div>
+
+      <div class="guide-item">
+        <h3>2. 불필요한 바이트를 줄이는 퇴고 요령</h3>
+        <p>'~에 대한', '~의 경우에 있어서는'과 같은 상투적인 일본어투 번역 문구와 이중 피동 표현을 제거하고 단문 위주로 정리하면, 문맥의 가독성이 높아지면서 <strong>글 전체 바이트를 10~15% 절약</strong>할 수 있습니다.</p>
+      </div>
+
+      <div class="guide-item">
+        <h3>3. 줄바꿈(엔터) 공백 관리</h3>
+        <p>EUC-KR 시스템에서 엔터 키 한 번은 한글 한 글자와 맞먹는 2바이트를 차지합니다. 문단 구분을 위해 빈 줄을 두 번 이상 연속으로 넣으면 본문 내용을 채울 용량이 부족해질 수 있으므로 문단당 1회의 줄바꿈만 사용하는 것이 권장됩니다.</p>
+      </div>
+    </div>
+
+    <!-- 3. 자주 묻는 질문 (FAQ) -->
+    <section class="seo-section">
+      <h2 style="font-size: 1.15rem; color: var(--text-main); margin-bottom: 16px;">● 자주 묻는 질문 (FAQ)</h2>
+      <div class="faq-item">
+        <div class="faq-question">Q. 채용 사이트마다 글자 수와 바이트 수가 다른 이유는 무엇인가요?</div>
+        <div class="faq-answer">한글 인코딩 규격의 차이 때문입니다. 사람인이나 잡코리아, 공공기관 채용 시스템은 전통적인 EUC-KR/CP949 방식을 기준으로 한글 1자를 2바이트, 줄바꿈을 2바이트로 계산하는 경우가 많습니다. 반면 현대 웹 표준인 UTF-8 방식은 한글 1자를 3바이트로 처리합니다.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">Q. 공백(띄어쓰기)과 줄바꿈(엔터)은 용량에 어떻게 반영되나요?</div>
+        <div class="faq-answer">단순 띄어쓰기(스페이스)는 영문과 동일하게 1글자이자 1바이트로 계산됩니다. 줄바꿈의 경우 윈도우 기반 시스템에서는 CRLF(2바이트), 유닉스/웹 환경에서는 LF(1바이트)로 처리되므로 자소서 접수 마감 직전 여유 용량을 10~20바이트 이상 남겨두는 것이 안전합니다.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">Q. 작성한 글 내용이 서버에 저장되거나 유출될 위험이 있나요?</div>
+        <div class="faq-answer">전혀 없습니다. 입력창에 입력한 모든 텍스트는 외부 서버로 전송되지 않고 사용자의 웹 브라우저 메모리상에서만 자바스크립트로 즉시 연산됩니다.</div>
+      </div>
+    </section>
+
+    <!-- 4. 함께 많이 활용하는 연산 도구 -->
+    <div class="related-section">
+      <div class="related-title">
+        <span>함께 많이 활용하는 연산 도구</span>
+        <a href="/ko/game-2048" style="font-size: 0.82rem; color: var(--accent-gold); text-decoration: none;">🎮 머리 식히기 (2048 게임)</a>
+      </div>
+      <div class="related-grid">
+        <a href="/ko/dday-calculator" class="related-card">
+          <div class="related-card-title">📅 디데이 & 영업일</div>
+          <div class="related-card-desc">접수 마감일 카운트다운·영업일 계산</div>
+        </a>
+        <a href="/ko/qr-generator" class="related-card">
+          <div class="related-card-title">📱 초고속 QR코드</div>
+          <div class="related-card-desc">포트폴리오 링크 즉시 QR 변환</div>
+        </a>
+        <a href="/ko/salary" class="related-card">
+          <div class="related-card-title">💰 연봉 실수령액</div>
+          <div class="related-card-desc">4대보험 최신 요율·근로소득 간이세액 공제</div>
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>© 2026 Starsign16. All rights reserved.</p>
+      <p style="margin-top: 8px;">
+        <a href="/legal/ko/about" style="color: var(--text-muted); text-decoration: none; margin: 0 8px;">소개</a> | 
+        <a href="/legal/ko/privacy" style="color: var(--text-muted); text-decoration: none; margin: 0 8px;">개인정보처리방침</a> | 
+        <a href="/legal/ko/terms" style="color: var(--text-muted); text-decoration: none; margin: 0 8px;">이용약관</a> | 
+        <a href="/legal/ko/contact" style="color: var(--text-muted); text-decoration: none; margin: 0 8px;">문의</a>
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    function updateStats() {
+      const text = document.getElementById('textInput').value;
+
+      // 1. 글자 수
+      const withSpace = text.length;
+      const noSpace = text.replace(/\s/g, '').length;
+
+      // 2. 바이트 수 (EUC-KR 2Byte vs UTF-8 3Byte)
+      let byteEucKr = 0;
+      let byteUtf8 = 0;
+
+      for (let i = 0; i < text.length; i++) {
+        const char = text.charAt(i);
+        const code = text.charCodeAt(i);
+
+        if (char === '\n') {
+          byteEucKr += 2; // 줄바꿈 CRLF
+          byteUtf8 += 1;
+        } else if (code <= 0x007f) {
+          byteEucKr += 1;
+          byteUtf8 += 1;
+        } else if (code <= 0x07ff) {
+          byteEucKr += 2;
+          byteUtf8 += 2;
+        } else {
+          byteEucKr += 2; // 한글 EUC-KR 2Byte
+          byteUtf8 += 3; // 한글 UTF-8 3Byte
+        }
+      }
+
+      // 3. 단어, 행, 문단 수
+      const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+      const lines = text ? text.split('\n').length : 0;
+      const paragraphs = text.trim() ? text.trim().split(/\n+/).length : 0;
+
+      // 4. 읽기 시간 (한국인 평균 분당 약 500자 기준)
+      const readSeconds = Math.ceil((withSpace / 500) * 60);
+
+      document.getElementById('cnt-with-space').innerText = withSpace.toLocaleString();
+      document.getElementById('cnt-no-space').innerText = noSpace.toLocaleString();
+      document.getElementById('cnt-byte-euckr').innerText = byteEucKr.toLocaleString() + " B";
+      document.getElementById('cnt-byte-utf8').innerText = byteUtf8.toLocaleString() + " B";
+
+      document.getElementById('cnt-words').innerText = words.toLocaleString() + " 개";
+      document.getElementById('cnt-lines').innerText = lines + " 줄 / " + paragraphs + " 문단";
+      document.getElementById('cnt-readtime').innerText = readSeconds < 60 ? "약 " + readSeconds + "초" : "약 " + Math.ceil(readSeconds / 60) + "분";
+    }
+
+    function clearText() {
+      document.getElementById('textInput').value = '';
+      updateStats();
+    }
+
+    function copyText() {
+      const text = document.getElementById('textInput').value;
+      if (!text) return;
+      navigator.clipboard.writeText(text).then(() => {
+        alert('텍스트가 클립보드에 복사되었습니다.');
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', updateStats);
+  </script>
+</body>
+</html>

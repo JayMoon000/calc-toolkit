@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>D-Day Calculator & Countdown Tracker | ToolLab</title>
+  <meta name="description" content="Free client-side D-Day countdown, days between dates, and business day calculator. Accurate, fast, and 100% private in your browser." />
+  <meta name="keywords" content="d-day calculator, countdown tracker, days between dates, business days calculator, date duration, event countdown, ToolLab" />
+  
+      <!-- Tailwind CDN & Config -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class'
+    }
+  </script>
+
+  <!-- Open Graph & Rich Snippets -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="ToolLab" />
+  <meta property="og:title" content="D-Day & Countdown Tracker | ToolLab" />
+  <meta property="og:description" content="Track remaining calendar days, working business days, and time intervals to your milestones." />
+  <meta property="og:url" content="https://Starsign16 Toolkit/tools/dday-calculator.html" />
+  <meta property="og:image" content="https://Starsign16 Toolkit/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="D-Day & Countdown Tracker | ToolLab" />
+  <meta name="twitter:description" content="Track remaining calendar days, working business days, and time intervals to your milestones." />
+  <meta name="twitter:image" content="https://Starsign16 Toolkit/og-image.png" />
+  <link rel="canonical" href="https://starsign16.com/tools/dday-calculator">
+
+  <!-- ToolLab Analytics Tracker -->
+  <script src="/js/analytics.js"></script>
+
+</head>
+<body class="bg-slate-950 text-slate-200 min-h-screen py-6 px-4 font-sans antialiased">
+  <div class="max-w-2xl mx-auto">
+    
+    <!-- Calculator Card -->
+    <div class="bg-slate-900 rounded-2xl shadow-xl border border-slate-800 p-5 md:p-7">
+      
+      <!-- Top Navigation -->
+      <div class="flex items-center justify-between pb-4 mb-6 border-b border-slate-800">
+        <div class="flex items-center gap-2.5">
+          <a href="../index.html" class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors" title="ToolLab Home">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+            </svg>
+          </a>
+          <div>
+            <span class="text-[10px] font-bold tracking-wider text-blue-400 uppercase block">Starsign16 Toolkit</span>
+            <h1 class="text-lg md:text-xl font-extrabold text-slate-100">D-Day & Countdown Tracker</h1>
+          </div>
+        </div>
+        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-950/80 text-blue-400 border border-blue-800">
+          Client-Side Core
+        </span>
+      </div>
+
+      <!-- Mode Selector -->
+      <div class="grid grid-cols-2 gap-1 bg-slate-950 p-1 rounded-xl text-xs font-bold text-slate-400 mb-6 border border-slate-800/80">
+        <button id="modeDday" class="py-2.5 rounded-lg transition-colors bg-blue-600 text-white shadow">Target Countdown (D-Day)</button>
+        <button id="modeAdd" class="py-2.5 rounded-lg transition-colors hover:text-slate-200">Add / Subtract Days</button>
+      </div>
+
+      <!-- D-Day Countdown Mode -->
+      <div id="sectionDday" class="space-y-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="p-3.5 bg-slate-950/70 border border-slate-800 rounded-xl space-y-1">
+            <label class="block text-[11px] font-semibold text-slate-400">Target Date</label>
+            <input type="date" id="targetDate" class="w-full bg-transparent text-slate-100 font-bold text-base outline-none focus:text-blue-400" />
+          </div>
+          <div class="p-3.5 bg-slate-950/70 border border-slate-800 rounded-xl space-y-1">
+            <label class="block text-[11px] font-semibold text-slate-400">Event Title (Optional)</label>
+            <input type="text" id="eventTitle" placeholder="e.g., Product Launch, Exam" class="w-full bg-transparent text-slate-100 font-medium text-base outline-none focus:text-blue-400 placeholder-slate-600" />
+          </div>
+        </div>
+
+        <!-- Primary Output Display -->
+        <div class="p-5 bg-blue-950/30 border border-blue-900/60 rounded-xl text-center space-y-1.5">
+          <span id="displayEventTitle" class="text-xs font-bold text-slate-400 tracking-wide uppercase">Target Event</span>
+          <div id="ddayBadge" class="text-4xl md:text-5xl font-black text-blue-400 tracking-tight">D-0</div>
+          <p id="ddaySubtitle" class="text-xs text-slate-400">Select a date above</p>
+        </div>
+
+        <!-- Breakdown Statistics -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+          <div class="p-2.5 bg-slate-950/60 border border-slate-800 rounded-lg text-center">
+            <span class="text-slate-400 block mb-0.5">Weeks</span>
+            <span id="statWeeks" class="font-bold text-slate-200 text-sm">0</span>
+          </div>
+          <div class="p-2.5 bg-slate-950/60 border border-slate-800 rounded-lg text-center">
+            <span class="text-slate-400 block mb-0.5">Business Days</span>
+            <span id="statBusiness" class="font-bold text-emerald-400 text-sm">0</span>
+          </div>
+          <div class="p-2.5 bg-slate-950/60 border border-slate-800 rounded-lg text-center">
+            <span class="text-slate-400 block mb-0.5">Total Hours</span>
+            <span id="statHours" class="font-bold text-slate-200 text-sm">0</span>
+          </div>
+          <div class="p-2.5 bg-slate-950/60 border border-slate-800 rounded-lg text-center">
+            <span class="text-slate-400 block mb-0.5">Total Days</span>
+            <span id="statTotalDays" class="font-bold text-blue-400 text-sm">0</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Add/Subtract Days Mode -->
+      <div id="sectionAdd" class="space-y-4 hidden">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="p-3.5 bg-slate-950/70 border border-slate-800 rounded-xl space-y-1">
+            <label class="block text-[11px] font-semibold text-slate-400">Start Date</label>
+            <input type="date" id="startDate" class="w-full bg-transparent text-slate-100 font-bold text-base outline-none focus:text-blue-400" />
+          </div>
+          <div class="p-3.5 bg-slate-950/70 border border-slate-800 rounded-xl space-y-1">
+            <label class="block text-[11px] font-semibold text-slate-400">Days to Add (+) or Subtract (-)</label>
+            <input type="number" id="daysOffset" value="100" class="w-full bg-transparent text-slate-100 font-black text-xl outline-none focus:text-blue-400" />
+          </div>
+        </div>
+
+        <div class="p-5 bg-blue-950/30 border border-blue-900/60 rounded-xl text-center space-y-1">
+          <span class="text-xs font-semibold text-blue-400 uppercase tracking-wider block">Calculated Result Date</span>
+          <div id="targetResultDate" class="text-2xl md:text-3xl font-black text-slate-100">-</div>
+          <p id="targetResultDetail" class="text-xs text-slate-400"></p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- SEO & Technical Reference Guide -->
+    <article class="mt-8 space-y-6 text-xs md:text-sm text-slate-400 leading-relaxed">
+      
+      <!-- Benchmark Reference Table -->
+      <section class="bg-slate-900 rounded-2xl border border-slate-800 p-5 md:p-6 shadow-md">
+        <h2 class="text-base font-extrabold text-slate-100 mb-3 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+          Common Project & Life Milestone Intervals
+        </h2>
+        <p class="text-xs text-slate-400 mb-4">Standard tracking benchmarks for delivery sprints, personal goals, and contractual timelines.</p>
+        
+        <div class="overflow-x-auto">
+          <table class="w-full text-xs text-left border-collapse">
+            <thead>
+              <tr class="bg-slate-950 border-b border-slate-800 text-slate-300 font-bold">
+                <th class="p-2.5">Milestone Target</th>
+                <th class="p-2.5">Standard Duration</th>
+                <th class="p-2.5">Business Days (~5/7)</th>
+                <th class="p-2.5">Application Context</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-800/60 text-slate-300">
+              <tr>
+                <td class="p-2.5 font-bold text-slate-100">Agile Sprint</td>
+                <td class="p-2.5 text-blue-400 font-medium">14 Days (2 Weeks)</td>
+                <td class="p-2.5 text-slate-400">10 Work Days</td>
+                <td class="p-2.5 text-slate-400">Software development cycles</td>
+              </tr>
+              <tr>
+                <td class="p-2.5 font-bold text-slate-100">Quarterly OKR</td>
+                <td class="p-2.5 text-blue-400 font-medium">90 – 92 Days</td>
+                <td class="p-2.5 text-slate-400">~65 Work Days</td>
+                <td class="p-2.5 text-slate-400">Corporate strategy & reviews</td>
+              </tr>
+              <tr>
+                <td class="p-2.5 font-bold text-slate-100">100-Day Challenge</td>
+                <td class="p-2.5 text-blue-400 font-medium">100 Days</td>
+                <td class="p-2.5 text-slate-400">~71 Work Days</td>
+                <td class="p-2.5 text-slate-400">Habit building, fitness transformation</td>
+              </tr>
+              <tr>
+                <td class="p-2.5 font-bold text-slate-100">Probationary Period</td>
+                <td class="p-2.5 text-blue-400 font-medium">90 – 180 Days</td>
+                <td class="p-2.5 text-slate-400">~65 – 130 Work Days</td>
+                <td class="p-2.5 text-slate-400">Employment contract milestones</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Practical Usage Tips -->
+      <section class="bg-slate-900 rounded-2xl border border-slate-800 p-5 md:p-6 shadow-md space-y-3">
+        <h2 class="text-base font-extrabold text-slate-100 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+          Calendar & Working Day Tracking Rules
+        </h2>
+        
+        <div class="space-y-2.5 text-xs leading-relaxed">
+          <div class="p-3 bg-slate-950/60 rounded-xl border border-slate-800/80">
+            <h3 class="font-bold text-slate-200 mb-1">1. Calendar Days vs. Business Days</h3>
+            <p>Calendar days represent elapsed consecutive 24-hour periods. Business days exclude Saturdays and Sundays to measure real productivity capacity for commercial projects.</p>
+          </div>
+
+          <div class="p-3 bg-slate-950/60 rounded-xl border border-slate-800/80">
+            <h3 class="font-bold text-slate-200 mb-1">2. D-Day Notation Standards</h3>
+            <p><strong>D-Day (D-0):</strong> The day of the designated milestone.<br>
+            <strong>D-N:</strong> Exactly N days remaining until the target arrives.<br>
+            <strong>D+N:</strong> Exactly N days have passed since the event occurred.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ToolLab Clean Ad Unit -->
+
+      <!-- FAQ -->
+      <section class="bg-slate-900 rounded-2xl border border-slate-800 p-5 md:p-6 shadow-md">
+        <h2 class="text-base font-extrabold text-slate-100 mb-4 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-indigo-400"></span>
+          Frequently Asked Questions
+        </h2>
+
+        <div class="space-y-3.5 text-xs">
+          <div>
+            <h3 class="font-bold text-slate-200 mb-1">Q. Are my saved dates or event titles stored on a server?</h3>
+            <p class="text-slate-400">Never. All inputs execute locally inside your browser runtime. Zero scheduling information is ever dispatched to external servers.</p>
+          </div>
+          <div class="border-t border-slate-800 pt-3">
+            <h3 class="font-bold text-slate-200 mb-1">Q. Does the business day calculation include public holidays?</h3>
+            <p class="text-slate-400">This client-side engine strips weekends (Saturday and Sunday). Because statutory public holidays differ by country and region, local bank holidays must be adjusted manually.</p>
+          </div>
+        </div>
+      </section>
+
+    </article>
+
+    <!-- Standard Minimal Footer -->
+    <footer class="mt-12 pt-6 pb-8 border-t border-slate-800 text-xs text-slate-500">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-3 text-center md:text-left">
+        <div class="space-y-0.5">
+          <p class="font-bold text-slate-400">Starsign16 Toolkit · Smart Web Utilities</p>
+          <p class="text-[11px]">Zero server latency · Client-side computational execution</p>
+        </div>
+        <div class="flex items-center gap-3 font-semibold text-slate-400">
+          <a href="../about.html" class="hover:text-emerald-400 transition-colors">About</a>
+        <span>·</span>
+        <a href="../contact.html" class="hover:text-emerald-400 transition-colors">Contact</a>
+        <span>·</span>
+        <a href="../privacy.html" class="hover:text-emerald-400 transition-colors">Privacy</a>
+        <span>·</span>
+        <a href="../terms.html" class="hover:text-emerald-400 transition-colors">Terms</a>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="../js/utils/ddayCounter.js"></script>
+  <script>
+    let activeMode = "dday";
+
+    const modeDdayBtn = document.getElementById("modeDday");
+    const modeAddBtn = document.getElementById("modeAdd");
+    const sectionDday = document.getElementById("sectionDday");
+    const sectionAdd = document.getElementById("sectionAdd");
+
+    const targetDateInput = document.getElementById("targetDate");
+    const eventTitleInput = document.getElementById("eventTitle");
+    const startDateInput = document.getElementById("startDate");
+    const daysOffsetInput = document.getElementById("daysOffset");
+
+    // Initialize with default date (30 days from now)
+    const today = new Date();
+    const defaultFuture = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 30);
+    targetDateInput.value = defaultFuture.toISOString().split("T")[0];
+    startDateInput.value = today.toISOString().split("T")[0];
+
+    modeDdayBtn.addEventListener("click", () => {
+      activeMode = "dday";
+      modeDdayBtn.className = "py-2.5 rounded-lg transition-colors bg-blue-600 text-white shadow";
+      modeAddBtn.className = "py-2.5 rounded-lg transition-colors hover:text-slate-200";
+      sectionDday.classList.remove("hidden");
+      sectionAdd.classList.add("hidden");
+      updateDDay();
+    });
+
+    modeAddBtn.addEventListener("click", () => {
+      activeMode = "add";
+      modeAddBtn.className = "py-2.5 rounded-lg transition-colors bg-blue-600 text-white shadow";
+      modeDdayBtn.className = "py-2.5 rounded-lg transition-colors hover:text-slate-200";
+      sectionAdd.classList.remove("hidden");
+      sectionDday.classList.add("hidden");
+      updateAddDays();
+    });
+
+    function updateDDay() {
+      const val = targetDateInput.value;
+      const title = eventTitleInput.value.trim() || "Target Event";
+      document.getElementById("displayEventTitle").textContent = title;
+
+      if (!val) {
+        document.getElementById("ddayBadge").textContent = "D-?";
+        document.getElementById("ddaySubtitle").textContent = "Select a valid target date";
+        return;
+      }
+
+      const res = DDayCounter.calculateDDay(val);
+      if (!res) return;
+
+      const badge = document.getElementById("ddayBadge");
+      const sub = document.getElementById("ddaySubtitle");
+
+      if (res.isToday) {
+        badge.textContent = "D-Day";
+        badge.className = "text-4xl md:text-5xl font-black text-emerald-400 tracking-tight";
+        sub.textContent = "Today is the day!";
+      } else if (res.isFuture) {
+        badge.textContent = `D-${res.days}`;
+        badge.className = "text-4xl md:text-5xl font-black text-blue-400 tracking-tight";
+        sub.textContent = `${res.days} day(s) remaining`;
+      } else {
+        badge.textContent = `D+${res.absDays}`;
+        badge.className = "text-4xl md:text-5xl font-black text-amber-400 tracking-tight";
+        sub.textContent = `${res.absDays} day(s) passed`;
+      }
+
+      document.getElementById("statWeeks").textContent = `${res.weeks}w ${res.remainingDaysAfterWeeks}d`;
+      document.getElementById("statTotalDays").textContent = res.absDays.toLocaleString();
+      document.getElementById("statHours").textContent = res.totalHours.toLocaleString();
+
+      // Business days calculation
+      const todayStr = new Date().toISOString().split("T")[0];
+      const bizDays = DDayCounter.calculateBusinessDays(todayStr, val);
+      document.getElementById("statBusiness").textContent = bizDays.toLocaleString();
+    }
+
+    function updateAddDays() {
+      const startVal = startDateInput.value;
+      const offset = parseInt(daysOffsetInput.value, 10);
+
+      const resultEl = document.getElementById("targetResultDate");
+      const detailEl = document.getElementById("targetResultDetail");
+
+      if (!startVal || isNaN(offset)) {
+        resultEl.textContent = "-";
+        detailEl.textContent = "";
+        return;
+      }
+
+      const res = DDayCounter.addDays(startVal, offset);
+      if (!res) return;
+
+      resultEl.textContent = res.formatted;
+      detailEl.textContent = `${offset >= 0 ? "+" : ""}${offset} days from ${startVal}`;
+    }
+
+    targetDateInput.addEventListener("input", updateDDay);
+    eventTitleInput.addEventListener("input", updateDDay);
+    startDateInput.addEventListener("input", updateAddDays);
+    daysOffsetInput.addEventListener("input", updateAddDays);
+
+    updateDDay();
+  </script>
+  <script src="../js/related-tools.js"></script>
+</body>
+</html>

@@ -1,0 +1,424 @@
+<!-- File: tools/game-2048.html -->
+<!-- Action: 2048 퍼즐 완전 한글화 및 심층 가이드/FAQ JSON-LD 탑재 -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2048 퍼즐 게임 | 스타사인16 무설치 웹 브레인 게임</title>
+  <meta name="description" content="설치 없이 브라우저에서 바로 즐기는 클래식 2048 숫자 퍼즐. 키보드 방향키 및 모바일 터치 스와이프 지원, 다크모드 최적화.">
+  <link rel="canonical" href="https://starsign16.com/tools/game-2048">
+  <link rel="stylesheet" href="../assets/css/style.css">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "2048 게임을 클리어하기 위한 핵심 전략은 무엇인가요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "가장 큰 숫자의 타일을 한쪽 구석(예: 좌측 하단 모서리)에 고정해 두고 절대 움직이지 않는 '코너 전략'이 가장 효과적입니다. 상하좌우 무작위로 이동하지 않고 세 방향(예: 아래, 왼쪽, 오른쪽)만 주로 활용하여 블록의 크기순 정렬을 유지해야 합니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "모바일 스마트폰에서도 플레이할 수 있나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "네, 스마트폰 및 태블릿 브라우저에서 화면을 손가락으로 상하좌우 스와이프(터치 드래그)하면 방향키와 동일하게 타일이 이동합니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "새로운 게임을 시작하면 최고 점수(Best)는 초기화되나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "아닙니다. 달성한 최고 점수는 사용자의 웹 브라우저 로컬 저장소(localStorage)에 안전하게 보존되므로 페이지를 새로고침하거나 창을 닫아도 유지됩니다."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    .game-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .score-container {
+      display: flex;
+      gap: 10px;
+    }
+    .score-box {
+      background-color: var(--bg-input);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 6px 14px;
+      text-align: center;
+      min-width: 75px;
+    }
+    .score-label {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+    .score-val {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--accent-gold);
+    }
+    .game-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .restart-btn {
+      background-color: var(--accent-blue);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 8px 16px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background 0.2s;
+    }
+    .restart-btn:hover {
+      background-color: #2563eb;
+    }
+    .grid-board {
+      width: 100%;
+      max-width: 400px;
+      height: 400px;
+      margin: 0 auto;
+      background-color: #0E1522;
+      border: 2px solid var(--border-color);
+      border-radius: 12px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(4, 1fr);
+      gap: 10px;
+      padding: 10px;
+      touch-action: none;
+      position: relative;
+    }
+    .tile {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+      font-size: 1.6rem;
+      font-weight: 700;
+      user-select: none;
+      transition: transform 0.1s ease;
+    }
+    .tile-empty { background-color: var(--bg-input); opacity: 0.4; }
+    .tile-2 { background-color: #1E293B; color: var(--text-main); }
+    .tile-4 { background-color: #334155; color: var(--text-main); }
+    .tile-8 { background-color: #D97706; color: #FFF; }
+    .tile-16 { background-color: #EA580C; color: #FFF; }
+    .tile-32 { background-color: #DC2626; color: #FFF; }
+    .tile-64 { background-color: #B91C1C; color: #FFF; }
+    .tile-128 { background-color: #2563EB; color: #FFF; font-size: 1.3rem; }
+    .tile-256 { background-color: #1D4ED8; color: #FFF; font-size: 1.3rem; }
+    .tile-512 { background-color: #059669; color: #FFF; font-size: 1.3rem; }
+    .tile-1024 { background-color: #047857; color: #FFF; font-size: 1.1rem; }
+    .tile-2048 { background-color: #F59E0B; color: #000; font-size: 1.1rem; box-shadow: 0 0 15px rgba(245, 158, 11, 0.6); }
+
+    .game-over-overlay {
+      position: absolute;
+      inset: 0;
+      background-color: rgba(11, 15, 23, 0.9);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      display: none;
+    }
+    .game-over-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #EF4444;
+      margin-bottom: 12px;
+    }
+    .strategy-list {
+      padding-left: 20px;
+      color: var(--text-muted);
+      line-height: 1.8;
+      font-size: 0.92rem;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container header-content">
+      <a href="/ko" class="logo"><span>★</span> Starsign16 <span>Toolkit</span></a>
+      <a href="/ko" class="lang-switch">← 한국어 허브</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="card" style="max-width: 480px; margin: 0 auto 32px auto;">
+      <div class="game-header">
+        <div>
+          <h1 style="font-size: 1.5rem; color: var(--text-main); margin-bottom: 4px;">2048 클래식 퍼즐</h1>
+          <p style="color: var(--text-muted); font-size: 0.85rem;">동일한 숫자를 합쳐 전설의 2048 타일을 완성하세요!</p>
+        </div>
+        <div class="score-container">
+          <div class="score-box">
+            <div class="score-label">현재 점수</div>
+            <div class="score-val" id="score">0</div>
+          </div>
+          <div class="score-box">
+            <div class="score-label">최고 기록</div>
+            <div class="score-val" id="best-score">0</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="game-actions">
+        <span style="font-size: 0.85rem; color: var(--text-muted);">조작: <strong>키보드 방향키</strong> 또는 <strong>터치 스와이프</strong></span>
+        <button class="restart-btn" onclick="initGame()">새 게임</button>
+      </div>
+
+      <div class="grid-board" id="board">
+        <div class="game-over-overlay" id="game-over">
+          <div class="game-over-title">게임 오버!</div>
+          <button class="restart-btn" onclick="initGame()">다시 도전하기</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SEO & 심층 전략 가이드 -->
+    <section class="seo-section" style="max-width: 680px; margin: 0 auto;">
+      <h2>2048 퍼즐 규칙 및 고득점 전략 가이드</h2>
+      <p>2048은 4×4 격자판 위에서 상하좌우로 타일을 밀어 동일한 숫자를 결합해 나가는 수학 기반 두뇌 트레이닝 게임입니다. 2에서 시작해 4, 8, 16, 32, 64, 128, 256, 512, 1024를 거쳐 최종 2048 타일을 만드는 것이 목표입니다.</p>
+      
+      <h3 style="font-size: 1.1rem; color: var(--text-main); margin: 20px 0 8px;">핵심 필승 공략법 (모서리 고정 공식)</h3>
+      <ul class="strategy-list">
+        <li><strong>모서리 고정:</strong> 가장 큰 수의 타일을 격자판의 4개 모서리 중 한 곳(보통 좌측 하단 추천)에 배치하고, 가능한 한 해당 위치를 벗어나지 않도록 유지합니다.</li>
+        <li><strong>금지 방향 설정:</strong> 모서리를 좌측 하단으로 정했다면, <strong>'위쪽 방향키(↑)'는 위급한 상황이 아니면 절대 누르지 마세요.</strong> 위로 움직이는 순간 가장 큰 타일 밑으로 2나 4가 끼어들어 판이 꼬이게 됩니다.</li>
+        <li><strong>내림차순 지그재그 배치:</strong> 큰 타일부터 순서대로 모서리 라인에 나란히 배치해야 연속 합체가 매끄럽게 이어집니다.</li>
+      </ul>
+
+      <div class="faq-item" style="margin-top: 24px;">
+        <div class="faq-question">Q. 2048 타일을 완성하면 게임이 바로 끝나나요?</div>
+        <div class="faq-answer">아닙니다. 2048 타일을 만든 이후에도 격자판이 가득 차서 더 이상 움직일 수 없을 때까지 계속해서 4096, 8192 이상의 초고득점에 도전할 수 있습니다.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">Q. 게임 진행 중 데이터가 서버로 전송되나요?</div>
+        <div class="faq-answer">전혀 전송되지 않습니다. 모든 연산과 점수 저장은 사용자의 브라우저 메모리 및 로컬 스토리지 내에서 100% 독립적으로 처리됩니다.</div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>© 2026 Starsign16. All rights reserved.</p>
+      <p style="margin-top: 8px;">
+        <a href="/legal/ko/about" style="color: var(--text-muted); text-decoration: none; margin: 0 8px;">소개</a> | 
+        <a href="/legal/ko/privacy" style="color: var(--text-muted); text-decoration: none; margin: 0 8px;">개인정보처리방침</a> | 
+        <a href="/legal/ko/terms" style="color: var(--text-muted); text-decoration: none; margin: 0 8px;">이용약관</a> | 
+        <a href="/legal/ko/contact" style="color: var(--text-muted); text-decoration: none; margin: 0 8px;">문의</a>
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    let board = [];
+    let score = 0;
+    let bestScore = localStorage.getItem('2048_best') || 0;
+    document.getElementById('best-score').innerText = bestScore;
+
+    function initGame() {
+      board = [
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0]
+      ];
+      score = 0;
+      updateScore(0);
+      document.getElementById('game-over').style.display = 'none';
+      spawnTile();
+      spawnTile();
+      renderBoard();
+    }
+
+    function spawnTile() {
+      let emptyCells = [];
+      for (let r = 0; r < 4; r++) {
+        for (let c = 0; c < 4; c++) {
+          if (board[r][c] === 0) emptyCells.push({r, c});
+        }
+      }
+      if (emptyCells.length > 0) {
+        let spot = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+        board[spot.r][spot.c] = Math.random() < 0.9 ? 2 : 4;
+      }
+    }
+
+    function renderBoard() {
+      const boardEl = document.getElementById('board');
+      const tiles = boardEl.querySelectorAll('.tile');
+      tiles.forEach(t => t.remove());
+
+      for (let r = 0; r < 4; r++) {
+        for (let c = 0; c < 4; c++) {
+          const val = board[r][c];
+          const tile = document.createElement('div');
+          tile.classList.add('tile');
+          if (val === 0) {
+            tile.classList.add('tile-empty');
+          } else {
+            tile.classList.add(`tile-${val}`);
+            tile.innerText = val;
+          }
+          boardEl.appendChild(tile);
+        }
+      }
+    }
+
+    function updateScore(add) {
+      score += add;
+      document.getElementById('score').innerText = score;
+      if (score > bestScore) {
+        bestScore = score;
+        localStorage.setItem('2048_best', bestScore);
+        document.getElementById('best-score').innerText = bestScore;
+      }
+    }
+
+    function slide(row) {
+      let arr = row.filter(val => val);
+      let missing = 4 - arr.length;
+      let zeros = Array(missing).fill(0);
+      return arr.concat(zeros);
+    }
+
+    function combine(row) {
+      for (let i = 0; i < 3; i++) {
+        if (row[i] !== 0 && row[i] === row[i + 1]) {
+          row[i] *= 2;
+          updateScore(row[i]);
+          row[i + 1] = 0;
+        }
+      }
+      return row;
+    }
+
+    function operate(row) {
+      row = slide(row);
+      row = combine(row);
+      row = slide(row);
+      return row;
+    }
+
+    function moveLeft() {
+      let moved = false;
+      for (let i = 0; i < 4; i++) {
+        let oldRow = [...board[i]];
+        board[i] = operate(board[i]);
+        if (oldRow.join(',') !== board[i].join(',')) moved = true;
+      }
+      return moved;
+    }
+
+    function rotateBoard() {
+      let newBoard = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]];
+      for (let i = 0; i < 4; i++) {
+        for (let j = 0; j < 4; j++) {
+          newBoard[j][3 - i] = board[i][j];
+        }
+      }
+      board = newBoard;
+    }
+
+    function moveRight() {
+      rotateBoard(); rotateBoard();
+      let moved = moveLeft();
+      rotateBoard(); rotateBoard();
+      return moved;
+    }
+
+    function moveUp() {
+      rotateBoard(); rotateBoard(); rotateBoard();
+      let moved = moveLeft();
+      rotateBoard();
+      return moved;
+    }
+
+    function moveDown() {
+      rotateBoard();
+      let moved = moveLeft();
+      rotateBoard(); rotateBoard(); rotateBoard();
+      return moved;
+    }
+
+    function checkGameOver() {
+      for (let r = 0; r < 4; r++) {
+        for (let c = 0; c < 4; c++) {
+          if (board[r][c] === 0) return false;
+          if (c < 3 && board[r][c] === board[r][c + 1]) return false;
+          if (r < 3 && board[r][c] === board[r + 1][c]) return false;
+        }
+      }
+      return true;
+    }
+
+    function handleInput(moved) {
+      if (moved) {
+        spawnTile();
+        renderBoard();
+        if (checkGameOver()) {
+          document.getElementById('game-over').style.display = 'flex';
+        }
+      }
+    }
+
+    window.addEventListener('keydown', e => {
+      if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+        e.preventDefault();
+        let moved = false;
+        if (e.key === 'ArrowLeft') moved = moveLeft();
+        else if (e.key === 'ArrowRight') moved = moveRight();
+        else if (e.key === 'ArrowUp') moved = moveUp();
+        else if (e.key === 'ArrowDown') moved = moveDown();
+        handleInput(moved);
+      }
+    });
+
+    let touchStartX = 0, touchStartY = 0;
+    const boardEl = document.getElementById('board');
+    boardEl.addEventListener('touchstart', e => {
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+    }, {passive: true});
+
+    boardEl.addEventListener('touchend', e => {
+      let dx = e.changedTouches[0].clientX - touchStartX;
+      let dy = e.changedTouches[0].clientY - touchStartY;
+      if (Math.abs(dx) < 30 && Math.abs(dy) < 30) return;
+
+      let moved = false;
+      if (Math.abs(dx) > Math.abs(dy)) {
+        moved = dx > 0 ? moveRight() : moveLeft();
+      } else {
+        moved = dy > 0 ? moveDown() : moveUp();
+      }
+      handleInput(moved);
+    }, {passive: true});
+
+    initGame();
+  </script>
+</body>
+</html>

@@ -1,0 +1,387 @@
+<!-- File: ko/severance.html -->
+<!-- Action: 라이트모드 원본 퇴직소득세 공제표, 실무 가이드, 연관 도구 100% 복원 -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>법정 퇴직금 계산기 | 2026년 근로기준법·퇴직소득세 반영 - 스타사인16</title>
+  <meta name="description" content="근로기준법 기준 1일 평균임금과 계속근로일수를 기반으로 정확한 법정 퇴직금을 산출합니다. 최근 3개월 급여, 상여금, 미사용 연차수당 및 퇴직소득세 공제 안내.">
+  <link rel="canonical" href="https://starsign16.com/ko/severance">
+  <link rel="stylesheet" href="../assets/css/style.css">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "퇴직금 지급 요건은 어떻게 되나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "근로기준법상 계속근로기간이 1년 이상이고, 4주간을 평균하여 1주 소정근로시간이 15시간 이상인 근로자라면 정규직, 계약직, 아르바이트 구분 없이 퇴직금 지급 대상이 됩니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "퇴직금 지급 기한과 지연이자는 어떻게 되나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "근로자퇴직급여 보장법 제9조에 따라 당사자 간 합의가 없는 한 퇴직일로부터 14일 이내에 지급해야 합니다. 특별한 합의 없이 기한을 넘길 경우 연 20%의 지연이자가 가산됩니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "퇴직소득세는 일반 근로소득세와 어떻게 다른가요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "퇴직금은 다른 종합소득과 합산하지 않고 분류과세됩니다. 또한 근속연수에 따른 대규모 소득공제와 환산급여 공제가 적용되어 통상 실효세율이 3~7% 수준으로 크게 낮습니다."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    .rate-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 14px;
+      font-size: 0.88rem;
+    }
+    .rate-table th, .rate-table td {
+      padding: 10px 8px;
+      text-align: center;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .rate-table th {
+      background-color: var(--bg-input);
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+    .rate-table td { color: var(--text-main); }
+    .rate-table td.highlight { color: var(--accent-blue); font-weight: 600; }
+
+    .guide-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 24px;
+      margin-top: 24px;
+    }
+    .guide-item { margin-bottom: 20px; }
+    .guide-item:last-child { margin-bottom: 0; }
+    .guide-item h3 {
+      font-size: 0.98rem;
+      color: var(--text-main);
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+    .guide-item p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .related-section {
+      margin-top: 40px;
+      padding-top: 28px;
+      border-top: 1px solid var(--border-color);
+    }
+    .related-title {
+      font-size: 1.1rem;
+      color: var(--text-main);
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .related-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+    @media (min-width: 640px) {
+      .related-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    .related-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 16px;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .related-card:hover {
+      border-color: var(--accent-blue);
+      transform: translateY(-2px);
+    }
+    .related-card-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 4px;
+    }
+    .related-card-desc {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container header-content">
+      <a href="/ko" class="logo"><span>★</span> Starsign16 <span>Financial</span></a>
+      <a href="/ko" class="lang-switch">← 한국어 허브</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+        <h1 style="font-size: 1.5rem; color: var(--text-main);">법정 퇴직금 계산기</h1>
+        <span style="font-size: 0.75rem; color: var(--accent-green); background: rgba(16, 185, 129, 0.15); padding: 4px 8px; border-radius: 6px; font-weight: 600;">[근로기준법 표준]</span>
+      </div>
+      <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 24px;">근로기준법 제34조 기준 1일 평균임금 및 계속근로일수 기반 실시간 연산</p>
+
+      <div class="grid-2">
+        <div class="form-group">
+          <label>입사일</label>
+          <input type="date" id="joinDate" onchange="calculateSeverance()">
+        </div>
+        <div class="form-group">
+          <label>퇴사일 (마지막 근무일 다음 날)</label>
+          <input type="date" id="leaveDate" onchange="calculateSeverance()">
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="form-group">
+          <label>최근 3개월 기본급 합계 (원)</label>
+          <input type="number" id="basePay3m" value="9000000" placeholder="예: 9000000 (월 300만 원씩 3개월)" oninput="calculateSeverance()">
+          <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">퇴직 전 3개월 동안 지급받은 기본급 총액</div>
+        </div>
+        <div class="form-group">
+          <label>최근 3개월 기타 수당 합계 (원)</label>
+          <input type="number" id="extraPay3m" value="600000" placeholder="예: 600000" oninput="calculateSeverance()">
+          <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">직책수당, 식대 등 정기 수당 총액</div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="form-group">
+          <label>연간 상여금 총액 (원)</label>
+          <input type="number" id="annualBonus" value="3000000" placeholder="예: 3000000" oninput="calculateSeverance()">
+          <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">최근 1년간 지급받은 상여금 총액의 3/12 반영</div>
+        </div>
+        <div class="form-group">
+          <label>연차유급휴가 미사용 수당 (원)</label>
+          <input type="number" id="annualLeave" value="500000" placeholder="예: 500000" oninput="calculateSeverance()">
+          <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">퇴직 전 발생한 미사용 연차수당의 3/12 반영</div>
+        </div>
+      </div>
+
+      <!-- 결과 카드 -->
+      <div class="result-card">
+        <div class="result-row total" style="margin-top: 0; padding-top: 0; border-top: none;">
+          <span style="font-size: 1.1rem; color: var(--text-main);">예상 법정 퇴직금 (세전)</span>
+          <span id="res-severance" class="result-value" style="font-size: 1.55rem; color: var(--accent-gold);">0 원</span>
+        </div>
+        <div class="result-row">
+          <span style="color: var(--text-muted);">총 재직 일수</span>
+          <span id="res-workdays" style="color: var(--text-main); font-weight: 600;">0 일</span>
+        </div>
+        <div class="result-row">
+          <span style="color: var(--text-muted);">1일 평균임금</span>
+          <span id="res-daily-wage" style="color: var(--accent-green); font-weight: 700;">0 원</span>
+        </div>
+        <div class="result-row">
+          <span style="color: var(--text-muted);">퇴직소득세 추정액 (지방세 포함)</span>
+          <span id="res-tax" style="color: #EF4444; font-weight: 600;">약 0 원</span>
+        </div>
+        <div class="result-row">
+          <span style="color: var(--text-muted);">예상 실 수령액 (세후)</span>
+          <span id="res-net-payout" style="color: var(--accent-blue); font-weight: 700; font-size: 1.1rem;">0 원</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 1. 퇴직소득세 근속연수공제 요율표 -->
+    <div class="card" style="margin-top: 24px;">
+      <h2 style="font-size: 1.15rem; color: var(--text-main); margin-bottom: 6px;">● 개정 세법 기준 퇴직소득세 근속연수공제 기준표</h2>
+      <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 12px;">근속연수가 길수록 대폭 상향된 공제 혜택이 적용되어 실제 세부담이 낮아집니다.</p>
+      
+      <table class="rate-table">
+        <thead>
+          <tr>
+            <th>근속연수 구간</th>
+            <th>기본 공제액</th>
+            <th>구간별 초과 1년당 추가 공제</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>5년 이하</td>
+            <td class="highlight">100만 원 × 근속연수</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>5년 초과 ~ 10년 이하</td>
+            <td class="highlight">500만 원</td>
+            <td>200만 원 × (근속연수 - 5년)</td>
+          </tr>
+          <tr>
+            <td>10년 초과 ~ 20년 이하</td>
+            <td class="highlight">1,500만 원</td>
+            <td>250만 원 × (근속연수 - 10년)</td>
+          </tr>
+          <tr>
+            <td>20년 초과</td>
+            <td class="highlight">4,000만 원</td>
+            <td>300만 원 × (근속연수 - 20년)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 2. 퇴직금 분쟁 예방 실무 가이드 -->
+    <div class="guide-card">
+      <h2 style="font-size: 1.15rem; color: var(--text-main); margin-bottom: 18px;">● 퇴직금 산정 및 수령 실무 가이드</h2>
+      
+      <div class="guide-item">
+        <h3>1. 14일 이내 지급 의무 및 지연이자</h3>
+        <p>근로기준법 제36조에 따라 사용자는 근로자가 사망 또는 퇴직한 경우 지급 사유가 발생한 날부터 <strong>14일 이내</strong>에 퇴직금을 지급해야 합니다. 별도의 기일 연장 합의 없이 14일을 넘길 경우 연 20%의 지연이자가 발생하며 노동청 진정 대상이 됩니다.</p>
+      </div>
+
+      <div class="guide-item">
+        <h3>2. 개인형 퇴직연금(IRP) 계좌 의무 이전</h3>
+        <p>법정 퇴직금은 근로자의 일반 급여 통장으로 직접 입금할 수 없으며, 반드시 <strong>개인형 퇴직연금(IRP) 계좌</strong>로 이전하는 것이 법적 의무입니다(단, 만 55세 이후 퇴직하거나 퇴직금이 300만 원 이하인 경우는 일반 계좌 수령 가능). IRP로 수령하여 만기 연금으로 전환하면 퇴직소득세의 30~40%를 감면받을 수 있습니다.</p>
+      </div>
+
+      <div class="guide-item">
+        <h3>3. 평균임금 vs 통상임금 비교 원칙</h3>
+        <p>퇴직 전 3개월간 무급 휴직, 병가, 육아휴직 등으로 인해 산출된 평균임금이 현저히 낮아질 경우, 근로기준법 제19조 제2항에 따라 근로자의 <strong>통상임금을 평균임금으로 간주</strong>하여 퇴직금을 계산해야 합니다.</p>
+      </div>
+    </div>
+
+    <!-- 3. 자주 묻는 질문 (FAQ) -->
+    <section class="seo-section">
+      <h2 style="font-size: 1.15rem; color: var(--text-main); margin-bottom: 16px;">● 자주 묻는 질문 (FAQ)</h2>
+      <div class="faq-item">
+        <div class="faq-question">Q. 퇴직금 지급 요건은 어떻게 되나요?</div>
+        <div class="faq-answer">근로기준법상 계속근로기간이 1년 이상이고, 4주간을 평균하여 1주 소정근로시간이 15시간 이상인 근로자라면 정규직, 계약직, 아르바이트 구분 없이 퇴직금 지급 대상이 됩니다.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">Q. 퇴직금 지급 기한과 지연이자는 어떻게 되나요?</div>
+        <div class="faq-answer">근로자퇴직급여 보장법 제9조에 따라 당사자 간 합의가 없는 한 퇴직일로부터 14일 이내에 지급해야 합니다. 특별한 합의 없이 기한을 넘길 경우 연 20%의 지연이자가 가산됩니다.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">Q. 퇴직소득세는 일반 근로소득세와 어떻게 다른가요?</div>
+        <div class="faq-answer">퇴직금은 다른 종합소득과 합산하지 않고 분류과세됩니다. 또한 근속연수에 따른 대규모 소득공제와 환산급여 공제가 적용되어 통상 실효세율이 3~7% 수준으로 크게 낮습니다.</div>
+      </div>
+    </section>
+
+    <!-- 4. 함께 많이 활용하는 연산 도구 -->
+    <div class="related-section">
+      <div class="related-title">
+        <span>함께 많이 활용하는 연산 도구</span>
+        <a href="/ko/game-2048" style="font-size: 0.82rem; color: var(--accent-gold); text-decoration: none;">🎮 머리 식히기 (2048 게임)</a>
+      </div>
+      <div class="related-grid">
+        <a href="/ko/salary" class="related-card">
+          <div class="related-card-title">💰 연봉 실수령액</div>
+          <div class="related-card-desc">4대보험 최신 요율·근로소득 간이세액 공제</div>
+        </a>
+        <a href="/ko/real-estate" class="related-card">
+          <div class="related-card-title">🏠 부동산 중개보수</div>
+          <div class="related-card-desc">매매·전월세 중개수수료 요율표 및 부가세</div>
+        </a>
+        <a href="/ko/hourly" class="related-card">
+          <div class="related-card-title">⏱️ 시급·주휴수당</div>
+          <div class="related-card-desc">2026년 최저시급 10,030원·주휴시간 자동 산출</div>
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>© 2026 Starsign16. All rights reserved.</p>
+      <p style="margin-top: 8px;">
+        <a href="/legal/ko/about" style="color: var(--text-muted); text-decoration: none; margin: 0 8px;">소개</a> | 
+        <a href="/legal/ko/privacy" style="color: var(--text-muted); text-decoration: none; margin: 0 8px;">개인정보처리방침</a> | 
+        <a href="/legal/ko/terms" style="color: var(--text-muted); text-decoration: none; margin: 0 8px;">이용약관</a> | 
+        <a href="/legal/ko/contact" style="color: var(--text-muted); text-decoration: none; margin: 0 8px;">문의</a>
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    function calculateSeverance() {
+      const joinVal = document.getElementById('joinDate').value;
+      const leaveVal = document.getElementById('leaveDate').value;
+
+      const basePay = parseFloat(document.getElementById('basePay3m').value) || 0;
+      const extraPay = parseFloat(document.getElementById('extraPay3m').value) || 0;
+      const bonus = parseFloat(document.getElementById('annualBonus').value) || 0;
+      const leavePay = parseFloat(document.getElementById('annualLeave').value) || 0;
+
+      let totalDays = 0;
+      if (joinVal && leaveVal) {
+        const d1 = new Date(joinVal);
+        const d2 = new Date(leaveVal);
+        const diffTime = d2.getTime() - d1.getTime();
+        totalDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+      }
+
+      if (totalDays <= 0) {
+        document.getElementById('res-workdays').innerText = "0 일";
+        document.getElementById('res-daily-wage').innerText = "0 원";
+        document.getElementById('res-severance').innerText = "0 원";
+        document.getElementById('res-tax').innerText = "0 원";
+        document.getElementById('res-net-payout').innerText = "0 원";
+        return;
+      }
+
+      const daysIn3m = 91;
+      const totalWage3m = basePay + extraPay + (bonus * 0.25) + (leavePay * 0.25);
+      const dailyWage = totalWage3m / daysIn3m;
+
+      let severance = 0;
+      if (totalDays >= 365 && dailyWage > 0) {
+        severance = Math.floor(dailyWage * 30 * (totalDays / 365));
+      }
+
+      // 퇴직소득세 약식 추정 (실효세율 3.5% 모델)
+      let tax = 0;
+      if (severance > 0) {
+        tax = Math.floor(severance * 0.035);
+      }
+      const netPayout = severance - tax;
+
+      document.getElementById('res-workdays').innerText = totalDays.toLocaleString() + " 일" + (totalDays < 365 ? " (1년 미만: 수급 제외)" : "");
+      document.getElementById('res-daily-wage').innerText = Math.floor(dailyWage).toLocaleString() + " 원";
+      document.getElementById('res-severance').innerText = severance.toLocaleString() + " 원";
+      document.getElementById('res-tax').innerText = "약 " + tax.toLocaleString() + " 원 (지방소득세 포함)";
+      document.getElementById('res-net-payout').innerText = netPayout.toLocaleString() + " 원";
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const today = new Date();
+      const threeYearsAgo = new Date();
+      threeYearsAgo.setFullYear(today.getFullYear() - 3);
+
+      const formatDate = (d) => d.toISOString().split('T')[0];
+      const joinInput = document.getElementById('joinDate');
+      const leaveInput = document.getElementById('leaveDate');
+
+      if (!joinInput.value) joinInput.value = formatDate(threeYearsAgo);
+      if (!leaveInput.value) leaveInput.value = formatDate(today);
+
+      calculateSeverance();
+    });
+  </script>
+</body>
+</html>

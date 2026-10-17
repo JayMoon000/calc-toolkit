@@ -1,0 +1,354 @@
+<!-- File: ko/hourly.html -->
+<!-- Action: 라이트모드 원본 주휴수당 요율표, 노무 실무 가이드, 연관 도구 100% 복원 -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>시급 & 주휴수당 계산기 | 2026년 최저시급 10,030원 반영 - 스타사인16</title>
+  <meta name="description" content="2026년 최저시급 10,030원 기준 주휴수당, 주급, 월급 실수령 환산 계산기. 주 15시간 이상 근무 시 발생하는 법정 주휴시간 및 알바 4대보험/3.3% 공제 가이드.">
+  <link rel="canonical" href="https://starsign16.com/ko/hourly">
+  <link rel="stylesheet" href="../assets/css/style.css">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "주휴수당 지급 조건은 무엇인가요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "근로기준법 제55조에 따라 4주간을 평균하여 1주 소정근로시간이 15시간 이상이고, 약정한 근무일에 결근 없이 개근한 근로자에게 주 1회 이상의 유급휴일(주휴수당)을 부여해야 합니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "지각이나 조퇴가 있어도 주휴수당을 받을 수 있나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "네, 지각이나 조퇴가 발생하더라도 결근하지 않고 출근하여 근로를 제공했다면 법적으로 '개근'으로 인정되어 주휴수당 전액이 정상 지급됩니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "5인 미만 소규모 사업장에서도 주휴수당을 지급해야 하나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "네, 주휴수당 규정(근로기준법 제55조)은 상시 근로자 수와 무관하게 1인 이상 모든 사업장에 예외 없이 강제 적용됩니다."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    .rate-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 14px;
+      font-size: 0.88rem;
+    }
+    .rate-table th, .rate-table td {
+      padding: 10px 8px;
+      text-align: center;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .rate-table th {
+      background-color: var(--bg-input);
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+    .rate-table td { color: var(--text-main); }
+    .rate-table td.highlight { color: var(--accent-blue); font-weight: 600; }
+
+    .guide-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 24px;
+      margin-top: 24px;
+    }
+    .guide-item { margin-bottom: 20px; }
+    .guide-item:last-child { margin-bottom: 0; }
+    .guide-item h3 {
+      font-size: 0.98rem;
+      color: var(--text-main);
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+    .guide-item p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .related-section {
+      margin-top: 40px;
+      padding-top: 28px;
+      border-top: 1px solid var(--border-color);
+    }
+    .related-title {
+      font-size: 1.1rem;
+      color: var(--text-main);
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .related-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+    @media (min-width: 640px) {
+      .related-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    .related-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 16px;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .related-card:hover {
+      border-color: var(--accent-blue);
+      transform: translateY(-2px);
+    }
+    .related-card-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 4px;
+    }
+    .related-card-desc {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container header-content">
+      <a href="/ko" class="logo"><span>★</span> Starsign16 <span>Financial</span></a>
+      <a href="/ko" class="lang-switch">← 한국어 허브</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+        <h1 style="font-size: 1.5rem; color: var(--text-main);">시급 & 주휴수당 계산기</h1>
+        <span style="font-size: 0.75rem; color: var(--accent-green); background: rgba(16, 185, 129, 0.15); padding: 4px 8px; border-radius: 6px; font-weight: 600;">[2026 최저 10,030원]</span>
+      </div>
+      <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 24px;">근로기준법 제55조 기준 법정 주휴수당 및 주급/월급 실시간 환산</p>
+
+      <div class="grid-2">
+        <div class="form-group">
+          <label>시급 (원)</label>
+          <input type="number" id="hourlyWage" value="10030" placeholder="2026년 최저시급 10,030원" oninput="calculateHourly()">
+          <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">2026년 법정 최저시급 10,030원 기본 세팅</div>
+        </div>
+        <div class="form-group">
+          <label>1일 근무 시간 (시간)</label>
+          <input type="number" id="dailyHours" value="8" step="0.5" oninput="calculateHourly()">
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="form-group">
+          <label>1주 근무 일수 (일)</label>
+          <select id="weeklyDays" onchange="calculateHourly()">
+            <option value="1">주 1일</option>
+            <option value="2">주 2일</option>
+            <option value="3">주 3일</option>
+            <option value="4">주 4일</option>
+            <option value="5" selected>주 5일 (표준 풀타임)</option>
+            <option value="6">주 6일</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>월 환산 기준 (주휴시간 산정)</label>
+          <select id="monthWeeks" onchange="calculateHourly()">
+            <option value="4.345" selected>통상 평균 (월 4.345주 / 209시간 기준)</option>
+            <option value="4">단순 4주 기준</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- 결과 카드 -->
+      <div class="result-card">
+        <div class="result-row total" style="margin-top: 0; padding-top: 0; border-top: none;">
+          <span style="font-size: 1.1rem; color: var(--text-main);">예상 월 급여 (주휴수당 포함)</span>
+          <span id="res-monthly-total" class="result-value" style="font-size: 1.55rem; color: var(--accent-gold);">0 원</span>
+        </div>
+        <div class="result-row">
+          <span style="color: var(--text-muted);">1주 총 근로시간</span>
+          <span id="res-weekly-hours" style="color: var(--text-main); font-weight: 600;">0 시간</span>
+        </div>
+        <div class="result-row">
+          <span style="color: var(--text-muted);">1주 기본급 (순수 근무수당)</span>
+          <span id="res-weekly-base" style="color: var(--text-main); font-weight: 600;">0 원</span>
+        </div>
+        <div class="result-row">
+          <span style="color: var(--text-muted);">1주 법정 주휴수당</span>
+          <span id="res-weekly-holiday" style="color: var(--accent-green); font-weight: 700;">0 원</span>
+        </div>
+        <div class="result-row">
+          <span style="color: var(--text-muted);">1주 총 지급액 (주급)</span>
+          <span id="res-weekly-total" style="color: var(--accent-blue); font-weight: 700;">0 원</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 1. 2026년 근로 형태별 주휴수당 및 월 환산 기준표 -->
+    <div class="card" style="margin-top: 24px;">
+      <h2 style="font-size: 1.15rem; color: var(--text-main); margin-bottom: 6px;">● 2026년 근로시간별 주휴수당 및 표준 월급 기준표</h2>
+      <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 12px;">최저시급 10,030원 적용 시 주 소정근로시간별 법정 수당 내역입니다.</p>
+      
+      <table class="rate-table">
+        <thead>
+          <tr>
+            <th>주당 근로시간</th>
+            <th>주휴시간</th>
+            <th>주휴수당 (주 1회)</th>
+            <th>월 환산 총 급여 (세전)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>주 15시간 미만</td>
+            <td>0시간</td>
+            <td>지급 대상 아님</td>
+            <td>시급 × 실근무시간</td>
+          </tr>
+          <tr>
+            <td>주 20시간 (파트타임)</td>
+            <td class="highlight">4시간</td>
+            <td>40,120원</td>
+            <td>1,046,129원</td>
+          </tr>
+          <tr>
+            <td>주 30시간 (중시간)</td>
+            <td class="highlight">6시간</td>
+            <td>60,180원</td>
+            <td>1,569,193원</td>
+          </tr>
+          <tr>
+            <td>주 40시간 (표준 풀타임)</td>
+            <td class="highlight">8시간</td>
+            <td>80,240원</td>
+            <td>2,096,270원 (209시간)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 2. 주휴수당 실무 가이드 및 주의사항 -->
+    <div class="guide-card">
+      <h2 style="font-size: 1.15rem; color: var(--text-main); margin-bottom: 18px;">● 아르바이트 및 사업주 주휴수당 실무 가이드</h2>
+      
+      <div class="guide-item">
+        <h3>1. 주휴수당 계산 공식 (40시간 미만 단시간 근로자)</h3>
+        <p>주 40시간 미만 근무하는 파트타임의 경우 <strong>(1주 총 소정근로시간 ÷ 40시간) × 8시간 × 시급</strong>으로 주휴시간을 비례 산출합니다. 예를 들어 주 20시간 일하면 4시간 분의 시급이 주휴수당으로 지급됩니다.</p>
+      </div>
+
+      <div class="guide-item">
+        <h3>2. 결근 vs 지각·조퇴의 차이</h3>
+        <p>주휴수당은 '약정한 날에 결근 없이 개근'해야 발생합니다. 그러나 지각이나 조퇴는 출근을 한 것이므로 결근에 해당하지 않습니다. 따라서 지각을 했더라도 당일 근로시간에 대해서만 임금을 공제할 뿐 <strong>주휴수당은 전액 지급</strong>해야 합니다.</p>
+      </div>
+
+      <div class="guide-item">
+        <h3>3. 월 60시간 이상 시 4대 보험 의무 가입</h3>
+        <p>1개월간 소정근로시간이 60시간 이상(주 15시간 이상)인 근로자는 고용보험 및 국민연금, 건강보험 가입 대상이 됩니다. 프리랜서 3.3% 사업소득세로 원천징수하더라도 실제 근로자성이 인정되면 4대 보험 및 주휴수당 미지급에 따른 소급 청구가 가능합니다.</p>
+      </div>
+    </div>
+
+    <!-- 3. 자주 묻는 질문 (FAQ) -->
+    <section class="seo-section">
+      <h2 style="font-size: 1.15rem; color: var(--text-main); margin-bottom: 16px;">● 자주 묻는 질문 (FAQ)</h2>
+      <div class="faq-item">
+        <div class="faq-question">Q. 주휴수당 지급 조건은 무엇인가요?</div>
+        <div class="faq-answer">근로기준법 제55조에 따라 4주간을 평균하여 1주 소정근로시간이 15시간 이상이고, 약정한 근무일에 결근 없이 개근한 근로자에게 주 1회 이상의 유급휴일(주휴수당)을 부여해야 합니다.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">Q. 지각이나 조퇴가 있어도 주휴수당을 받을 수 있나요?</div>
+        <div class="faq-answer">네, 지각이나 조퇴가 발생하더라도 결근하지 않고 출근하여 근로를 제공했다면 법적으로 '개근'으로 인정되어 주휴수당 전액이 정상 지급됩니다.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">Q. 5인 미만 소규모 사업장에서도 주휴수당을 지급해야 하나요?</div>
+        <div class="faq-answer">네, 주휴수당 규정(근로기준법 제55조)은 상시 근로자 수와 무관하게 1인 이상 모든 사업장에 예외 없이 강제 적용됩니다.</div>
+      </div>
+    </section>
+
+    <!-- 4. 함께 많이 활용하는 연산 도구 -->
+    <div class="related-section">
+      <div class="related-title">
+        <span>함께 많이 활용하는 연산 도구</span>
+        <a href="/ko/game-2048" style="font-size: 0.82rem; color: var(--accent-gold); text-decoration: none;">🎮 머리 식히기 (2048 게임)</a>
+      </div>
+      <div class="related-grid">
+        <a href="/ko/salary" class="related-card">
+          <div class="related-card-title">💰 연봉 실수령액</div>
+          <div class="related-card-desc">4대보험 최신 요율·근로소득 간이세액 공제</div>
+        </a>
+        <a href="/ko/severance" class="related-card">
+          <div class="related-card-title">💼 퇴직금 계산기</div>
+          <div class="related-card-desc">근속연수공제·환산급여 개정세법 세후 수령액</div>
+        </a>
+        <a href="/ko/real-estate" class="related-card">
+          <div class="related-card-title">🏠 부동산 중개보수</div>
+          <div class="related-card-desc">매매·전월세 중개수수료 요율표 및 부가세</div>
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>© 2026 Starsign16. All rights reserved.</p>
+      <p style="margin-top: 8px;">
+        <a href="/legal/ko/about" style="color: var(--text-muted); text-decoration: none; margin: 0 8px;">소개</a> | 
+        <a href="/legal/ko/privacy" style="color: var(--text-muted); text-decoration: none; margin: 0 8px;">개인정보처리방침</a> | 
+        <a href="/legal/ko/terms" style="color: var(--text-muted); text-decoration: none; margin: 0 8px;">이용약관</a> | 
+        <a href="/legal/ko/contact" style="color: var(--text-muted); text-decoration: none; margin: 0 8px;">문의</a>
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    function calculateHourly() {
+      const wage = parseFloat(document.getElementById('hourlyWage').value) || 0;
+      const hours = parseFloat(document.getElementById('dailyHours').value) || 0;
+      const days = parseInt(document.getElementById('weeklyDays').value) || 0;
+      const weeksMultiplier = parseFloat(document.getElementById('monthWeeks').value) || 4.345;
+
+      const weeklyHours = hours * days;
+      const weeklyBasePay = weeklyHours * wage;
+
+      let weeklyHolidayPay = 0;
+      if (weeklyHours >= 15) {
+        if (weeklyHours >= 40) {
+          weeklyHolidayPay = 8 * wage;
+        } else {
+          weeklyHolidayPay = (weeklyHours / 40) * 8 * wage;
+        }
+      }
+
+      const weeklyTotal = weeklyBasePay + weeklyHolidayPay;
+      const monthlyTotal = Math.floor(weeklyTotal * weeksMultiplier);
+
+      document.getElementById('res-weekly-hours').innerText = weeklyHours.toFixed(1) + " 시간" + (weeklyHours < 15 ? " (주 15시간 미만: 주휴 제외)" : "");
+      document.getElementById('res-weekly-base').innerText = Math.floor(weeklyBasePay).toLocaleString() + " 원";
+      document.getElementById('res-weekly-holiday').innerText = Math.floor(weeklyHolidayPay).toLocaleString() + " 원";
+      document.getElementById('res-weekly-total').innerText = Math.floor(weeklyTotal).toLocaleString() + " 원";
+      document.getElementById('res-monthly-total').innerText = monthlyTotal.toLocaleString() + " 원";
+    }
+
+    document.addEventListener('DOMContentLoaded', calculateHourly);
+  </script>
+</body>
+</html>

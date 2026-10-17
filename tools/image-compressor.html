@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bulk Image Compressor & WebP Converter | 100% Client-Side - ToolLab</title>
+  <meta name="description" content="Free unlimited image compressor. Compress JPG, PNG, and WebP images directly in your browser with zero latency, zero server uploads, and complete data privacy." />
+  <meta name="keywords" content="image compressor, compress image online, webp converter, png compressor, bulk image optimizer, privacy image compress, ToolLab" />
+  
+      <!-- Tailwind CDN & Config -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class'
+    }
+  </script>
+
+  <!-- Open Graph & Rich Snippets -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="ToolLab" />
+  <meta property="og:title" content="Image Compressor & WebP | ToolLab" />
+  <meta property="og:description" content="Compress JPG, PNG, and WebP locally via HTML5 Canvas with 100% data privacy and zero server transfer." />
+  <meta property="og:url" content="https://Starsign16 Toolkit/tools/image-compressor.html" />
+  <meta property="og:image" content="https://Starsign16 Toolkit/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Image Compressor & WebP | ToolLab" />
+  <meta name="twitter:description" content="Compress JPG, PNG, and WebP locally via HTML5 Canvas with 100% data privacy and zero server transfer." />
+  <meta name="twitter:image" content="https://Starsign16 Toolkit/og-image.png" />
+  <link rel="canonical" href="https://starsign16.com/tools/image-compressor">
+
+  <!-- ToolLab Analytics Tracker -->
+  <script src="/js/analytics.js"></script>
+
+</head>
+<body class="bg-slate-950 text-slate-200 min-h-screen py-6 px-4 font-sans antialiased">
+  <div class="max-w-4xl mx-auto">
+    
+    <!-- Main Card -->
+    <div class="bg-slate-900 rounded-2xl shadow-xl border border-slate-800 p-5 md:p-7">
+      
+      <!-- Header Navigation -->
+      <div class="flex items-center justify-between pb-4 mb-5 border-b border-slate-800">
+        <div class="flex items-center gap-2.5">
+          <a href="../index.html" class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors" title="ToolLab Home">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+            </svg>
+          </a>
+          <div>
+            <span class="text-[10px] font-bold tracking-wider text-blue-400 uppercase block">Starsign16 Toolkit</span>
+            <h1 class="text-lg md:text-xl font-extrabold text-slate-100">Image Compressor & WebP Engine</h1>
+          </div>
+        </div>
+        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-950/80 text-emerald-400 border border-emerald-800">
+          Client-Side Zero-Upload
+        </span>
+      </div>
+
+      <!-- Compression Options Control Bar -->
+      <div class="p-4 bg-slate-950/70 border border-slate-800 rounded-xl space-y-4 mb-5">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          
+          <!-- Quality Slider -->
+          <div class="space-y-1">
+            <div class="flex justify-between text-xs font-semibold">
+              <span class="text-slate-400">Quality</span>
+              <span id="qualityVal" class="text-blue-400 font-mono">80%</span>
+            </div>
+            <input type="range" id="qualityRange" min="10" max="100" value="80" step="5"
+              class="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-blue-500" />
+          </div>
+
+          <!-- Output Format -->
+          <div class="space-y-1">
+            <label class="block text-xs font-semibold text-slate-400">Target Format</label>
+            <select id="formatSelect" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-1.5 text-xs font-bold text-slate-200 outline-none focus:border-blue-500">
+              <option value="image/webp">WebP (Recommended)</option>
+              <option value="image/jpeg">JPEG (.jpg)</option>
+              <option value="image/png">PNG (.png)</option>
+            </select>
+          </div>
+
+          <!-- Max Resolution -->
+          <div class="space-y-1">
+            <label class="block text-xs font-semibold text-slate-400">Max Dimension</label>
+            <select id="resSelect" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-1.5 text-xs font-bold text-slate-200 outline-none focus:border-blue-500">
+              <option value="original">Original Resolution</option>
+              <option value="1920">Full HD (Max 1920px)</option>
+              <option value="1280">HD (Max 1280px)</option>
+              <option value="800">Compact (Max 800px)</option>
+            </select>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Drag & Drop Upload Zone -->
+      <div id="dropZone" class="border-2 border-dashed border-slate-800 hover:border-blue-500/60 bg-slate-950/40 rounded-2xl p-8 text-center transition-all cursor-pointer mb-5">
+        <input type="file" id="fileInput" multiple accept="image/jpeg,image/png,image/webp" class="hidden" />
+        <div class="flex flex-col items-center justify-center gap-2 pointer-events-none">
+          <svg class="w-10 h-10 text-slate-600 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+          </svg>
+          <span class="text-sm font-bold text-slate-200">Drop your images here, or <span class="text-blue-400 underline">browse</span></span>
+          <span class="text-xs text-slate-500">Supports JPG, PNG, WebP · Fast batch in-browser compression</span>
+        </div>
+      </div>
+
+      <!-- Global Actions & Summary -->
+      <div id="batchSummary" class="flex items-center justify-between p-3 bg-slate-950/60 border border-slate-800 rounded-xl mb-4 hidden">
+        <div class="text-xs">
+          <span id="batchCount" class="font-bold text-slate-200">0 files processed</span>
+          <span id="batchSavings" class="text-emerald-400 font-mono ml-2">Total saved: 0 B (0%)</span>
+        </div>
+        <button id="downloadAllBtn" class="px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition-colors">
+          Download All
+        </button>
+      </div>
+
+      <!-- Processed Images List -->
+      <div id="resultsList" class="space-y-3">
+        <!-- Dynamically injected cards -->
+      </div>
+
+    </div>
+
+    <!-- SEO & Technical Documentation -->
+    <article class="mt-8 space-y-6 text-xs md:text-sm text-slate-400 leading-relaxed">
+      
+      <!-- Comparison Matrix Table -->
+      <section class="bg-slate-900 rounded-2xl border border-slate-800 p-5 md:p-6 shadow-md">
+        <h2 class="text-base font-extrabold text-slate-100 mb-3 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+          Web Image Format Compression Matrix
+        </h2>
+        <p class="text-xs text-slate-400 mb-4">Standard trade-offs between compression efficiency, transparency support, and web compatibility.</p>
+        
+        <div class="overflow-x-auto">
+          <table class="w-full text-xs text-left border-collapse">
+            <thead>
+              <tr class="bg-slate-950 border-b border-slate-800 text-slate-300 font-bold">
+                <th class="p-2.5">Format</th>
+                <th class="p-2.5">Compression Type</th>
+                <th class="p-2.5">Transparency (Alpha)</th>
+                <th class="p-2.5">Best Application</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-800/60 text-slate-300 font-mono">
+              <tr>
+                <td class="p-2.5 font-bold text-blue-400 font-sans">WebP</td>
+                <td class="p-2.5 text-slate-300">Lossy & Lossless</td>
+                <td class="p-2.5 text-emerald-400 font-sans">Supported</td>
+                <td class="p-2.5 text-slate-400 font-sans">Modern websites, Core Web Vitals boost</td>
+              </tr>
+              <tr>
+                <td class="p-2.5 font-bold text-slate-100 font-sans">JPEG / JPG</td>
+                <td class="p-2.5 text-slate-300">Lossy</td>
+                <td class="p-2.5 text-rose-400 font-sans">No</td>
+                <td class="p-2.5 text-slate-400 font-sans">Photographs, legacy browser fallbacks</td>
+              </tr>
+              <tr>
+                <td class="p-2.5 font-bold text-slate-100 font-sans">PNG</td>
+                <td class="p-2.5 text-slate-300">Lossless</td>
+                <td class="p-2.5 text-emerald-400 font-sans">Supported</td>
+                <td class="p-2.5 text-slate-400 font-sans">Logos, sharp line art, screenshots</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Practical Strategy Guides -->
+      <section class="bg-slate-900 rounded-2xl border border-slate-800 p-5 md:p-6 shadow-md space-y-3">
+        <h2 class="text-base font-extrabold text-slate-100 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+          Web Performance Optimization Guidelines
+        </h2>
+        
+        <div class="space-y-2.5 text-xs leading-relaxed">
+          <div class="p-3 bg-slate-950/60 rounded-xl border border-slate-800/80">
+            <h3 class="font-bold text-slate-200 mb-1">1. The 80% Quality Sweet Spot</h3>
+            <p>Reducing image quality from 100% to 80% typically strips 50% to 70% of the byte weight while retaining structural sharpness that is imperceptible to the human eye.</p>
+          </div>
+
+          <div class="p-3 bg-slate-950/60 rounded-xl border border-slate-800/80">
+            <h3 class="font-bold text-slate-200 mb-1">2. Local Browser Compute Architecture</h3>
+            <p>By executing compression via browser-native Canvas APIs, high-volume image batches are processed without waiting in cloud queues or uploading sensitive internal screenshots to third-party servers.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ToolLab Clean Ad Unit -->
+
+      <!-- FAQ -->
+      <section class="bg-slate-900 rounded-2xl border border-slate-800 p-5 md:p-6 shadow-md">
+        <h2 class="text-base font-extrabold text-slate-100 mb-4 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-indigo-400"></span>
+          Frequently Asked Questions
+        </h2>
+
+        <div class="space-y-3.5 text-xs">
+          <div>
+            <h3 class="font-bold text-slate-200 mb-1">Q. Does this tool store or log image metadata (EXIF)?</h3>
+            <p class="text-slate-400">No. During canvas drawing, EXIF metadata (GPS coordinates, camera serial numbers) is automatically stripped, protecting your privacy before web publishing.</p>
+          </div>
+          <div class="border-t border-slate-800 pt-3">
+            <h3 class="font-bold text-slate-200 mb-1">Q. Are there limits on the number of photos I can compress?</h3>
+            <p class="text-slate-400">Zero limits. The tool executes directly on your hardware's CPU and memory, entirely free of external API quotas.</p>
+          </div>
+        </div>
+      </section>
+
+    </article>
+
+    <!-- Standard Minimal Footer -->
+    <footer class="mt-12 pt-6 pb-8 border-t border-slate-800 text-xs text-slate-500">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-3 text-center md:text-left">
+        <div class="space-y-0.5">
+          <p class="font-bold text-slate-400">Starsign16 Toolkit · Smart Web Utilities</p>
+          <p class="text-[11px]">Zero server latency · Client-side computational execution</p>
+        </div>
+        <div class="flex items-center gap-3 font-semibold text-slate-400">
+          <a href="../about.html" class="hover:text-emerald-400 transition-colors">About</a>
+        <span>·</span>
+        <a href="../contact.html" class="hover:text-emerald-400 transition-colors">Contact</a>
+        <span>·</span>
+        <a href="../privacy.html" class="hover:text-emerald-400 transition-colors">Privacy</a>
+        <span>·</span>
+        <a href="../terms.html" class="hover:text-emerald-400 transition-colors">Terms</a>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="../js/utils/imageCompressor.js"></script>
+  <script>
+    const dropZone = document.getElementById("dropZone");
+    const fileInput = document.getElementById("fileInput");
+    const qualityRange = document.getElementById("qualityRange");
+    const qualityVal = document.getElementById("qualityVal");
+    const formatSelect = document.getElementById("formatSelect");
+    const resSelect = document.getElementById("resSelect");
+
+    const batchSummary = document.getElementById("batchSummary");
+    const batchCount = document.getElementById("batchCount");
+    const batchSavings = document.getElementById("batchSavings");
+    const downloadAllBtn = document.getElementById("downloadAllBtn");
+    const resultsList = document.getElementById("resultsList");
+
+    let processedItems = [];
+
+    qualityRange.addEventListener("input", (e) => {
+      qualityVal.textContent = `${e.target.value}%`;
+    });
+
+    dropZone.addEventListener("click", () => fileInput.click());
+    dropZone.addEventListener("dragover", (e) => {
+      e.preventDefault();
+      dropZone.classList.add("border-blue-500");
+    });
+    dropZone.addEventListener("dragleave", () => {
+      dropZone.classList.remove("border-blue-500");
+    });
+    dropZone.addEventListener("drop", (e) => {
+      e.preventDefault();
+      dropZone.classList.remove("border-blue-500");
+      if (e.dataTransfer.files.length) {
+        handleFiles(e.dataTransfer.files);
+      }
+    });
+
+    fileInput.addEventListener("change", (e) => {
+      if (e.target.files.length) {
+        handleFiles(e.target.files);
+      }
+    });
+
+    async function handleFiles(files) {
+      const quality = parseFloat(qualityRange.value) / 100;
+      const format = formatSelect.value;
+      const resVal = resSelect.value;
+      const maxDim = resVal === "original" ? 10000 : parseInt(resVal, 10);
+
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        if (!file.type.startsWith("image/")) continue;
+
+        try {
+          const result = await ImageCompressor.compressFile(file, {
+            quality,
+            outputFormat: format,
+            maxWidth: maxDim,
+            maxHeight: maxDim
+          });
+
+          const itemData = {
+            id: "img_" + Date.now() + "_" + i,
+            name: file.name,
+            originalSize: result.originalSize,
+            compressedSize: result.compressedSize,
+            savedRatio: result.savedRatio,
+            blob: result.blob,
+            format: result.outputFormat
+          };
+
+          processedItems.push(itemData);
+          renderItemCard(itemData);
+        } catch (err) {
+          console.error("Compression error:", err);
+        }
+      }
+
+      updateBatchSummary();
+    }
+
+    function renderItemCard(item) {
+      const extension = item.format === "image/webp" ? ".webp" : item.format === "image/png" ? ".png" : ".jpg";
+      const downloadName = item.name.substring(0, item.name.lastIndexOf(".")) + "_compressed" + extension;
+      const downloadUrl = URL.createObjectURL(item.blob);
+
+      const card = document.createElement("div");
+      card.className = "p-3.5 bg-slate-950/80 border border-slate-800 rounded-xl flex items-center justify-between gap-3 text-xs";
+      card.innerHTML = `
+        <div class="flex items-center gap-3 overflow-hidden">
+          <img src="${downloadUrl}" class="w-12 h-12 object-cover rounded-lg border border-slate-800 flex-shrink-0" />
+          <div class="overflow-hidden">
+            <span class="font-bold text-slate-200 block truncate">${item.name}</span>
+            <div class="flex items-center gap-2 mt-0.5 text-[11px] font-mono">
+              <span class="text-slate-500 line-through">${ImageCompressor.formatBytes(item.originalSize)}</span>
+              <span class="text-blue-400 font-bold">${ImageCompressor.formatBytes(item.compressedSize)}</span>
+              <span class="text-emerald-400 font-bold">(-${item.savedRatio}%)</span>
+            </div>
+          </div>
+        </div>
+        <a href="${downloadUrl}" download="${downloadName}" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold flex-shrink-0 transition-colors">
+          Download
+        </a>
+      `;
+      resultsList.prepend(card);
+    }
+
+    function updateBatchSummary() {
+      if (!processedItems.length) return;
+      batchSummary.classList.remove("hidden");
+
+      const totalOrig = processedItems.reduce((acc, cur) => acc + cur.originalSize, 0);
+      const totalComp = processedItems.reduce((acc, cur) => acc + cur.compressedSize, 0);
+      const totalSaved = Math.max(0, totalOrig - totalComp);
+      const ratio = totalOrig > 0 ? ((totalSaved / totalOrig) * 100).toFixed(1) : 0;
+
+      batchCount.textContent = `${processedItems.length} file${processedItems.length > 1 ? "s" : ""} processed`;
+      batchSavings.textContent = `Total saved: ${ImageCompressor.formatBytes(totalSaved)} (-${ratio}%)`;
+    }
+
+    downloadAllBtn.addEventListener("click", () => {
+      processedItems.forEach((item, index) => {
+        setTimeout(() => {
+          const extension = item.format === "image/webp" ? ".webp" : item.format === "image/png" ? ".png" : ".jpg";
+          const downloadName = item.name.substring(0, item.name.lastIndexOf(".")) + "_compressed" + extension;
+          const a = document.createElement("a");
+          a.href = URL.createObjectURL(item.blob);
+          a.download = downloadName;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+        }, index * 200);
+      });
+    });
+  </script>
+  <script src="../js/related-tools.js"></script>
+</body>
+</html>

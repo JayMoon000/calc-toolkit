@@ -1,0 +1,484 @@
+<!-- File: ko/discount-calc.html -->
+<!-- Action: 4대 실무 탭(기본할인, 복합할인, 부가세, 마진/마크업) 완전 탑재 -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>할인율 & 부가세 & 마진율 계산기 | 소상공인 실무 툴킷 - 스타사인16</title>
+  <meta name="description" content="쇼핑 세일 할인율, 1차+2차 복합할인, 부가가치세 10% 공급가액 분리, 원가 기준 판매 마진율 및 마크업을 실시간으로 계산합니다. 소상공인 및 스마트스토어 판매자 필수 도구.">
+  <link rel="canonical" href="https://starsign16.com/ko/discount-calc">
+  <link rel="stylesheet" href="../assets/css/style.css">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "마진율(Margin)과 마크업(Markup)의 차이는 무엇인가요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "마진율은 판매가 대비 이익의 비율((판매가 - 원가) ÷ 판매가 × 100)을 의미하며 최대 100%를 넘을 수 없습니다. 반면 마크업은 원가 대비 이익의 비율((판매가 - 원가) ÷ 원가 × 100)로, 원가의 몇 배로 가격을 책정했는지를 나타내며 100% 이상도 가능합니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "결제 금액에서 부가세(VAT) 10%를 역산하는 공식은 무엇인가요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "공급대가(합계금액)를 1.1로 나누면 순수 공급가액이 산출되며, 합계금액에서 공급가액을 뺀 금액이 부가가치세(10%)가 됩니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "추가 할인이 적용될 때 최종 할인율은 어떻게 되나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "1차 할인된 금액을 기준으로 2차 할인이 적용되는 중복 할인(복합 할인)의 경우, 단순 퍼센트 합산보다 실제 할인 폭이 적습니다. 예를 들어 20% 할인 후 추가 10% 할인은 합산 30%가 아니라 실질 28% 할인율이 적용됩니다."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    .calc-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+    .tab-btn {
+      flex: 1;
+      min-width: 90px;
+      padding: 10px 10px;
+      background-color: var(--bg-input);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 0.88rem;
+      font-weight: 500;
+      text-align: center;
+      transition: all 0.2s;
+    }
+    .tab-btn.active {
+      background-color: rgba(59, 130, 246, 0.2);
+      border-color: var(--accent-blue);
+      color: var(--text-main);
+      font-weight: 600;
+    }
+    .calc-panel { display: none; }
+    .calc-panel.active { display: block; }
+
+    .rate-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 14px;
+      font-size: 0.88rem;
+    }
+    .rate-table th, .rate-table td {
+      padding: 10px 8px;
+      text-align: center;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .rate-table th {
+      background-color: var(--bg-input);
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+    .rate-table td { color: var(--text-main); }
+    .rate-table td.highlight { color: var(--accent-blue); font-weight: 600; }
+
+    .guide-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 24px;
+      margin-top: 24px;
+    }
+    .guide-item { margin-bottom: 20px; }
+    .guide-item:last-child { margin-bottom: 0; }
+    .guide-item h3 {
+      font-size: 0.98rem;
+      color: var(--text-main);
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+    .guide-item p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .related-section {
+      margin-top: 40px;
+      padding-top: 28px;
+      border-top: 1px solid var(--border-color);
+    }
+    .related-title {
+      font-size: 1.1rem;
+      color: var(--text-main);
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .related-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+    @media (min-width: 640px) {
+      .related-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    .related-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 16px;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .related-card:hover {
+      border-color: var(--accent-blue);
+      transform: translateY(-2px);
+    }
+    .related-card-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 4px;
+    }
+    .related-card-desc {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container header-content">
+      <a href="/ko" class="logo"><span>★</span> Starsign16 <span>Financial</span></a>
+      <a href="/ko" class="lang-switch">← 한국어 허브</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+        <h1 style="font-size: 1.5rem; color: var(--text-main);">할인율 & 부가세 & 마진율 계산기</h1>
+        <span style="font-size: 0.75rem; color: var(--accent-green); background: rgba(16, 185, 129, 0.15); padding: 4px 8px; border-radius: 6px; font-weight: 600;">[4대 실무 모드]</span>
+      </div>
+      <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 24px;">기본 세일, 중복 복합 할인, 세금계산서 부가세 분리, 유통 마진율을 즉시 산출합니다.</p>
+
+      <!-- 상단 4개 탭 네비게이션 -->
+      <div class="calc-tabs">
+        <button class="tab-btn active" onclick="switchTab('discount')">1. 기본 할인율</button>
+        <button class="tab-btn" onclick="switchTab('double')">2. 복합(추가) 할인</button>
+        <button class="tab-btn" onclick="switchTab('vat')">3. 부가세(VAT) 분리</button>
+        <button class="tab-btn" onclick="switchTab('margin')">4. 마진율 & 원가</button>
+      </div>
+
+      <!-- 패널 1: 기본 할인율 -->
+      <div id="panel-discount" class="calc-panel active">
+        <div class="grid-2">
+          <div class="form-group">
+            <label>기존 정가 (원)</label>
+            <input type="number" id="disc-orig" value="100000" oninput="calcDiscount()">
+          </div>
+          <div class="form-group">
+            <label>할인율 (%)</label>
+            <input type="number" id="disc-rate" value="25" step="0.5" oninput="calcDiscount()">
+          </div>
+        </div>
+        <div class="result-card">
+          <div class="result-row total" style="margin-top: 0; padding-top: 0; border-top: none;">
+            <span style="font-size: 1.1rem; color: var(--text-main);">최종 결제 금액</span>
+            <span id="disc-res-final" class="result-value" style="font-size: 1.55rem; color: var(--accent-gold);">75,000 원</span>
+          </div>
+          <div class="result-row">
+            <span style="color: var(--text-muted);">할인된 절약 금액</span>
+            <span id="disc-res-saved" style="color: var(--accent-green); font-weight: 700;">- 25,000 원</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 패널 2: 복합(중복) 할인 (신규 추가) -->
+      <div id="panel-double" class="calc-panel">
+        <div class="form-group">
+          <label>최초 정가 (원)</label>
+          <input type="number" id="dbl-orig" value="100000" oninput="calcDouble()">
+        </div>
+        <div class="grid-2">
+          <div class="form-group">
+            <label>1차 기본 할인율 (%)</label>
+            <input type="number" id="dbl-rate1" value="20" step="0.5" oninput="calcDouble()">
+          </div>
+          <div class="form-group">
+            <label>2차 추가 쿠폰 할인율 (%)</label>
+            <input type="number" id="dbl-rate2" value="10" step="0.5" oninput="calcDouble()">
+          </div>
+        </div>
+        <div class="result-card">
+          <div class="result-row total" style="margin-top: 0; padding-top: 0; border-top: none;">
+            <span style="font-size: 1.1rem; color: var(--text-main);">최종 실질 결제액</span>
+            <span id="dbl-res-final" class="result-value" style="font-size: 1.55rem; color: var(--accent-gold);">72,000 원</span>
+          </div>
+          <div class="result-row">
+            <span style="color: var(--text-muted);">실질 체감 할인율 (단순합산 30% 아님)</span>
+            <span id="dbl-res-realrate" style="color: var(--accent-blue); font-weight: 700;">28.0 %</span>
+          </div>
+          <div class="result-row">
+            <span style="color: var(--text-muted);">총 할인 절약액</span>
+            <span id="dbl-res-saved" style="color: var(--accent-green); font-weight: 700;">- 28,000 원</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 패널 3: 부가세 분리 -->
+      <div id="panel-vat" class="calc-panel">
+        <div class="form-group">
+          <label>합계 금액 (공급대가, 원)</label>
+          <input type="number" id="vat-total" value="110000" oninput="calcVat()">
+        </div>
+        <div class="result-card">
+          <div class="result-row total" style="margin-top: 0; padding-top: 0; border-top: none;">
+            <span style="font-size: 1.1rem; color: var(--text-main);">순수 공급가액</span>
+            <span id="vat-res-supply" class="result-value" style="font-size: 1.55rem; color: var(--accent-blue);">100,000 원</span>
+          </div>
+          <div class="result-row">
+            <span style="color: var(--text-muted);">부가가치세 (10%)</span>
+            <span id="vat-res-tax" style="color: var(--accent-gold); font-weight: 700;">10,000 원</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 패널 4: 마진율 & 원가 -->
+      <div id="panel-margin" class="calc-panel">
+        <div class="grid-2">
+          <div class="form-group">
+            <label>상품 매입 원가 (원)</label>
+            <input type="number" id="margin-cost" value="20000" oninput="calcMargin()">
+          </div>
+          <div class="form-group">
+            <label>희망 판매가 (원)</label>
+            <input type="number" id="margin-price" value="30000" oninput="calcMargin()">
+          </div>
+        </div>
+        <div class="result-card">
+          <div class="result-row total" style="margin-top: 0; padding-top: 0; border-top: none;">
+            <span style="font-size: 1.1rem; color: var(--text-main);">매출 이익률 (Margin)</span>
+            <span id="margin-res-margin" class="result-value" style="font-size: 1.55rem; color: var(--accent-green);">33.33 %</span>
+          </div>
+          <div class="result-row">
+            <span style="color: var(--text-muted);">순 마진 이익금</span>
+            <span id="margin-res-profit" style="color: var(--text-main); font-weight: 700;">10,000 원</span>
+          </div>
+          <div class="result-row">
+            <span style="color: var(--text-muted);">원가 대비 마크업 (Markup)</span>
+            <span id="margin-res-markup" style="color: var(--accent-gold); font-weight: 700;">50.00 %</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 1. 마진율 vs 마크업 실무 환산 매트릭스 -->
+    <div class="card" style="margin-top: 24px;">
+      <h2 style="font-size: 1.15rem; color: var(--text-main); margin-bottom: 6px;">● 유통 판매자 마진율(Margin) vs 마크업(Markup) 환산표</h2>
+      <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 12px;">원가 100,000원 상품을 기준으로 산출한 목표 수익률 비교 매트릭스입니다.</p>
+      
+      <table class="rate-table">
+        <thead>
+          <tr>
+            <th>원가 대비 마크업</th>
+            <th>실질 매출 마진율</th>
+            <th>매입 원가</th>
+            <th>최종 권장 판매가</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>15.0%</td>
+            <td class="highlight">13.0%</td>
+            <td>100,000원</td>
+            <td>115,000원</td>
+          </tr>
+          <tr>
+            <td>25.0%</td>
+            <td class="highlight">20.0%</td>
+            <td>100,000원</td>
+            <td>125,000원</td>
+          </tr>
+          <tr>
+            <td>50.0%</td>
+            <td class="highlight">33.3%</td>
+            <td>100,000원</td>
+            <td>150,000원</td>
+          </tr>
+          <tr>
+            <td>100.0% (더블 배수)</td>
+            <td class="highlight">50.0%</td>
+            <td>100,000원</td>
+            <td>200,000원</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 2. 실무 가격 책정 및 세무 가이드 -->
+    <div class="guide-card">
+      <h2 style="font-size: 1.15rem; color: var(--text-main); margin-bottom: 18px;">● 온라인 셀러 및 소상공인 실무 가격 가이드</h2>
+      
+      <div class="guide-item">
+        <h3>1. 부가세 포함 판매가 설정 시 주의점</h3>
+        <p>스마트스토어나 오픈마켓에 상품을 등록할 때는 소비자가 최종 결제하는 금액에 <strong>부가가치세 10%가 이미 포함</strong>되어 있습니다. 정산받을 때 부가세가 차감되므로, 마진율을 계산할 때는 판매가를 1.1로 나눈 공급가액을 기준으로 순이익을 산정해야 역마진을 방지할 수 있습니다.</p>
+      </div>
+
+      <div class="guide-item">
+        <h3>2. 마진율 100%가 불가능한 이유</h3>
+        <p>마진율은 <strong>(판매가 - 원가) ÷ 판매가</strong>로 계산되므로 원가가 0원이 되더라도 최대치는 100%입니다. 원가의 2배로 판매할 때 마진율은 50%이며, 원가의 3배로 판매해야 마진율이 약 66.7%에 도달합니다. 흔히 말하는 '마진 100%'는 원가 기준 <strong>마크업 100%</strong>를 의미합니다.</p>
+      </div>
+
+      <div class="guide-item">
+        <h3>3. 중복 할인(복합 할인)의 실제 할인 폭</h3>
+        <p>기본 30% 세일에 '추가 10% 쿠폰'이 적용되는 경우, 단순 합산인 40%가 할인되는 것이 아닙니다. 100원짜리 상품이 70원이 된 후 70원의 10%(7원)가 추가 할인되므로 최종 결제액은 63원(실질 할인율 37%)이 됩니다.</p>
+      </div>
+    </div>
+
+    <!-- 3. 자주 묻는 질문 (FAQ) -->
+    <section class="seo-section">
+      <h2 style="font-size: 1.15rem; color: var(--text-main); margin-bottom: 16px;">● 자주 묻는 질문 (FAQ)</h2>
+      <div class="faq-item">
+        <div class="faq-question">Q. 마진율(Margin)과 마크업(Markup)의 차이는 무엇인가요?</div>
+        <div class="faq-answer">마진율은 판매가 대비 이익의 비율((판매가 - 원가) ÷ 판매가 × 100)을 의미하며 최대 100%를 넘을 수 없습니다. 반면 마크업은 원가 대비 이익의 비율((판매가 - 원가) ÷ 원가 × 100)로, 원가의 몇 배로 가격을 책정했는지를 나타내며 100% 이상도 가능합니다.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">Q. 결제 금액에서 부가세(VAT) 10%를 역산하는 공식은 무엇인가요?</div>
+        <div class="faq-answer">공급대가(합계금액)를 1.1로 나누면 순수 공급가액이 산출되며, 합계금액에서 공급가액을 뺀 금액이 부가가치세(10%)가 됩니다.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">Q. 추가 할인이 적용될 때 최종 할인율은 어떻게 되나요?</div>
+        <div class="faq-answer">1차 할인된 금액을 기준으로 2차 할인이 적용되는 중복 할인(복합 할인)의 경우, 단순 퍼센트 합산보다 실제 할인 폭이 적습니다. 예를 들어 20% 할인 후 추가 10% 할인은 합산 30%가 아니라 실질 28% 할인율이 적용됩니다.</div>
+      </div>
+    </section>
+
+    <!-- 4. 함께 많이 활용하는 연산 도구 -->
+    <div class="related-section">
+      <div class="related-title">
+        <span>함께 많이 활용하는 연산 도구</span>
+        <a href="/ko/game-2048" style="font-size: 0.82rem; color: var(--accent-gold); text-decoration: none;">🎮 머리 식히기 (2048 게임)</a>
+      </div>
+      <div class="related-grid">
+        <a href="/ko/salary" class="related-card">
+          <div class="related-card-title">💰 연봉 실수령액</div>
+          <div class="related-card-desc">4대보험 최신 요율·근로소득 간이세액 공제</div>
+        </a>
+        <a href="/ko/savings" class="related-card">
+          <div class="related-card-title">🏦 예·적금 이자</div>
+          <div class="related-card-desc">단리·복리 및 일반과세/비과세 수익 비교</div>
+        </a>
+        <a href="/ko/hourly" class="related-card">
+          <div class="related-card-title">⏱️ 시급·주휴수당</div>
+          <div class="related-card-desc">2026년 최저시급 10,030원·주휴시간 자동 산출</div>
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>© 2026 Starsign16. All rights reserved.</p>
+      <p style="margin-top: 8px;">
+        <a href="/legal/ko/about" style="color: var(--text-muted); text-decoration: none; margin: 0 8px;">소개</a> | 
+        <a href="/legal/ko/privacy" style="color: var(--text-muted); text-decoration: none; margin: 0 8px;">개인정보처리방침</a> | 
+        <a href="/legal/ko/terms" style="color: var(--text-muted); text-decoration: none; margin: 0 8px;">이용약관</a> | 
+        <a href="/legal/ko/contact" style="color: var(--text-muted); text-decoration: none; margin: 0 8px;">문의</a>
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    function switchTab(tab) {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.calc-panel').forEach(panel => panel.classList.remove('active'));
+
+      if (tab === 'discount') {
+        document.querySelectorAll('.tab-btn')[0].classList.add('active');
+        document.getElementById('panel-discount').classList.add('active');
+        calcDiscount();
+      } else if (tab === 'double') {
+        document.querySelectorAll('.tab-btn')[1].classList.add('active');
+        document.getElementById('panel-double').classList.add('active');
+        calcDouble();
+      } else if (tab === 'vat') {
+        document.querySelectorAll('.tab-btn')[2].classList.add('active');
+        document.getElementById('panel-vat').classList.add('active');
+        calcVat();
+      } else {
+        document.querySelectorAll('.tab-btn')[3].classList.add('active');
+        document.getElementById('panel-margin').classList.add('active');
+        calcMargin();
+      }
+    }
+
+    function calcDiscount() {
+      const orig = parseFloat(document.getElementById('disc-orig').value) || 0;
+      const rate = parseFloat(document.getElementById('disc-rate').value) || 0;
+      const saved = Math.floor(orig * (rate / 100));
+      const finalPrice = Math.max(0, orig - saved);
+
+      document.getElementById('disc-res-final').innerText = finalPrice.toLocaleString() + " 원";
+      document.getElementById('disc-res-saved').innerText = "- " + saved.toLocaleString() + " 원";
+    }
+
+    function calcDouble() {
+      const orig = parseFloat(document.getElementById('dbl-orig').value) || 0;
+      const r1 = (parseFloat(document.getElementById('dbl-rate1').value) || 0) / 100;
+      const r2 = (parseFloat(document.getElementById('dbl-rate2').value) || 0) / 100;
+
+      // 1차 할인 후 2차 할인
+      const priceAfter1 = orig * (1 - r1);
+      const finalPrice = Math.floor(priceAfter1 * (1 - r2));
+      const totalSaved = orig - finalPrice;
+      const realRate = orig > 0 ? (totalSaved / orig) * 100 : 0;
+
+      document.getElementById('dbl-res-final').innerText = finalPrice.toLocaleString() + " 원";
+      document.getElementById('dbl-res-realrate').innerText = realRate.toFixed(1) + " %";
+      document.getElementById('dbl-res-saved').innerText = "- " + totalSaved.toLocaleString() + " 원";
+    }
+
+    function calcVat() {
+      const total = parseFloat(document.getElementById('vat-total').value) || 0;
+      const supply = Math.round(total / 1.1);
+      const tax = total - supply;
+
+      document.getElementById('vat-res-supply').innerText = supply.toLocaleString() + " 원";
+      document.getElementById('vat-res-tax').innerText = tax.toLocaleString() + " 원";
+    }
+
+    function calcMargin() {
+      const cost = parseFloat(document.getElementById('margin-cost').value) || 0;
+      const price = parseFloat(document.getElementById('margin-price').value) || 0;
+
+      const profit = price - cost;
+      let marginPct = 0;
+      let markupPct = 0;
+
+      if (price > 0) marginPct = (profit / price) * 100;
+      if (cost > 0) markupPct = (profit / cost) * 100;
+
+      document.getElementById('margin-res-margin').innerText = marginPct.toFixed(2) + " %";
+      document.getElementById('margin-res-profit').innerText = profit.toLocaleString() + " 원";
+      document.getElementById('margin-res-markup').innerText = markupPct.toFixed(2) + " %";
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      calcDiscount();
+    });
+  </script>
+</body>
+</html>

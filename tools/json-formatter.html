@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JSON Formatter, Validator & Minifier | 100% Client-Side - ToolLab</title>
+  <meta name="description" content="Instant client-side JSON formatter, beautifier, validator, and minifier. Fix syntax errors, inspect nested keys, and compress payloads privately with zero server transfer." />
+  <meta name="keywords" content="json formatter, json beautifier, json validator, json minifier, format json online, json lint, ToolLab" />
+  
+      <!-- Tailwind CDN & Config -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class'
+    }
+  </script>
+
+  <!-- Open Graph & Rich Snippets -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="ToolLab" />
+  <meta property="og:title" content="JSON Formatter & Validator | ToolLab" />
+  <meta property="og:description" content="Validate, beautify, inspect keys, and minify JSON payloads with instant client-side syntax error detection." />
+  <meta property="og:url" content="https://Starsign16 Toolkit/tools/json-formatter.html" />
+  <meta property="og:image" content="https://Starsign16 Toolkit/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="JSON Formatter & Validator | ToolLab" />
+  <meta name="twitter:description" content="Validate, beautify, inspect keys, and minify JSON payloads with instant client-side syntax error detection." />
+  <meta name="twitter:image" content="https://Starsign16 Toolkit/og-image.png" />
+  <link rel="canonical" href="https://starsign16.com/tools/json-formatter">
+
+  <!-- ToolLab Analytics Tracker -->
+  <script src="/js/analytics.js"></script>
+
+</head>
+<body class="bg-slate-950 text-slate-200 min-h-screen py-6 px-4 font-sans antialiased">
+  <div class="max-w-4xl mx-auto">
+    
+    <!-- Main Card -->
+    <div class="bg-slate-900 rounded-2xl shadow-xl border border-slate-800 p-5 md:p-7">
+      
+      <!-- Top Bar -->
+      <div class="flex items-center justify-between pb-4 mb-5 border-b border-slate-800">
+        <div class="flex items-center gap-2.5">
+          <a href="../index.html" class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors" title="ToolLab Home">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+            </svg>
+          </a>
+          <div>
+            <span class="text-[10px] font-bold tracking-wider text-blue-400 uppercase block">Starsign16 Toolkit</span>
+            <h1 class="text-lg md:text-xl font-extrabold text-slate-100">JSON Formatter & Validator</h1>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <button id="loadSampleBtn" class="text-xs px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors">Sample</button>
+          <button id="clearBtn" class="text-xs px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-slate-200 transition-colors">Clear</button>
+        </div>
+      </div>
+
+      <!-- Action & Configuration Bar -->
+      <div class="flex flex-wrap items-center justify-between gap-3 mb-4 bg-slate-950/60 p-3 rounded-xl border border-slate-800">
+        <div class="flex flex-wrap items-center gap-2">
+          <button id="beautifyBtn" class="px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition-all shadow-sm">Beautify</button>
+          <button id="minifyBtn" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold transition-all border border-slate-700">Minify</button>
+          <select id="indentSelect" class="bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-200 font-bold outline-none">
+            <option value="2">2 Spaces</option>
+            <option value="4">4 Spaces</option>
+            <option value="tab">Tab</option>
+          </select>
+        </div>
+        <div class="flex items-center gap-2">
+          <button id="copyBtn" class="px-3 py-1.5 rounded-lg bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-400 border border-emerald-800/60 text-xs font-bold transition-all">Copy JSON</button>
+        </div>
+      </div>
+
+      <!-- Status & Error Alert -->
+      <div id="statusAlert" class="mb-4 p-3 rounded-xl text-xs font-mono flex items-center justify-between bg-slate-950 border border-slate-800 text-slate-400">
+        <span id="statusMessage">Ready for JSON input</span>
+        <span id="statusDetails" class="font-bold"></span>
+      </div>
+
+      <!-- Dual / Split Editor Layout -->
+      <div class="space-y-2">
+        <div class="relative">
+          <textarea id="jsonInput" rows="14" spellcheck="false"
+            placeholder="Paste your raw or minified JSON payload here..." 
+            class="w-full p-4 bg-slate-950 border border-slate-800 rounded-xl text-slate-100 placeholder-slate-600 focus:outline-none focus:border-blue-500 font-mono text-xs md:text-sm leading-relaxed resize-y"></textarea>
+        </div>
+      </div>
+
+      <!-- Structural Analytics Matrix -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mt-4 text-xs">
+        <div class="p-3 bg-slate-950/60 border border-slate-800 rounded-xl text-center">
+          <span class="text-slate-400 block mb-0.5 text-[11px] uppercase tracking-wider">Payload Size</span>
+          <span id="statSize" class="font-black text-slate-100 text-sm md:text-base">0 B</span>
+        </div>
+        <div class="p-3 bg-slate-950/60 border border-slate-800 rounded-xl text-center">
+          <span class="text-slate-400 block mb-0.5 text-[11px] uppercase tracking-wider">Total Keys</span>
+          <span id="statKeys" class="font-black text-blue-400 text-sm md:text-base">0</span>
+        </div>
+        <div class="p-3 bg-slate-950/60 border border-slate-800 rounded-xl text-center">
+          <span class="text-slate-400 block mb-0.5 text-[11px] uppercase tracking-wider">Max Depth</span>
+          <span id="statDepth" class="font-black text-indigo-400 text-sm md:text-base">0</span>
+        </div>
+        <div class="p-3 bg-slate-950/60 border border-slate-800 rounded-xl text-center">
+          <span class="text-slate-400 block mb-0.5 text-[11px] uppercase tracking-wider">Root Structure</span>
+          <span id="statType" class="font-black text-emerald-400 text-sm md:text-base">-</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- SEO & Technical Documentation -->
+    <article class="mt-8 space-y-6 text-xs md:text-sm text-slate-400 leading-relaxed">
+      
+      <!-- Comparison Reference Table -->
+      <section class="bg-slate-900 rounded-2xl border border-slate-800 p-5 md:p-6 shadow-md">
+        <h2 class="text-base font-extrabold text-slate-100 mb-3 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+          Data Interchange Format Comparison Matrix
+        </h2>
+        <p class="text-xs text-slate-400 mb-4">Structural attributes across standard API transmission formats.</p>
+        
+        <div class="overflow-x-auto">
+          <table class="w-full text-xs text-left border-collapse">
+            <thead>
+              <tr class="bg-slate-950 border-b border-slate-800 text-slate-300 font-bold">
+                <th class="p-2.5">Format</th>
+                <th class="p-2.5">Data Overhead</th>
+                <th class="p-2.5">Native Browser Support</th>
+                <th class="p-2.5">Primary Application</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-800/60 text-slate-300">
+              <tr>
+                <td class="p-2.5 font-bold text-slate-100">JSON</td>
+                <td class="p-2.5 text-blue-400 font-medium">Low to Moderate</td>
+                <td class="p-2.5 text-emerald-400 font-bold">Native (JSON.parse)</td>
+                <td class="p-2.5 text-slate-400">REST APIs, Web Services, Configs</td>
+              </tr>
+              <tr>
+                <td class="p-2.5 font-bold text-slate-100">XML</td>
+                <td class="p-2.5 text-rose-400 font-medium">High (Verbose tags)</td>
+                <td class="p-2.5 text-slate-300">DOMParser</td>
+                <td class="p-2.5 text-slate-400">Enterprise SOAP, Document Markup</td>
+              </tr>
+              <tr>
+                <td class="p-2.5 font-bold text-slate-100">YAML</td>
+                <td class="p-2.5 text-blue-400 font-medium">Low (Minimalist)</td>
+                <td class="p-2.5 text-slate-400">Requires Parser</td>
+                <td class="p-2.5 text-slate-400">CI/CD Pipelines, Kubernetes, Docker</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Practical Syntax Standards -->
+      <section class="bg-slate-900 rounded-2xl border border-slate-800 p-5 md:p-6 shadow-md space-y-3">
+        <h2 class="text-base font-extrabold text-slate-100 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+          Common JSON Formatting Violations
+        </h2>
+        
+        <div class="space-y-2.5 text-xs leading-relaxed">
+          <div class="p-3 bg-slate-950/60 rounded-xl border border-slate-800/80">
+            <h3 class="font-bold text-slate-200 mb-1">1. Single Quotes vs. Double Quotes</h3>
+            <p>JSON standard strictly requires double quotation marks (<code>"key": "value"</code>). Single quotes (<code>'key': 'value'</code>) produce immediate parse errors.</p>
+          </div>
+
+          <div class="p-3 bg-slate-950/60 rounded-xl border border-slate-800/80">
+            <h3 class="font-bold text-slate-200 mb-1">2. Unquoted Object Keys</h3>
+            <p>Unlike standard JavaScript object literals, every key in a JSON object must be enclosed within double quotes.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ToolLab Clean Ad Unit -->
+
+      <!-- FAQ -->
+      <section class="bg-slate-900 rounded-2xl border border-slate-800 p-5 md:p-6 shadow-md">
+        <h2 class="text-base font-extrabold text-slate-100 mb-4 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-indigo-400"></span>
+          Frequently Asked Questions
+        </h2>
+
+        <div class="space-y-3.5 text-xs">
+          <div>
+            <h3 class="font-bold text-slate-200 mb-1">Q. Does this tool support large JSON payloads?</h3>
+            <p class="text-slate-400">Yes. It operates with high memory performance up to several tens of megabytes directly in the browser runtime without encountering remote HTTP transfer limits.</p>
+          </div>
+          <div class="border-t border-slate-800 pt-3">
+            <h3 class="font-bold text-slate-200 mb-1">Q. Are API secrets or tokens safe when pasted here?</h3>
+            <p class="text-slate-400">Entirely safe. No telemetry or payload logging exists. All logic runs strictly in your local browser sandbox.</p>
+          </div>
+        </div>
+      </section>
+
+    </article>
+
+    <!-- Standard Minimal Footer -->
+    <footer class="mt-12 pt-6 pb-8 border-t border-slate-800 text-xs text-slate-500">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-3 text-center md:text-left">
+        <div class="space-y-0.5">
+          <p class="font-bold text-slate-400">Starsign16 Toolkit · Smart Web Utilities</p>
+          <p class="text-[11px]">Zero server latency · Client-side computational execution</p>
+        </div>
+        <div class="flex items-center gap-3 font-semibold text-slate-400">
+          <a href="../about.html" class="hover:text-emerald-400 transition-colors">About</a>
+        <span>·</span>
+        <a href="../contact.html" class="hover:text-emerald-400 transition-colors">Contact</a>
+        <span>·</span>
+        <a href="../privacy.html" class="hover:text-emerald-400 transition-colors">Privacy</a>
+        <span>·</span>
+        <a href="../terms.html" class="hover:text-emerald-400 transition-colors">Terms</a>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="../js/utils/jsonFormatter.js"></script>
+  <script>
+    const input = document.getElementById("jsonInput");
+    const statusAlert = document.getElementById("statusAlert");
+    const statusMessage = document.getElementById("statusMessage");
+    const statusDetails = document.getElementById("statusDetails");
+
+    const statSize = document.getElementById("statSize");
+    const statKeys = document.getElementById("statKeys");
+    const statDepth = document.getElementById("statDepth");
+    const statType = document.getElementById("statType");
+
+    const indentSelect = document.getElementById("indentSelect");
+    const beautifyBtn = document.getElementById("beautifyBtn");
+    const minifyBtn = document.getElementById("minifyBtn");
+    const copyBtn = document.getElementById("copyBtn");
+    const clearBtn = document.getElementById("clearBtn");
+    const loadSampleBtn = document.getElementById("loadSampleBtn");
+
+    function formatBytes(bytes) {
+      if (bytes < 1024) return bytes + " B";
+      else if (bytes < 1048576) return (bytes / 1024).toFixed(1) + " KB";
+      return (bytes / 1048576).toFixed(2) + " MB";
+    }
+
+    function checkAndAnalyze() {
+      const val = input.value.trim();
+      if (!val) {
+        statusAlert.className = "mb-4 p-3 rounded-xl text-xs font-mono flex items-center justify-between bg-slate-950 border border-slate-800 text-slate-400";
+        statusMessage.textContent = "Ready for JSON input";
+        statusDetails.textContent = "";
+        statSize.textContent = "0 B";
+        statKeys.textContent = "0";
+        statDepth.textContent = "0";
+        statType.textContent = "-";
+        return;
+      }
+
+      const stats = JsonFormatter.getStats(val);
+      statSize.textContent = formatBytes(stats.byteSize);
+
+      if (stats.isValid) {
+        statusAlert.className = "mb-4 p-3 rounded-xl text-xs font-mono flex items-center justify-between bg-emerald-950/40 border border-emerald-800 text-emerald-400";
+        statusMessage.textContent = "✔ Valid JSON Syntax";
+        statusDetails.textContent = `${stats.type} Payload`;
+        statKeys.textContent = stats.keyCount.toLocaleString();
+        statDepth.textContent = stats.depth;
+        statType.textContent = stats.type;
+      } else {
+        const valRes = JsonFormatter.validate(val);
+        statusAlert.className = "mb-4 p-3 rounded-xl text-xs font-mono flex items-center justify-between bg-rose-950/40 border border-rose-800 text-rose-400";
+        statusMessage.textContent = `✖ Syntax Error: ${valRes.error}`;
+        statusDetails.textContent = valRes.line ? `Line ${valRes.line}, Col ${valRes.column}` : "Parse Failed";
+        statKeys.textContent = "-";
+        statDepth.textContent = "-";
+        statType.textContent = "Invalid";
+      }
+    }
+
+    beautifyBtn.addEventListener("click", () => {
+      const val = input.value.trim();
+      if (!val) return;
+      const res = JsonFormatter.beautify(val, indentSelect.value);
+      if (res.success) {
+        input.value = res.result;
+      }
+      checkAndAnalyze();
+    });
+
+    minifyBtn.addEventListener("click", () => {
+      const val = input.value.trim();
+      if (!val) return;
+      const res = JsonFormatter.minify(val);
+      if (res.success) {
+        input.value = res.result;
+      }
+      checkAndAnalyze();
+    });
+
+    copyBtn.addEventListener("click", () => {
+      if (!input.value) return;
+      navigator.clipboard.writeText(input.value).then(() => {
+        const orig = copyBtn.textContent;
+        copyBtn.textContent = "Copied!";
+        setTimeout(() => (copyBtn.textContent = orig), 1500);
+      });
+    });
+
+    clearBtn.addEventListener("click", () => {
+      input.value = "";
+      checkAndAnalyze();
+      input.focus();
+    });
+
+    loadSampleBtn.addEventListener("click", () => {
+      const sample = {
+        name: "ToolLab Platform",
+        version: "1.0.0",
+        openSource: true,
+        features: ["zero-server-cost", "client-side", "ultra-fast"],
+        metrics: {
+          uptime: 100,
+          targetExitTraffic: 500000
+        }
+      };
+      input.value = JSON.stringify(sample, null, 2);
+      checkAndAnalyze();
+    });
+
+    input.addEventListener("input", checkAndAnalyze);
+  </script>
+  <script src="../js/related-tools.js"></script>
+</body>
+</html>

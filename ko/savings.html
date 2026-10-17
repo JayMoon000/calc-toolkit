@@ -1,0 +1,449 @@
+<!-- File: ko/savings.html -->
+<!-- Action: 라이트모드 원본 이자 과세표, 단리/복리 비교, 절세 가이드, 연관 도구 100% 복원 -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>예금 & 적금 이자 계산기 | 단리·복리·비과세 비교 - 스타사인16</title>
+  <meta name="description" content="정기예금 및 정기적금 만기 이자 실수령액 계산기. 단리, 월복리, 일반과세(15.4%), 세금우대(9.5%), 조합원 비과세를 실시간으로 비교 계산하세요.">
+  <link rel="canonical" href="https://starsign16.com/ko/savings">
+  <link rel="stylesheet" href="../assets/css/style.css">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "예금과 적금의 실질 이자 차이는 왜 발생하나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "정기예금은 목돈 전체를 예치하므로 원금 전액에 대해 12개월 치 이자가 붙습니다. 반면 정기적금은 매월 분할 납입하므로 첫 달 입금액은 12개월 치, 마지막 달 입금액은 1개월 치 이자만 붙어 동일 금리일 때 실질 이자는 예금의 약 절반 수준이 됩니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "이자소득세 15.4%는 어떻게 구성되나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "이자소득세는 국세인 소득세 14%와 지방세인 지방소득세 1.4%(소득세의 10%)가 합산되어 총 15.4%가 만기 해약 시 원천징수됩니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "새마을금고나 신협의 세금우대 혜택은 무엇인가요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "만 19세 이상 거주자라면 상호금융권(새마을금고, 신협, 수협, 농축협) 통합 1인당 3,000만 원 한도 내에서 이자소득세 14%가 면제되고 농어촌특별세 1.4%만 부과되어 이자 실수령액을 크게 늘릴 수 있습니다."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    .radio-pill-group {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .radio-pill-label {
+      flex: 1;
+      min-width: 100px;
+      text-align: center;
+      padding: 9px 12px;
+      background-color: var(--bg-input);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      transition: all 0.2s;
+    }
+    .radio-pill-group input[type="radio"] { display: none; }
+    .radio-pill-group input[type="radio"]:checked + .radio-pill-label {
+      background-color: rgba(59, 130, 246, 0.2);
+      border-color: var(--accent-blue);
+      color: var(--text-main);
+      font-weight: 600;
+    }
+
+    .rate-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 14px;
+      font-size: 0.88rem;
+    }
+    .rate-table th, .rate-table td {
+      padding: 10px 8px;
+      text-align: center;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .rate-table th {
+      background-color: var(--bg-input);
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+    .rate-table td { color: var(--text-main); }
+    .rate-table td.highlight { color: var(--accent-blue); font-weight: 600; }
+
+    .guide-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 24px;
+      margin-top: 24px;
+    }
+    .guide-item { margin-bottom: 20px; }
+    .guide-item:last-child { margin-bottom: 0; }
+    .guide-item h3 {
+      font-size: 0.98rem;
+      color: var(--text-main);
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+    .guide-item p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .related-section {
+      margin-top: 40px;
+      padding-top: 28px;
+      border-top: 1px solid var(--border-color);
+    }
+    .related-title {
+      font-size: 1.1rem;
+      color: var(--text-main);
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .related-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+    @media (min-width: 640px) {
+      .related-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    .related-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 16px;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .related-card:hover {
+      border-color: var(--accent-blue);
+      transform: translateY(-2px);
+    }
+    .related-card-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 4px;
+    }
+    .related-card-desc {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container header-content">
+      <a href="/ko" class="logo"><span>★</span> Starsign16 <span>Financial</span></a>
+      <a href="/ko" class="lang-switch">← 한국어 허브</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+        <h1 style="font-size: 1.5rem; color: var(--text-main);">예금 & 적금 이자 계산기</h1>
+        <span style="font-size: 0.75rem; color: var(--accent-green); background: rgba(16, 185, 129, 0.15); padding: 4px 8px; border-radius: 6px; font-weight: 600;">[최신 세법 반영]</span>
+      </div>
+      <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 24px;">정기예금·정기적금 만기 이자 실수령액 및 비과세·복리 실시간 비교</p>
+
+      <!-- 상품 유형 라디오 -->
+      <div class="form-group">
+        <label>상품 유형</label>
+        <div class="radio-pill-group">
+          <input type="radio" name="productType" id="type-deposit" value="deposit" checked onchange="updateFormLabels()">
+          <label for="type-deposit" class="radio-pill-label">정기예금 (목돈 굴리기)</label>
+
+          <input type="radio" name="productType" id="type-savings" value="savings" onchange="updateFormLabels()">
+          <label for="type-savings" class="radio-pill-label">정기적금 (목돈 모으기)</label>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="form-group">
+          <label id="label-amount">예치 금액 (원)</label>
+          <input type="number" id="principal" value="10000000" placeholder="예: 10000000" oninput="calculateSavings()">
+          <div id="amount-hangeul" style="font-size: 0.8rem; color: var(--accent-blue); margin-top: 4px;">1,000만 원</div>
+        </div>
+        <div class="form-group">
+          <label>연 이자율 (%)</label>
+          <input type="number" id="interestRate" value="3.5" step="0.1" placeholder="예: 3.5" oninput="calculateSavings()">
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="form-group">
+          <label>가입 기간 (개월)</label>
+          <input type="number" id="periodMonths" value="12" placeholder="예: 12" oninput="calculateSavings()">
+        </div>
+        <div class="form-group">
+          <label>이자 계산 방식 (예금 전용)</label>
+          <select id="calcMethod" onchange="calculateSavings()">
+            <option value="simple" selected>단리 (표준)</option>
+            <option value="compound">월복리</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>과세 구분</label>
+        <select id="taxType" onchange="calculateSavings()">
+          <option value="normal" selected>일반과세 (15.4% = 소득세 14% + 지방소득세 1.4%)</option>
+          <option value="preferential">세금우대 / 상호금융 조합원 (1.4% = 농특세만 부과)</option>
+          <option value="free">비과세 (0% = 청년도약계좌, ISA 등)</option>
+        </select>
+      </div>
+
+      <!-- 결과 카드 -->
+      <div class="result-card">
+        <div class="result-row total" style="margin-top: 0; padding-top: 0; border-top: none;">
+          <span style="font-size: 1.1rem; color: var(--text-main);">만기 실수령액 (원리금 합계)</span>
+          <span id="res-total-payout" class="result-value" style="font-size: 1.55rem; color: var(--accent-gold);">0 원</span>
+        </div>
+        <div class="result-row">
+          <span style="color: var(--text-muted);">총 납입 원금</span>
+          <span id="res-principal-sum" style="color: var(--text-main); font-weight: 600;">0 원</span>
+        </div>
+        <div class="result-row">
+          <span style="color: var(--text-muted);">세전 총 이자</span>
+          <span id="res-gross-interest" style="color: var(--text-main); font-weight: 600;">0 원</span>
+        </div>
+        <div class="result-row">
+          <span style="color: var(--text-muted);">이자과세금 (원천징수)</span>
+          <span id="res-tax-amount" style="color: #EF4444; font-weight: 700;">- 0 원</span>
+        </div>
+        <div class="result-row">
+          <span style="color: var(--text-muted);">세후 순 이자 수익</span>
+          <span id="res-net-interest" style="color: var(--accent-green); font-weight: 700;">0 원</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 1. 과세 형태별 실효 수익 비교 기준표 -->
+    <div class="card" style="margin-top: 24px;">
+      <h2 style="font-size: 1.15rem; color: var(--text-main); margin-bottom: 6px;">● 예·적금 과세 방식별 세율 및 실수령 비교표</h2>
+      <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 12px;">원천징수되는 세금에 따라 실제 손에 쥐는 만기 이자가 크게 달라집니다.</p>
+      
+      <table class="rate-table">
+        <thead>
+          <tr>
+            <th>과세 구분</th>
+            <th>적용 세율</th>
+            <th>세전 이자 100만 원 시 세금</th>
+            <th>실수령 이자</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>일반과세 (시중은행)</td>
+            <td class="highlight">15.4%</td>
+            <td>154,000원</td>
+            <td>846,000원</td>
+          </tr>
+          <tr>
+            <td>세금우대 (상호금융)</td>
+            <td class="highlight">1.4%</td>
+            <td>14,000원 (농특세)</td>
+            <td>986,000원 (+14만 원 이득)</td>
+          </tr>
+          <tr>
+            <td>완전 비과세 (ISA 등)</td>
+            <td class="highlight">0.0%</td>
+            <td>0원</td>
+            <td>1,000,000원 (전액 수령)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 2. 예적금 재테크 실무 가이드 -->
+    <div class="guide-card">
+      <h2 style="font-size: 1.15rem; color: var(--text-main); margin-bottom: 18px;">● 스마트 예·적금 재테크 실무 가이드</h2>
+      
+      <div class="guide-item">
+        <h3>1. 예금 풍차돌리기 vs 단일 예치</h3>
+        <p>목돈을 한 통장에 몰아서 넣기보다 100만 원~300만 원 단위로 쪼개어 정기예금에 분할 가입하면 급전이 필요할 때 일부 계좌만 중도 해지할 수 있어 약정 이자 손실을 최소화할 수 있습니다.</p>
+      </div>
+
+      <div class="guide-item">
+        <h3>2. 상호금융권 3천만 원 조합원 비과세 활용</h3>
+        <p>신협, 새마을금고, 수협, 단위 농협에서 1~2만 원의 소액 출자금을 내고 준조합원으로 가입하면 만 19세 이상 거주자 1인당 3,000만 원 한도로 이자소득세(14%)가 면제되고 농어촌특별세(1.4%)만 부과됩니다.</p>
+      </div>
+
+      <div class="guide-item">
+        <h3>3. 단리와 월복리의 실질 차이</h3>
+        <p>1년 만기 단기 상품에서는 단리와 월복리의 이자 차이가 몇천 원 수준에 불과하지만, 3년~5년 장기 적금이나 거치식 예금일수록 복리 효과가 누적되어 수익률 격차가 커집니다.</p>
+      </div>
+    </div>
+
+    <!-- 3. 자주 묻는 질문 (FAQ) -->
+    <section class="seo-section">
+      <h2 style="font-size: 1.15rem; color: var(--text-main); margin-bottom: 16px;">● 자주 묻는 질문 (FAQ)</h2>
+      <div class="faq-item">
+        <div class="faq-question">Q. 예금과 적금의 실질 이자 차이는 왜 발생하나요?</div>
+        <div class="faq-answer">정기예금은 목돈 전체를 예치하므로 원금 전액에 대해 12개월 치 이자가 붙습니다. 반면 정기적금은 매월 분할 납입하므로 첫 달 입금액은 12개월 치, 마지막 달 입금액은 1개월 치 이자만 붙어 동일 금리일 때 실질 이자는 예금의 약 절반 수준이 됩니다.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">Q. 이자소득세 15.4%는 어떻게 구성되나요?</div>
+        <div class="faq-answer">이자소득세는 국세인 소득세 14%와 지방세인 지방소득세 1.4%(소득세의 10%)가 합산되어 총 15.4%가 만기 해약 시 원천징수됩니다.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">Q. 새마을금고나 신협의 세금우대 혜택은 무엇인가요?</div>
+        <div class="faq-answer">만 19세 이상 거주자라면 상호금융권(새마을금고, 신협, 수협, 농축협) 통합 1인당 3,000만 원 한도 내에서 이자소득세 14%가 면제되고 농어촌특별세 1.4%만 부과되어 이자 실수령액을 크게 늘릴 수 있습니다.</div>
+      </div>
+    </section>
+
+    <!-- 4. 함께 많이 활용하는 연산 도구 -->
+    <div class="related-section">
+      <div class="related-title">
+        <span>함께 많이 활용하는 연산 도구</span>
+        <a href="/ko/game-2048" style="font-size: 0.82rem; color: var(--accent-gold); text-decoration: none;">🎮 머리 식히기 (2048 게임)</a>
+      </div>
+      <div class="related-grid">
+        <a href="/ko/salary" class="related-card">
+          <div class="related-card-title">💰 연봉 실수령액</div>
+          <div class="related-card-desc">4대보험 최신 요율·근로소득 간이세액 공제</div>
+        </a>
+        <a href="/ko/discount-calc" class="related-card">
+          <div class="related-card-title">🏷️ 할인율·부가세·마진</div>
+          <div class="related-card-desc">공급가액 분리 및 소상공인 마진율 계산</div>
+        </a>
+        <a href="/ko/real-estate" class="related-card">
+          <div class="related-card-title">🏠 부동산 중개보수</div>
+          <div class="related-card-desc">매매·전월세 중개수수료 요율표 및 부가세</div>
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>© 2026 Starsign16. All rights reserved.</p>
+      <p style="margin-top: 8px;">
+        <a href="/legal/ko/about" style="color: var(--text-muted); text-decoration: none; margin: 0 8px;">소개</a> | 
+        <a href="/legal/ko/privacy" style="color: var(--text-muted); text-decoration: none; margin: 0 8px;">개인정보처리방침</a> | 
+        <a href="/legal/ko/terms" style="color: var(--text-muted); text-decoration: none; margin: 0 8px;">이용약관</a> | 
+        <a href="/legal/ko/contact" style="color: var(--text-muted); text-decoration: none; margin: 0 8px;">문의</a>
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    function numberToHangeul(num) {
+      if (!num || num <= 0) return '';
+      const units = ['', '만', '억', '조'];
+      let result = [];
+      let unitIdx = 0;
+      while (num > 0) {
+        const mod = num % 10000;
+        if (mod > 0) {
+          result.unshift(mod.toLocaleString() + units[unitIdx]);
+        }
+        num = Math.floor(num / 10000);
+        unitIdx++;
+      }
+      return result.join(' ') + ' 원';
+    }
+
+    function updateFormLabels() {
+      const isDeposit = document.getElementById('type-deposit').checked;
+      const label = document.getElementById('label-amount');
+      const methodSelect = document.getElementById('calcMethod');
+
+      if (isDeposit) {
+        label.innerText = "예치 금액 (원)";
+        methodSelect.disabled = false;
+      } else {
+        label.innerText = "월 납입 금액 (원)";
+        methodSelect.disabled = true;
+        methodSelect.value = "simple";
+      }
+      calculateSavings();
+    }
+
+    function calculateSavings() {
+      const isDeposit = document.getElementById('type-deposit').checked;
+      const amount = parseFloat(document.getElementById('principal').value) || 0;
+      const rateAnnual = (parseFloat(document.getElementById('interestRate').value) || 0) / 100;
+      const months = parseInt(document.getElementById('periodMonths').value) || 0;
+      const method = document.getElementById('calcMethod').value;
+      const taxType = document.getElementById('taxType').value;
+
+      document.getElementById('amount-hangeul').innerText = numberToHangeul(amount);
+
+      if (amount <= 0 || months <= 0) {
+        document.getElementById('res-principal-sum').innerText = "0 원";
+        document.getElementById('res-gross-interest').innerText = "0 원";
+        document.getElementById('res-tax-amount').innerText = "- 0 원";
+        document.getElementById('res-net-interest').innerText = "0 원";
+        document.getElementById('res-total-payout').innerText = "0 원";
+        return;
+      }
+
+      let totalPrincipal = 0;
+      let grossInterest = 0;
+
+      if (isDeposit) {
+        totalPrincipal = amount;
+        if (method === 'simple') {
+          grossInterest = amount * rateAnnual * (months / 12);
+        } else {
+          const rMonthly = rateAnnual / 12;
+          grossInterest = amount * Math.pow(1 + rMonthly, months) - amount;
+        }
+      } else {
+        totalPrincipal = amount * months;
+        let sumInt = 0;
+        for (let i = 1; i <= months; i++) {
+          sumInt += amount * rateAnnual * (months - i + 1) / 12;
+        }
+        grossInterest = sumInt;
+      }
+
+      grossInterest = Math.floor(grossInterest);
+
+      let taxRate = 0.154;
+      if (taxType === 'preferential') taxRate = 0.014;
+      else if (taxType === 'free') taxRate = 0.0;
+
+      const taxAmount = Math.floor(grossInterest * taxRate);
+      const netInterest = grossInterest - taxAmount;
+      const totalPayout = totalPrincipal + netInterest;
+
+      document.getElementById('res-principal-sum').innerText = totalPrincipal.toLocaleString() + " 원";
+      document.getElementById('res-gross-interest').innerText = grossInterest.toLocaleString() + " 원";
+      document.getElementById('res-tax-amount').innerText = "- " + taxAmount.toLocaleString() + " 원 (" + (taxRate * 100).toFixed(1) + "%)";
+      document.getElementById('res-net-interest').innerText = netInterest.toLocaleString() + " 원";
+      document.getElementById('res-total-payout').innerText = totalPayout.toLocaleString() + " 원";
+    }
+
+    document.addEventListener('DOMContentLoaded', updateFormLabels);
+  </script>
+</body>
+</html>

@@ -1,0 +1,448 @@
+<!-- File: ko/qr-generator.html -->
+<!-- Action: 초고속 QR코드 생성기 다크모드 통합 및 규격/인쇄 가이드 탑재 -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>초고속 QR코드 생성기 | URL·텍스트·와이파이 무료 생성 - 스타사인16</title>
+  <meta name="description" content="설치 없이 브라우저에서 즉시 생성하는 고해상도 QR코드. 웹사이트 링크, 와이파이 자동 접속, 텍스트 변환 및 고화질 PNG 다운로드를 100% 무료로 지원합니다.">
+  <link rel="canonical" href="https://starsign16.com/ko/qr-generator">
+  <link rel="stylesheet" href="../assets/css/style.css">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "생성된 QR코드에 유효기간이나 스캔 횟수 제한이 있나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "전혀 없습니다. 본 도구는 중간 리다이렉트 서버를 거치지 않는 순수 '정적(Static) QR코드'를 생성하므로 영구적으로 무제한 스캔할 수 있습니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "인쇄물이나 현수막에 인쇄할 때 권장되는 최소 크기는 얼마인가요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "스마트폰 카메라의 초점 거리와 인식률을 고려할 때 명함이나 전단지는 가로세로 최소 2cm × 2cm 이상, 포스터나 테이블 배너는 3~5cm 이상, 원거리 현수막은 10cm 이상 크기로 출력하는 것이 안전합니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "입력한 와이파이 비밀번호나 텍스트가 외부로 유출되나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "아닙니다. QR코드 이미지는 외부 서버로 전송되지 않고 사용자의 웹 브라우저 로컬 환경(클라이언트 단)에서 즉각 생성되므로 정보가 안전하게 보호됩니다."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    .qr-layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+    @media (min-width: 768px) {
+      .qr-layout { grid-template-columns: 1.2fr 0.8fr; }
+    }
+    .qr-preview-box {
+      background-color: #0E1522;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 280px;
+    }
+    #qrcode {
+      padding: 12px;
+      background-color: #FFFFFF;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+    #qrcode img {
+      display: block;
+    }
+    .btn-download {
+      margin-top: 18px;
+      width: 100%;
+      max-width: 220px;
+      padding: 10px 16px;
+      background-color: var(--accent-blue);
+      color: #FFFFFF;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-download:hover {
+      background-color: #2563EB;
+    }
+
+    .rate-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 14px;
+      font-size: 0.88rem;
+    }
+    .rate-table th, .rate-table td {
+      padding: 10px 8px;
+      text-align: center;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .rate-table th {
+      background-color: var(--bg-input);
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+    .rate-table td { color: var(--text-main); }
+    .rate-table td.highlight { color: var(--accent-blue); font-weight: 600; }
+
+    .guide-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 24px;
+      margin-top: 24px;
+    }
+    .guide-item { margin-bottom: 20px; }
+    .guide-item:last-child { margin-bottom: 0; }
+    .guide-item h3 {
+      font-size: 0.98rem;
+      color: var(--text-main);
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+    .guide-item p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .related-section {
+      margin-top: 40px;
+      padding-top: 28px;
+      border-top: 1px solid var(--border-color);
+    }
+    .related-title {
+      font-size: 1.1rem;
+      color: var(--text-main);
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .related-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+    @media (min-width: 640px) {
+      .related-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    .related-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 16px;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .related-card:hover {
+      border-color: var(--accent-blue);
+      transform: translateY(-2px);
+    }
+    .related-card-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 4px;
+    }
+    .related-card-desc {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container header-content">
+      <a href="/ko" class="logo"><span>★</span> Starsign16 <span>Financial</span></a>
+      <a href="/ko" class="lang-switch">← 한국어 허브</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+        <h1 style="font-size: 1.5rem; color: var(--text-main);">초고속 QR코드 생성기</h1>
+        <span style="font-size: 0.75rem; color: var(--accent-green); background: rgba(16, 185, 129, 0.15); padding: 4px 8px; border-radius: 6px; font-weight: 600;">[영구 무료·무제한]</span>
+      </div>
+      <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 24px;">웹 링크, 일반 텍스트, 매장 Wi-Fi 접속 QR코드를 브라우저에서 즉시 생성합니다.</p>
+
+      <div class="qr-layout">
+        <!-- 설정 폼 -->
+        <div>
+          <div class="form-group">
+            <label>변환 데이터 유형</label>
+            <select id="qrType" onchange="toggleQrType()">
+              <option value="url" selected>웹사이트 URL 링크</option>
+              <option value="wifi">매장/카페 Wi-Fi 원터치 접속</option>
+              <option value="text">일반 텍스트 / 안내문구</option>
+            </select>
+          </div>
+
+          <!-- URL 모드 -->
+          <div id="group-url" class="form-group">
+            <label>웹사이트 링크 (URL)</label>
+            <input type="text" id="qrText" value="https://starsign16.com" placeholder="https://example.com" oninput="generateQR()">
+          </div>
+
+          <!-- 와이파이 모드 -->
+          <div id="group-wifi" style="display: none;">
+            <div class="form-group">
+              <label>와이파이 네트워크 이름 (SSID)</label>
+              <input type="text" id="wifiSsid" placeholder="예: Starsign_Cafe_5G" oninput="generateQR()">
+            </div>
+            <div class="form-group">
+              <label>비밀번호</label>
+              <input type="text" id="wifiPass" placeholder="비밀번호가 없으면 비워두세요" oninput="generateQR()">
+            </div>
+            <div class="form-group">
+              <label>보안 유형</label>
+              <select id="wifiType" onchange="generateQR()">
+                <option value="WPA" selected>WPA / WPA2 / WPA3 (표준)</option>
+                <option value="WEP">WEP (구형)</option>
+                <option value="nopass">비밀번호 없음 (공개망)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div class="form-group">
+              <label>이미지 해상도 (크기)</label>
+              <select id="qrSize" onchange="generateQR()">
+                <option value="180">기본 (180 × 180 px)</option>
+                <option value="240" selected>표준 (240 × 240 px)</option>
+                <option value="320">고해상도 (320 × 320 px)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>오류 복원 레벨 (Error Correction)</label>
+              <select id="qrLevel" onchange="generateQR()">
+                <option value="L">Level L (7% 복원 - 가장 조밀하지 않음)</option>
+                <option value="M" selected>Level M (15% 복원 - 권장)</option>
+                <option value="Q">Level Q (25% 복원)</option>
+                <option value="H">Level H (30% 복원 - 로고 삽입용)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- 미리보기 및 다운로드 -->
+        <div class="qr-preview-box">
+          <div id="qrcode"></div>
+          <button class="btn-download" onclick="downloadQR()">PNG 이미지 저장</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 1. 오류 복원율 및 인쇄 규격 표 -->
+    <div class="card" style="margin-top: 24px;">
+      <h2 style="font-size: 1.15rem; color: var(--text-main); margin-bottom: 6px;">● QR코드 오류 복원 수준(Error Correction) 및 규격 기준표</h2>
+      <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 12px;">코드가 오염되거나 훼손되어도 데이터를 정상 복원할 수 있는 허용 수치입니다.</p>
+      
+      <table class="rate-table">
+        <thead>
+          <tr>
+            <th>복원 레벨</th>
+            <th>손상 허용 비율</th>
+            <th>모듈(점) 밀도</th>
+            <th>권장 활용처</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Level L (Low)</td>
+            <td class="highlight">약 7%</td>
+            <td>가장 단순함</td>
+            <td>화면 디스플레이, 짧은 URL 단순 스캔</td>
+          </tr>
+          <tr>
+            <td>Level M (Medium)</td>
+            <td class="highlight">약 15%</td>
+            <td>표준 밀도</td>
+            <td>명함, 팸플릿, 웹 배너 (가장 추천)</td>
+          </tr>
+          <tr>
+            <td>Level Q (Quartile)</td>
+            <td class="highlight">약 25%</td>
+            <td>높은 밀도</td>
+            <td>오프라인 전단지, 택배 라벨</td>
+          </tr>
+          <tr>
+            <td>Level H (High)</td>
+            <td class="highlight">약 30%</td>
+            <td>가장 촘촘함</td>
+            <td>중앙에 로고/아이콘을 덮어씌울 때</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 2. 인쇄 및 제작 실무 가이드 -->
+    <div class="guide-card">
+      <h2 style="font-size: 1.15rem; color: var(--text-main); margin-bottom: 18px;">● 오프라인 인쇄 및 QR코드 활용 실무 가이드</h2>
+      
+      <div class="guide-item">
+        <h3>1. 반드시 배경 여백(Quiet Zone)을 확보하세요</h3>
+        <p>QR코드 인식 실패의 80% 이상은 테두리 여백 부족에서 발생합니다. QR코드 사각형 주변에 최소 <strong>4개 이상의 점(모듈) 두께에 해당하는 흰색 빈 여백</strong>이 사방으로 둘러싸여 있어야 스마트폰 카메라가 모서리 패턴을 안정적으로 인식합니다.</p>
+      </div>
+
+      <div class="guide-item">
+        <h3>2. 반전 색상(검은 배경 + 흰색 점) 주의</h3>
+        <p>디자인을 위해 검은 배경에 흰색 코드로 반전 인쇄하는 경우가 있으나, 구형 스마트폰이나 일부 기본 카메라 앱에서는 색상 반전 코드를 읽지 못합니다. 가급적 <strong>흰색(밝은) 배경에 짙은 색 점</strong>을 유지하는 것이 인식 성공률을 100% 보장합니다.</p>
+      </div>
+
+      <div class="guide-item">
+        <h3>3. 정적(Static) 코드의 영구적 안전성</h3>
+        <p>본 생성기에서 만들어진 코드는 중간 중계 서버를 거치지 않고 순수 데이터가 코드 자체에 인코딩되는 정적 QR코드입니다. 무료 체험 기간이 끝나면 연결이 끊기는 상업용 동적 QR코드와 달리 <strong>평생 만료 없이 무제한 사용</strong>할 수 있습니다.</p>
+      </div>
+    </div>
+
+    <!-- 3. 자주 묻는 질문 (FAQ) -->
+    <section class="seo-section">
+      <h2 style="font-size: 1.15rem; color: var(--text-main); margin-bottom: 16px;">● 자주 묻는 질문 (FAQ)</h2>
+      <div class="faq-item">
+        <div class="faq-question">Q. 생성된 QR코드에 유효기간이나 스캔 횟수 제한이 있나요?</div>
+        <div class="faq-answer">전혀 없습니다. 본 도구는 중간 리다이렉트 서버를 거치지 않는 순수 '정적(Static) QR코드'를 생성하므로 영구적으로 무제한 스캔할 수 있습니다.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">Q. 인쇄물이나 현수막에 인쇄할 때 권장되는 최소 크기는 얼마인가요?</div>
+        <div class="faq-answer">스마트폰 카메라의 초점 거리와 인식률을 고려할 때 명함이나 전단지는 가로세로 최소 2cm × 2cm 이상, 포스터나 테이블 배너는 3~5cm 이상, 원거리 현수막은 10cm 이상 크기로 출력하는 것이 안전합니다.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">Q. 입력한 와이파이 비밀번호나 텍스트가 외부로 유출되나요?</div>
+        <div class="faq-answer">아닙니다. QR코드 이미지는 외부 서버로 전송되지 않고 사용자의 웹 브라우저 로컬 환경(클라이언트 단)에서 즉각 생성되므로 정보가 안전하게 보호됩니다.</div>
+      </div>
+    </section>
+
+    <!-- 4. 함께 많이 활용하는 연산 도구 -->
+    <div class="related-section">
+      <div class="related-title">
+        <span>함께 많이 활용하는 연산 도구</span>
+        <a href="/ko/game-2048" style="font-size: 0.82rem; color: var(--accent-gold); text-decoration: none;">🎮 머리 식히기 (2048 게임)</a>
+      </div>
+      <div class="related-grid">
+        <a href="/ko/dday-calculator" class="related-card">
+          <div class="related-card-title">📅 디데이 & 영업일</div>
+          <div class="related-card-desc">이벤트 카운트다운·주말 제외 계산</div>
+        </a>
+        <a href="/ko/word-counter" class="related-card">
+          <div class="related-card-title">📝 글자수 & 바이트</div>
+          <div class="related-card-desc">자기소개서·보고서 분량 실시간 측정</div>
+        </a>
+        <a href="/ko/discount-calc" class="related-card">
+          <div class="related-card-title">🏷️ 할인율·부가세·마진</div>
+          <div class="related-card-desc">소상공인 마진율 및 4대 실무 연산</div>
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>© 2026 Starsign16. All rights reserved.</p>
+      <p style="margin-top: 8px;">
+        <a href="/legal/ko/about" style="color: var(--text-muted); text-decoration: none; margin: 0 8px;">소개</a> | 
+        <a href="/legal/ko/privacy" style="color: var(--text-muted); text-decoration: none; margin: 0 8px;">개인정보처리방침</a> | 
+        <a href="/legal/ko/terms" style="color: var(--text-muted); text-decoration: none; margin: 0 8px;">이용약관</a> | 
+        <a href="/legal/ko/contact" style="color: var(--text-muted); text-decoration: none; margin: 0 8px;">문의</a>
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    let qrcodeObj = null;
+
+    function toggleQrType() {
+      const type = document.getElementById('qrType').value;
+      const urlGroup = document.getElementById('group-url');
+      const wifiGroup = document.getElementById('group-wifi');
+
+      if (type === 'wifi') {
+        urlGroup.style.display = 'none';
+        wifiGroup.style.display = 'block';
+      } else {
+        urlGroup.style.display = 'block';
+        wifiGroup.style.display = 'none';
+        document.getElementById('qrText').placeholder = type === 'url' ? 'https://example.com' : '변환할 문구를 입력하세요';
+      }
+      generateQR();
+    }
+
+    function generateQR() {
+      const type = document.getElementById('qrType').value;
+      const size = parseInt(document.getElementById('qrSize').value) || 240;
+      const level = document.getElementById('qrLevel').value;
+
+      let qrPayload = "";
+      if (type === 'wifi') {
+        const ssid = document.getElementById('wifiSsid').value || "Wi-Fi";
+        const pass = document.getElementById('wifiPass').value;
+        const auth = document.getElementById('wifiType').value;
+        qrPayload = `WIFI:S:${ssid};T:${auth};P:${pass};;`;
+      } else {
+        qrPayload = document.getElementById('qrText').value || "https://starsign16.com";
+      }
+
+      const container = document.getElementById('qrcode');
+      container.innerHTML = "";
+
+      let correctLevel = QRCode.CorrectLevel.M;
+      if (level === 'L') correctLevel = QRCode.CorrectLevel.L;
+      else if (level === 'Q') correctLevel = QRCode.CorrectLevel.Q;
+      else if (level === 'H') correctLevel = QRCode.CorrectLevel.H;
+
+      qrcodeObj = new QRCode(container, {
+        text: qrPayload,
+        width: size,
+        height: size,
+        colorDark: "#000000",
+        colorLight: "#FFFFFF",
+        correctLevel: correctLevel
+      });
+    }
+
+    function downloadQR() {
+      const img = document.querySelector('#qrcode img');
+      if (!img || !img.src) {
+        alert('QR코드가 생성되지 않았습니다.');
+        return;
+      }
+      const link = document.createElement('a');
+      link.download = 'starsign16-qrcode.png';
+      link.href = img.src;
+      link.click();
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      generateQR();
+    });
+  </script>
+</body>
+</html>

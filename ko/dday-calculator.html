@@ -1,0 +1,446 @@
+<!-- File: ko/dday-calculator.html -->
+<!-- Action: 디데이/영업일 계산기 다크모드 통합 및 업무 일정 가이드 탑재 -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>디데이 & 영업일 계산기 | D-Day 카운트다운·주말 제외 계산 - 스타사인16</title>
+  <meta name="description" content="시험, 기념일, 전역일 D-Day 카운트다운 및 주말을 제외한 순수 업무 영업일 수를 실시간으로 계산합니다. 프로젝트 마감일 및 계약 납기일 관리 도구.">
+  <link rel="canonical" href="https://starsign16.com/ko/dday-calculator">
+  <link rel="stylesheet" href="../assets/css/style.css">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "D-Day 계산 시 당일(오늘)은 포함되나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "일반적인 D-Day 산정 공식에 따라 시작일 당일은 0일(D-Day)로 처리되며, 다음 날부터 D+1일 또는 D-1일로 일수가 카운트됩니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "영업일 계산 시 토요일과 일요일은 어떻게 제외되나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "시작일부터 목표일까지의 전체 달력 일수 중 토요일과 일요일을 자동으로 필터링하여 순수 평일(월~금) 일수만을 산출합니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "계약서상 '7일 이내'와 '7영업일 이내'의 법적 차이는 무엇인가요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "'7일 이내'는 주말과 공휴일을 포함한 총 달력 일수를 의미하며, '7영업일(Business Days) 이내'는 토·일요일 및 법정 공휴일을 제외한 순수 은행·관공서 업무일만을 기준으로 산정하므로 실제 기간이 약 9~11일로 늘어납니다."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    .calc-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+    .tab-btn {
+      flex: 1;
+      min-width: 100px;
+      padding: 10px 14px;
+      background-color: var(--bg-input);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 500;
+      text-align: center;
+      transition: all 0.2s;
+    }
+    .tab-btn.active {
+      background-color: rgba(59, 130, 246, 0.2);
+      border-color: var(--accent-blue);
+      color: var(--text-main);
+      font-weight: 600;
+    }
+    .calc-panel { display: none; }
+    .calc-panel.active { display: block; }
+
+    .rate-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 14px;
+      font-size: 0.88rem;
+    }
+    .rate-table th, .rate-table td {
+      padding: 10px 8px;
+      text-align: center;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .rate-table th {
+      background-color: var(--bg-input);
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+    .rate-table td { color: var(--text-main); }
+    .rate-table td.highlight { color: var(--accent-blue); font-weight: 600; }
+
+    .guide-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 24px;
+      margin-top: 24px;
+    }
+    .guide-item { margin-bottom: 20px; }
+    .guide-item:last-child { margin-bottom: 0; }
+    .guide-item h3 {
+      font-size: 0.98rem;
+      color: var(--text-main);
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+    .guide-item p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .related-section {
+      margin-top: 40px;
+      padding-top: 28px;
+      border-top: 1px solid var(--border-color);
+    }
+    .related-title {
+      font-size: 1.1rem;
+      color: var(--text-main);
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .related-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+    @media (min-width: 640px) {
+      .related-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    .related-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 16px;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .related-card:hover {
+      border-color: var(--accent-blue);
+      transform: translateY(-2px);
+    }
+    .related-card-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 4px;
+    }
+    .related-card-desc {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container header-content">
+      <a href="/ko" class="logo"><span>★</span> Starsign16 <span>Financial</span></a>
+      <a href="/ko" class="lang-switch">← 한국어 허브</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+        <h1 style="font-size: 1.5rem; color: var(--text-main);">디데이 & 영업일 계산기</h1>
+        <span style="font-size: 0.75rem; color: var(--accent-green); background: rgba(16, 185, 129, 0.15); padding: 4px 8px; border-radius: 6px; font-weight: 600;">[일정 관리 툴]</span>
+      </div>
+      <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 24px;">기념일 카운트다운, D-Day 계산 및 주말 제외 순수 영업일 수를 산출합니다.</p>
+
+      <!-- 탭 -->
+      <div class="calc-tabs">
+        <button class="tab-btn active" onclick="switchTab('dday')">D-Day 카운트다운</button>
+        <button class="tab-btn" onclick="switchTab('workday')">주말 제외 영업일 계산</button>
+      </div>
+
+      <!-- 패널 1: D-Day -->
+      <div id="panel-dday" class="calc-panel active">
+        <div class="grid-2">
+          <div class="form-group">
+            <label>기준 시작일</label>
+            <input type="date" id="dday-base" onchange="calcDday()">
+          </div>
+          <div class="form-group">
+            <label>목표 대상일</label>
+            <input type="date" id="dday-target" onchange="calcDday()">
+          </div>
+        </div>
+
+        <div class="result-card">
+          <div class="result-row total" style="margin-top: 0; padding-top: 0; border-top: none;">
+            <span style="font-size: 1.1rem; color: var(--text-main);">D-Day 결과</span>
+            <span id="dday-res-badge" class="result-value" style="font-size: 1.6rem; color: var(--accent-gold);">D-Day</span>
+          </div>
+          <div class="result-row">
+            <span style="color: var(--text-muted);">남은 일수 (총 달력일수)</span>
+            <span id="dday-res-days" style="color: var(--text-main); font-weight: 700;">0 일</span>
+          </div>
+          <div class="result-row">
+            <span style="color: var(--text-muted);">주 단위 환산</span>
+            <span id="dday-res-weeks" style="color: var(--accent-blue); font-weight: 600;">0 주 0 일</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 패널 2: 영업일 -->
+      <div id="panel-workday" class="calc-panel">
+        <div class="grid-2">
+          <div class="form-group">
+            <label>시작일</label>
+            <input type="date" id="work-start" onchange="calcWorkdays()">
+          </div>
+          <div class="form-group">
+            <label>마감 예정일</label>
+            <input type="date" id="work-end" onchange="calcWorkdays()">
+          </div>
+        </div>
+
+        <div class="result-card">
+          <div class="result-row total" style="margin-top: 0; padding-top: 0; border-top: none;">
+            <span style="font-size: 1.1rem; color: var(--text-main);">순수 영업일 수 (평일)</span>
+            <span id="work-res-workdays" class="result-value" style="font-size: 1.6rem; color: var(--accent-green);">0 일</span>
+          </div>
+          <div class="result-row">
+            <span style="color: var(--text-muted);">제외된 주말 일수 (토/일)</span>
+            <span id="work-res-weekends" style="color: #EF4444; font-weight: 600;">0 일</span>
+          </div>
+          <div class="result-row">
+            <span style="color: var(--text-muted);">전체 총 달력 일수</span>
+            <span id="work-res-totaldays" style="color: var(--text-main); font-weight: 600;">0 일</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 1. 일정 단위별 환산 기준표 -->
+    <div class="card" style="margin-top: 24px;">
+      <h2 style="font-size: 1.15rem; color: var(--text-main); margin-bottom: 6px;">● 기간 산정 방식별 법적·실무 적용 비교표</h2>
+      <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 12px;">공공 입찰, 납품 기한, 민법상 기간 계산 시 적용되는 기준입니다.</p>
+      
+      <table class="rate-table">
+        <thead>
+          <tr>
+            <th>구분</th>
+            <th>적용 기준</th>
+            <th>주말 및 공휴일 포함 여부</th>
+            <th>주요 법적 사례</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>단순 일수 (달력일)</td>
+            <td class="highlight">총 역일수 (Calendar Days)</td>
+            <td>주말·공휴일 모두 포함</td>
+            <td>아파트 청약일, 수습기간, 퇴직금 14일</td>
+          </tr>
+          <tr>
+            <td>영업일 (Business Days)</td>
+            <td class="highlight">순수 평일 (월~금)</td>
+            <td>토·일요일 전면 제외</td>
+            <td>관공서 서류 발급, 금융 결제일, 물품 검수</td>
+          </tr>
+          <tr>
+            <td>민법 제157조 원칙</td>
+            <td class="highlight">초일불산입 (첫날 제외)</td>
+            <td>기간 만료일이 공휴일이면 익일 만료</td>
+            <td>소멸시효, 계약 해지 통고, 소송 제기</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 2. 실무 가이드 -->
+    <div class="guide-card">
+      <h2 style="font-size: 1.15rem; color: var(--text-main); margin-bottom: 18px;">● 프로젝트 납기 및 계약 실무 가이드</h2>
+      
+      <div class="guide-item">
+        <h3>1. 계약서 작성 시 '일'과 '영업일' 명시 원칙</h3>
+        <p>용역이나 개발 계약서에 "계약 체결일로부터 10일 이내 납품"이라고 작성하면 주말이 포함되어 실작업일이 6~7일로 줄어듭니다. 긴박한 외주나 프로젝트를 진행할 때는 반드시 <strong>'10영업일 이내'</strong>로 명시해야 불필요한 납기 지체상금을 방지할 수 있습니다.</p>
+      </div>
+
+      <div class="guide-item">
+        <h3>2. 민법의 초일불산입 원칙 이해</h3>
+        <p>민법 제157조에 따르면 기간을 일, 주, 월, 연으로 정한 때에는 기간의 <strong>첫날은 산입하지 않는 것(초일불산입)</strong>이 원칙입니다(단, 오전 0시부터 시작하는 경우는 산입). 본 계산기는 실무적인 편의를 위해 당일 기준 경과/잔여 일수를 직관적으로 산출합니다.</p>
+      </div>
+
+      <div class="guide-item">
+        <h3>3. 마감일이 공휴일인 경우의 법적 효력</h3>
+        <p>민법 제161조에 따라 기간의 말일이 토요일 또는 공휴일에 해당하는 때에는 그 익일(다음 월요일 또는 대체공휴일 다음 날)로 만료일이 연장됩니다. 세금 납부 기한이나 서류 제출 시 참고하시기 바랍니다.</p>
+      </div>
+    </div>
+
+    <!-- 3. 자주 묻는 질문 (FAQ) -->
+    <section class="seo-section">
+      <h2 style="font-size: 1.15rem; color: var(--text-main); margin-bottom: 16px;">● 자주 묻는 질문 (FAQ)</h2>
+      <div class="faq-item">
+        <div class="faq-question">Q. D-Day 계산 시 당일(오늘)은 포함되나요?</div>
+        <div class="faq-answer">일반적인 D-Day 산정 공식에 따라 시작일 당일은 0일(D-Day)로 처리되며, 다음 날부터 D+1일 또는 D-1일로 일수가 카운트됩니다.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">Q. 영업일 계산 시 토요일과 일요일은 어떻게 제외되나요?</div>
+        <div class="faq-answer">시작일부터 목표일까지의 전체 달력 일수 중 토요일과 일요일을 자동으로 필터링하여 순수 평일(월~금) 일수만을 산출합니다.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">Q. 계약서상 '7일 이내'와 '7영업일 이내'의 법적 차이는 무엇인가요?</div>
+        <div class="faq-answer">'7일 이내'는 주말과 공휴일을 포함한 총 달력 일수를 의미하며, '7영업일(Business Days) 이내'는 토·일요일 및 법정 공휴일을 제외한 순수 은행·관공서 업무일만을 기준으로 산정하므로 실제 기간이 약 9~11일로 늘어납니다.</div>
+      </div>
+    </section>
+
+    <!-- 4. 함께 많이 활용하는 연산 도구 -->
+    <div class="related-section">
+      <div class="related-title">
+        <span>함께 많이 활용하는 연산 도구</span>
+        <a href="/ko/game-2048" style="font-size: 0.82rem; color: var(--accent-gold); text-decoration: none;">🎮 머리 식히기 (2048 게임)</a>
+      </div>
+      <div class="related-grid">
+        <a href="/ko/word-counter" class="related-card">
+          <div class="related-card-title">📝 글자수 & 바이트</div>
+          <div class="related-card-desc">자기소개서·보고서 분량 실시간 측정</div>
+        </a>
+        <a href="/ko/qr-generator" class="related-card">
+          <div class="related-card-title">📱 초고속 QR코드</div>
+          <div class="related-card-desc">URL 및 안내문구 즉시 QR 변환</div>
+        </a>
+        <a href="/ko/discount-calc" class="related-card">
+          <div class="related-card-title">🏷️ 할인율·부가세·마진</div>
+          <div class="related-card-desc">소상공인 마진율 및 4대 실무 연산</div>
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>© 2026 Starsign16. All rights reserved.</p>
+      <p style="margin-top: 8px;">
+        <a href="/legal/ko/about" style="color: var(--text-muted); text-decoration: none; margin: 0 8px;">소개</a> | 
+        <a href="/legal/ko/privacy" style="color: var(--text-muted); text-decoration: none; margin: 0 8px;">개인정보처리방침</a> | 
+        <a href="/legal/ko/terms" style="color: var(--text-muted); text-decoration: none; margin: 0 8px;">이용약관</a> | 
+        <a href="/legal/ko/contact" style="color: var(--text-muted); text-decoration: none; margin: 0 8px;">문의</a>
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    function switchTab(tab) {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.calc-panel').forEach(panel => panel.classList.remove('active'));
+
+      if (tab === 'dday') {
+        document.querySelectorAll('.tab-btn')[0].classList.add('active');
+        document.getElementById('panel-dday').classList.add('active');
+        calcDday();
+      } else {
+        document.querySelectorAll('.tab-btn')[1].classList.add('active');
+        document.getElementById('panel-workday').classList.add('active');
+        calcWorkdays();
+      }
+    }
+
+    function calcDday() {
+      const baseVal = document.getElementById('dday-base').value;
+      const targetVal = document.getElementById('dday-target').value;
+      if (!baseVal || !targetVal) return;
+
+      const d1 = new Date(baseVal);
+      const d2 = new Date(targetVal);
+      d1.setHours(0,0,0,0);
+      d2.setHours(0,0,0,0);
+
+      const diffTime = d2.getTime() - d1.getTime();
+      const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
+
+      let badge = "";
+      if (diffDays === 0) badge = "D-Day (오늘)";
+      else if (diffDays > 0) badge = "D - " + diffDays;
+      else badge = "D + " + Math.abs(diffDays);
+
+      const absDays = Math.abs(diffDays);
+      const weeks = Math.floor(absDays / 7);
+      const remDays = absDays % 7;
+
+      document.getElementById('dday-res-badge').innerText = badge;
+      document.getElementById('dday-res-days').innerText = (diffDays >= 0 ? "앞으로 " : "지나간 지 ") + absDays.toLocaleString() + " 일";
+      document.getElementById('dday-res-weeks').innerText = weeks + " 주 " + remDays + " 일";
+    }
+
+    function calcWorkdays() {
+      const startVal = document.getElementById('work-start').value;
+      const endVal = document.getElementById('work-end').value;
+      if (!startVal || !endVal) return;
+
+      let cur = new Date(startVal);
+      const end = new Date(endVal);
+      cur.setHours(0,0,0,0);
+      end.setHours(0,0,0,0);
+
+      if (cur > end) {
+        document.getElementById('work-res-workdays').innerText = "0 일 (날짜 역전)";
+        return;
+      }
+
+      let totalDays = 0;
+      let workdays = 0;
+      let weekends = 0;
+
+      while (cur <= end) {
+        totalDays++;
+        const day = cur.getDay();
+        if (day === 0 || day === 6) {
+          weekends++;
+        } else {
+          workdays++;
+        }
+        cur.setDate(cur.getDate() + 1);
+      }
+
+      document.getElementById('work-res-workdays').innerText = workdays.toLocaleString() + " 일 (평일)";
+      document.getElementById('work-res-weekends').innerText = weekends.toLocaleString() + " 일";
+      document.getElementById('work-res-totaldays').innerText = totalDays.toLocaleString() + " 일";
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const today = new Date();
+      const nextMonth = new Date();
+      nextMonth.setDate(today.getDate() + 30);
+
+      const fmt = d => d.toISOString().split('T')[0];
+      document.getElementById('dday-base').value = fmt(today);
+      document.getElementById('dday-target').value = fmt(nextMonth);
+
+      document.getElementById('work-start').value = fmt(today);
+      document.getElementById('work-end').value = fmt(nextMonth);
+
+      calcDday();
+    });
+  </script>
+</body>
+</html>

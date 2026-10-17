@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Free Text Formatter & Slug Generator | Clean, Sort, Convert Case - ToolLab</title>
+  <meta name="description" content="Instant client-side text cleanup and case converter. Convert to UPPERCASE, lowercase, camelCase, snake_case, SEO slug, strip duplicate lines, and trim whitespace locally." />
+  <meta name="keywords" content="text formatter, case converter, seo slug generator, remove duplicate lines, clean text online, camelCase converter, ToolLab" />
+  
+      <!-- Tailwind CDN & Config -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class'
+    }
+  </script>
+
+  <!-- Open Graph & Rich Snippets -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="ToolLab" />
+  <meta property="og:title" content="Text Formatter & Slugifier | ToolLab" />
+  <meta property="og:description" content="Transform text casing, generate clean URL slugs, remove duplicate lines, and sort text in browser memory." />
+  <meta property="og:url" content="https://Starsign16 Toolkit/tools/text-formatter.html" />
+  <meta property="og:image" content="https://Starsign16 Toolkit/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Text Formatter & Slugifier | ToolLab" />
+  <meta name="twitter:description" content="Transform text casing, generate clean URL slugs, remove duplicate lines, and sort text in browser memory." />
+  <meta name="twitter:image" content="https://Starsign16 Toolkit/og-image.png" />
+  <link rel="canonical" href="https://starsign16.com/tools/text-formatter">
+
+  <!-- ToolLab Analytics Tracker -->
+  <script src="/js/analytics.js"></script>
+
+</head>
+<body class="bg-slate-950 text-slate-200 min-h-screen py-6 px-4 font-sans antialiased">
+  <div class="max-w-4xl mx-auto">
+    
+    <!-- Main Card -->
+    <div class="bg-slate-900 rounded-2xl shadow-xl border border-slate-800 p-5 md:p-7">
+      
+      <!-- Top Navigation -->
+      <div class="flex items-center justify-between pb-4 mb-5 border-b border-slate-800">
+        <div class="flex items-center gap-2.5">
+          <a href="../index.html" class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors" title="ToolLab Home">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+            </svg>
+          </a>
+          <div>
+            <span class="text-[10px] font-bold tracking-wider text-blue-400 uppercase block">Starsign16 Toolkit</span>
+            <h1 class="text-lg md:text-xl font-extrabold text-slate-100">Text Formatter & Slugifier</h1>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <button id="clearBtn" class="text-xs px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-slate-200 transition-colors">Clear</button>
+          <button id="copyBtn" class="text-xs px-3 py-1.5 rounded-lg bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-400 border border-emerald-800/60 font-bold transition-colors">Copy Result</button>
+        </div>
+      </div>
+
+      <!-- Action Button Clusters -->
+      <div class="space-y-3 mb-5">
+        <!-- Letter Case Transformations -->
+        <div>
+          <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider block mb-1.5">Case Conversion</span>
+          <div class="flex flex-wrap gap-1.5">
+            <button class="action-btn px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium transition-colors" data-action="upper">UPPERCASE</button>
+            <button class="action-btn px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium transition-colors" data-action="lower">lowercase</button>
+            <button class="action-btn px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium transition-colors" data-action="title">Title Case</button>
+            <button class="action-btn px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium transition-colors" data-action="sentence">Sentence case</button>
+          </div>
+        </div>
+
+        <!-- Developer & Coding Cases -->
+        <div>
+          <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider block mb-1.5">Code & URL Formats</span>
+          <div class="flex flex-wrap gap-1.5">
+            <button class="action-btn px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-blue-400 text-xs font-mono font-medium transition-colors" data-action="slug">seo-slug</button>
+            <button class="action-btn px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-blue-400 text-xs font-mono font-medium transition-colors" data-action="camel">camelCase</button>
+            <button class="action-btn px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-blue-400 text-xs font-mono font-medium transition-colors" data-action="pascal">PascalCase</button>
+            <button class="action-btn px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-blue-400 text-xs font-mono font-medium transition-colors" data-action="snake">snake_case</button>
+            <button class="action-btn px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-blue-400 text-xs font-mono font-medium transition-colors" data-action="kebab">kebab-case</button>
+          </div>
+        </div>
+
+        <!-- Cleaning & Sorting -->
+        <div>
+          <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider block mb-1.5">Clean & Organize Lines</span>
+          <div class="flex flex-wrap gap-1.5">
+            <button class="action-btn px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium transition-colors" data-action="dedupe">Remove Duplicate Lines</button>
+            <button class="action-btn px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium transition-colors" data-action="strip-empty">Remove Empty Lines</button>
+            <button class="action-btn px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium transition-colors" data-action="trim-spaces">Trim Extra Spaces</button>
+            <button class="action-btn px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium transition-colors" data-action="sort-asc">Sort Lines (A-Z)</button>
+            <button class="action-btn px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium transition-colors" data-action="sort-desc">Sort Lines (Z-A)</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Textarea -->
+      <div class="relative">
+        <textarea id="textInput" rows="12" spellcheck="false"
+          placeholder="Paste or type content here, then click any formatting button above to transform your text instantly..." 
+          class="w-full p-4 bg-slate-950 border border-slate-800 rounded-xl text-slate-100 placeholder-slate-600 focus:outline-none focus:border-blue-500 font-mono text-xs md:text-sm leading-relaxed resize-y"></textarea>
+      </div>
+
+      <!-- Live Character Counter Row -->
+      <div class="flex justify-between items-center mt-3 text-xs text-slate-500 font-mono">
+        <span id="actionFeedback" class="text-blue-400">Ready</span>
+        <div class="flex gap-4">
+          <span id="charCount">Chars: 0</span>
+          <span id="lineCount">Lines: 0</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- SEO & Technical Reference Guide -->
+    <article class="mt-8 space-y-6 text-xs md:text-sm text-slate-400 leading-relaxed">
+      
+      <!-- Casing Reference Table -->
+      <section class="bg-slate-900 rounded-2xl border border-slate-800 p-5 md:p-6 shadow-md">
+        <h2 class="text-base font-extrabold text-slate-100 mb-3 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+          Variable Casing Standards Matrix
+        </h2>
+        <p class="text-xs text-slate-400 mb-4">Standard conventions across modern programming languages and web development architectures.</p>
+        
+        <div class="overflow-x-auto">
+          <table class="w-full text-xs text-left border-collapse">
+            <thead>
+              <tr class="bg-slate-950 border-b border-slate-800 text-slate-300 font-bold">
+                <th class="p-2.5">Style</th>
+                <th class="p-2.5">Example</th>
+                <th class="p-2.5">Common Programming Context</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-800/60 text-slate-300 font-mono">
+              <tr>
+                <td class="p-2.5 font-bold text-blue-400">camelCase</td>
+                <td class="p-2.5 text-slate-200">userProfileData</td>
+                <td class="p-2.5 text-slate-400 font-sans">JavaScript variables, JSON keys, Java methods</td>
+              </tr>
+              <tr>
+                <td class="p-2.5 font-bold text-blue-400">PascalCase</td>
+                <td class="p-2.5 text-slate-200">UserProfileData</td>
+                <td class="p-2.5 text-slate-400 font-sans">React components, TypeScript classes, C# structures</td>
+              </tr>
+              <tr>
+                <td class="p-2.5 font-bold text-blue-400">snake_case</td>
+                <td class="p-2.5 text-slate-200">user_profile_data</td>
+                <td class="p-2.5 text-slate-400 font-sans">Python variables, SQL table columns, PostgreSQL schemas</td>
+              </tr>
+              <tr>
+                <td class="p-2.5 font-bold text-blue-400">kebab-case / slug</td>
+                <td class="p-2.5 text-slate-200">user-profile-data</td>
+                <td class="p-2.5 text-slate-400 font-sans">SEO URLs, CSS class selectors, HTML attributes</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Practical Strategy Guides -->
+      <section class="bg-slate-900 rounded-2xl border border-slate-800 p-5 md:p-6 shadow-md space-y-3">
+        <h2 class="text-base font-extrabold text-slate-100 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+          Formatting Best Practices
+        </h2>
+        
+        <div class="space-y-2.5 text-xs leading-relaxed">
+          <div class="p-3 bg-slate-950/60 rounded-xl border border-slate-800/80">
+            <h3 class="font-bold text-slate-200 mb-1">1. URL Slug Optimization</h3>
+            <p>Clean URL slugs strip stop words, non-ASCII characters, and special punctuation, resulting in human-readable search queries that improve organic click-through rates.</p>
+          </div>
+
+          <div class="p-3 bg-slate-950/60 rounded-xl border border-slate-800/80">
+            <h3 class="font-bold text-slate-200 mb-1">2. Line Deduplication Efficiency</h3>
+            <p>Cleaning email lists, CSV records, or server log entries by removing duplicate lines reduces file size and prevents redundant queries before database ingestion.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ToolLab Clean Ad Unit -->
+
+      <!-- FAQ -->
+      <section class="bg-slate-900 rounded-2xl border border-slate-800 p-5 md:p-6 shadow-md">
+        <h2 class="text-base font-extrabold text-slate-100 mb-4 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-indigo-400"></span>
+          Frequently Asked Questions
+        </h2>
+
+        <div class="space-y-3.5 text-xs">
+          <div>
+            <h3 class="font-bold text-slate-200 mb-1">Q. Does line deduplication alter the original order of lines?</h3>
+            <p class="text-slate-400">No. The first occurrence of each unique line is preserved in its original relative order; only subsequent identical duplicates are dropped.</p>
+          </div>
+          <div class="border-t border-slate-800 pt-3">
+            <h3 class="font-bold text-slate-200 mb-1">Q. Are my confidential lists and text snippets saved anywhere?</h3>
+            <p class="text-slate-400">Never. All operations execute entirely in browser memory. Nothing is ever logged or transferred to an external server.</p>
+          </div>
+        </div>
+      </section>
+
+    </article>
+
+    <!-- Standard Minimal Footer -->
+    <footer class="mt-12 pt-6 pb-8 border-t border-slate-800 text-xs text-slate-500">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-3 text-center md:text-left">
+        <div class="space-y-0.5">
+          <p class="font-bold text-slate-400">Starsign16 Toolkit · Smart Web Utilities</p>
+          <p class="text-[11px]">Zero server latency · Client-side computational execution</p>
+        </div>
+        <div class="flex items-center gap-3 font-semibold text-slate-400">
+          <a href="../about.html" class="hover:text-emerald-400 transition-colors">About</a>
+        <span>·</span>
+        <a href="../contact.html" class="hover:text-emerald-400 transition-colors">Contact</a>
+        <span>·</span>
+        <a href="../privacy.html" class="hover:text-emerald-400 transition-colors">Privacy</a>
+        <span>·</span>
+        <a href="../terms.html" class="hover:text-emerald-400 transition-colors">Terms</a>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="../js/utils/textFormatter.js"></script>
+  <script>
+    const textarea = document.getElementById("textInput");
+    const actionFeedback = document.getElementById("actionFeedback");
+    const charCountEl = document.getElementById("charCount");
+    const lineCountEl = document.getElementById("lineCount");
+    const clearBtn = document.getElementById("clearBtn");
+    const copyBtn = document.getElementById("copyBtn");
+
+    function updateMetrics() {
+      const val = textarea.value;
+      charCountEl.textContent = `Chars: ${val.length.toLocaleString()}`;
+      const lines = val ? val.split(/\r?\n/).length : 0;
+      lineCountEl.textContent = `Lines: ${lines.toLocaleString()}`;
+    }
+
+    function setFeedback(msg) {
+      actionFeedback.textContent = msg;
+      setTimeout(() => {
+        actionFeedback.textContent = "Ready";
+      }, 2000);
+    }
+
+    document.querySelectorAll(".action-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const action = btn.dataset.action;
+        const text = textarea.value;
+        if (!text) return;
+
+        let result = text;
+        switch (action) {
+          case "upper":
+            result = TextFormatter.toUpper(text);
+            setFeedback("Converted to UPPERCASE");
+            break;
+          case "lower":
+            result = TextFormatter.toLower(text);
+            setFeedback("Converted to lowercase");
+            break;
+          case "title":
+            result = TextFormatter.toTitleCase(text);
+            setFeedback("Converted to Title Case");
+            break;
+          case "sentence":
+            result = TextFormatter.toSentenceCase(text);
+            setFeedback("Converted to Sentence case");
+            break;
+          case "slug":
+            result = TextFormatter.slugify(text);
+            setFeedback("Generated SEO Slug");
+            break;
+          case "camel":
+            result = TextFormatter.toCamelCase(text);
+            setFeedback("Converted to camelCase");
+            break;
+          case "pascal":
+            result = TextFormatter.toPascalCase(text);
+            setFeedback("Converted to PascalCase");
+            break;
+          case "snake":
+            result = TextFormatter.toSnakeCase(text);
+            setFeedback("Converted to snake_case");
+            break;
+          case "kebab":
+            result = TextFormatter.toKebabCase(text);
+            setFeedback("Converted to kebab-case");
+            break;
+          case "dedupe":
+            result = TextFormatter.removeDuplicateLines(text);
+            setFeedback("Removed duplicate lines");
+            break;
+          case "strip-empty":
+            result = TextFormatter.removeEmptyLines(text);
+            setFeedback("Removed empty lines");
+            break;
+          case "trim-spaces":
+            result = TextFormatter.trimExtraSpaces(text);
+            setFeedback("Trimmed extra spaces");
+            break;
+          case "sort-asc":
+            result = TextFormatter.sortLines(text, "asc");
+            setFeedback("Sorted lines (A-Z)");
+            break;
+          case "sort-desc":
+            result = TextFormatter.sortLines(text, "desc");
+            setFeedback("Sorted lines (Z-A)");
+            break;
+        }
+
+        textarea.value = result;
+        updateMetrics();
+      });
+    });
+
+    copyBtn.addEventListener("click", () => {
+      if (!textarea.value) return;
+      navigator.clipboard.writeText(textarea.value).then(() => {
+        const orig = copyBtn.textContent;
+        copyBtn.textContent = "Copied!";
+        setTimeout(() => (copyBtn.textContent = orig), 1500);
+      });
+    });
+
+    clearBtn.addEventListener("click", () => {
+      textarea.value = "";
+      updateMetrics();
+      setFeedback("Cleared");
+      textarea.focus();
+    });
+
+    textarea.addEventListener("input", updateMetrics);
+    updateMetrics();
+  </script>
+  <script src="../js/related-tools.js"></script>
+</body>
+</html>

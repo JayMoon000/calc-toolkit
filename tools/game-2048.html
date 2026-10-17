@@ -1,0 +1,241 @@
+<!-- File: tools/game-2048.html -->
+<!-- Action: 글로벌 영문 2048 - 심층 공략 가이드 및 FAQ Schema.org 탑재 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2048 Classic Web Puzzle | Starsign16 Toolkit</title>
+  <meta name="description" content="Play the free online 2048 puzzle game with zero lag. Responsive controls for keyboard arrows and touch swipe, smooth dark mode UI, and step-by-step master strategies.">
+  <link rel="canonical" href="https://starsign16.com/tools/game-2048">
+  <link rel="stylesheet" href="../assets/css/style.css">
+
+  <!-- Schema.org FAQPage JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is the optimal strategy to reach the 2048 tile?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The most effective technique is the 'Corner Anchor Strategy'. Choose one permanent corner (typically bottom-left) to hold your highest-value tile. Keep tiles ordered in descending sequence along that edge, and avoid pressing the opposite directional key (e.g., Up arrow) to prevent smaller tiles from trapping your anchor."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does the game end immediately when the 2048 tile is created?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. Once you combine two 1024 tiles into 2048, you can continue playing indefinitely to achieve 4096, 8192, and beyond until no valid moves remain on the 4x4 grid."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is game progress or high score sent to any remote server?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Never. All computational moves and high scores are processed and retained 100% locally within your browser's memory and localStorage."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    .game-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .score-container {
+      display: flex;
+      gap: 10px;
+    }
+    .score-box {
+      background-color: var(--bg-input);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 6px 14px;
+      text-align: center;
+      min-width: 75px;
+    }
+    .score-label {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+    .score-val {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--accent-gold);
+    }
+    .game-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .restart-btn {
+      background-color: var(--accent-blue);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 8px 16px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background 0.2s;
+    }
+    .restart-btn:hover {
+      background-color: #2563eb;
+    }
+    .grid-board {
+      width: 100%;
+      max-width: 400px;
+      height: 400px;
+      margin: 0 auto;
+      background-color: #0E1522;
+      border: 2px solid var(--border-color);
+      border-radius: 12px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(4, 1fr);
+      gap: 10px;
+      padding: 10px;
+      touch-action: none;
+      position: relative;
+    }
+    .tile {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+      font-size: 1.6rem;
+      font-weight: 700;
+      user-select: none;
+      transition: transform 0.1s ease;
+    }
+    .tile-empty { background-color: var(--bg-input); opacity: 0.4; }
+    .tile-2 { background-color: #1E293B; color: var(--text-main); }
+    .tile-4 { background-color: #334155; color: var(--text-main); }
+    .tile-8 { background-color: #D97706; color: #FFF; }
+    .tile-16 { background-color: #EA580C; color: #FFF; }
+    .tile-32 { background-color: #DC2626; color: #FFF; }
+    .tile-64 { background-color: #B91C1C; color: #FFF; }
+    .tile-128 { background-color: #2563EB; color: #FFF; font-size: 1.3rem; }
+    .tile-256 { background-color: #1D4ED8; color: #FFF; font-size: 1.3rem; }
+    .tile-512 { background-color: #059669; color: #FFF; font-size: 1.3rem; }
+    .tile-1024 { background-color: #047857; color: #FFF; font-size: 1.1rem; }
+    .tile-2048 { background-color: #F59E0B; color: #000; font-size: 1.1rem; box-shadow: 0 0 15px rgba(245, 158, 11, 0.6); }
+
+    .game-over-overlay {
+      position: absolute;
+      inset: 0;
+      background-color: rgba(11, 15, 23, 0.9);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      display: none;
+    }
+    .game-over-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #EF4444;
+      margin-bottom: 12px;
+    }
+    .strategy-list {
+      padding-left: 20px;
+      color: var(--text-muted);
+      line-height: 1.8;
+      font-size: 0.92rem;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container header-content">
+      <a href="/" class="logo"><span>★</span> Starsign16 <span>Toolkit</span></a>
+      <a href="/" class="lang-switch">← Global Hub</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="card" style="max-width: 480px; margin: 0 auto 32px auto;">
+      <div class="game-header">
+        <div>
+          <h1 style="font-size: 1.5rem; color: var(--text-main); margin-bottom: 4px;">2048 Puzzle Game</h1>
+          <p style="color: var(--text-muted); font-size: 0.85rem;">Merge identical numbers and unlock the legendary 2048 tile!</p>
+        </div>
+        <div class="score-container">
+          <div class="score-box">
+            <div class="score-label">Score</div>
+            <div class="score-val" id="score">0</div>
+          </div>
+          <div class="score-box">
+            <div class="score-label">Best</div>
+            <div class="score-val" id="best-score">0</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="game-actions">
+        <span style="font-size: 0.85rem; color: var(--text-muted);">Controls: <strong>Arrow Keys</strong> or <strong>Touch Swipe</strong></span>
+        <button class="restart-btn" onclick="initGame()">New Game</button>
+      </div>
+
+      <div class="grid-board" id="board">
+        <div class="game-over-overlay" id="game-over">
+          <div class="game-over-title">Game Over!</div>
+          <button class="restart-btn" onclick="initGame()">Try Again</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SEO & Detailed Strategy Guide -->
+    <section class="seo-section" style="max-width: 680px; margin: 0 auto;">
+      <h2>Rules & Master Strategy Guide for 2048</h2>
+      <p>2048 is an algorithmic sliding block puzzle played on an uncluttered 4×4 grid. Your objective is to slide numbered tiles horizontally and vertically to combine pairs of matching numbers (2, 4, 8, 16, 32, 64, 128, 256, 512, 1024) until reaching 2048.</p>
+      
+      <h3 style="font-size: 1.1rem; color: var(--text-main); margin: 20px 0 8px;">Key Tactics for Consistent Victory (Corner Anchor Method)</h3>
+      <ul class="strategy-list">
+        <li><strong>Corner Anchor:</strong> Designate a single corner (bottom-left is highly recommended) and anchor your highest-value tile there throughout the entire session.</li>
+        <li><strong>Restricted Direction:</strong> Once your anchor corner is established at the bottom, <strong>never press the Up Arrow (↑)</strong> unless you have zero legal alternatives. Moving upward allows small "2" and "4" tiles to spawn underneath your primary block, paralyzing your board.</li>
+        <li><strong>Descending Monotonic Rows:</strong> Organize tiles in descending numerical order along your anchored edge (e.g., 512, 256, 128, 64) to trigger effortless cascade combinations.</li>
+      </ul>
+
+      <div class="faq-item" style="margin-top: 24px;">
+        <div class="faq-question">Q. Does the puzzle terminate immediately upon reaching 2048?</div>
+        <div class="faq-answer">No. 2048 represents the primary milestone, but you can continue playing toward 4096 and 8192 until no open spaces or adjacent identical tiles remain.</div>
+      </div>
+      <div class="faq-item" style="margin-top: 24px;">
+        <div class="faq-question">Q. Are my movements or personal scores transmitted to external servers?</div>
+        <div class="faq-answer">No. All game computations and high scores reside entirely within your browser sandbox via localStorage, ensuring absolute privacy and instant offline response.</div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>© 2026 Starsign16. All rights reserved.</p>
+      <p style="margin-top: 8px;">
+        <a href="/legal/about" style="color: var(--text-muted); text-decoration: none; margin: 0 8px;">About</a> | 
+        <a href="/legal/privacy" style="color: var(--text-muted); text-decoration: none; margin: 0 8px;">Privacy Policy</a> | 
+        <a href="/legal/terms" style="color: var(--text-muted); text-decoration: none; margin: 0 8px;">Terms of Service</a> | 
+        <a href="/legal/contact" style="color: var(--text-muted); text-decoration: none; margin: 0 8px;">Contact</a>
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    let board = [];
+    let score = 0;
+    let bestScore = localStorage.getItem('2048_best') || 0;
+    document.getElementById('best-score').innerText = bestScore;

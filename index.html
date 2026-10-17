@@ -1,262 +1,260 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
-
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-YLJ01C9RJQ"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-YLJ01C9RJQ');
-</script>
-
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>스마트 계산기 툴킷 | 2026 법령·세법 반영 금융·노무 계산기</title>
-  <link rel="canonical" href="https://starsign16.com/" />
-  <meta property="og:url" content="https://starsign16.com/" />
-  <meta property="og:type" content="website" />  
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Starsign16 Toolkit | Smart Financial & Productivity Tools</title>
+  <meta name="description" content="Fast, private, zero-server computational utilities. Online calculators for compound interest, loan amortizations, unit conversions, and productivity tasks.">
+  <link rel="canonical" href="https://starsign16.com/">
+  <link rel="stylesheet" href="assets/css/style.css">
   
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1512367949140208"
-     crossorigin="anonymous"></script>
-  
-  <meta name="description" content="예·적금 만기이자, 부동산 중개보수, 단위변환, 퇴직금, 연봉 실수령액, 2026 최저시급 및 주휴수당까지 실시간으로 계산하는 전문 유틸리티 툴킷입니다." />
-  <meta name="keywords" content="계산기툴킷, 예금이자계산기, 부동산중개수수료, 단위변환기, 퇴직금계산기, 연봉실수령액, 주휴수당계산기, 2026최저임금" />
-
-  <!-- 구조화 데이터 (Schema.org WebSite) -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "스마트 계산기 툴킷",
+    "@type": "WebApplication",
+    "name": "Starsign16 Toolkit",
     "url": "https://starsign16.com/",
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": "https://starsign16.com/?q={search_term_string}",
-      "query-input": "required name=search_term_string"
+    "applicationCategory": "FinanceApplication, UtilitiesApplication",
+    "operatingSystem": "All",
+    "description": "Smart, privacy-first utility toolkit running 100% client-side in your browser."
+  }
+  </script>
+
+  <style>
+    .hub-title { margin-bottom: 8px; font-size: 1.85rem; font-weight: 700; color: var(--text-main); }
+    .hub-desc { color: var(--text-muted); margin-bottom: 28px; font-size: 1rem; }
+    .section-title { font-size: 1.25rem; font-weight: 600; color: var(--text-main); margin: 36px 0 16px 0; }
+    .tool-grid { display: grid; grid-template-columns: 1fr; gap: 18px; }
+    @media (min-width: 640px) { .tool-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 900px) { .tool-grid { grid-template-columns: repeat(3, 1fr); } }
+    .tool-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 20px;
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.2s ease;
     }
-  }
-  </script>
+    .tool-card:hover { border-color: var(--accent-blue); transform: translateY(-2px); }
+    .tool-card.featured {
+      border-color: rgba(245, 158, 11, 0.4);
+      background: linear-gradient(180deg, rgba(245, 158, 11, 0.05) 0%, var(--bg-card) 100%);
+    }
+    .tool-tag {
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 4px;
+      width: fit-content;
+      margin-bottom: 10px;
+      background-color: rgba(59, 130, 246, 0.15);
+      color: var(--accent-blue);
+    }
+    .tool-tag.gold { background-color: rgba(245, 158, 11, 0.15); color: var(--accent-gold); }
+    .tool-tag.purple { background-color: rgba(168, 85, 247, 0.15); color: #C084FC; }
+    .tool-name { font-size: 1.15rem; font-weight: 700; color: var(--text-main); margin-bottom: 6px; }
+    .tool-summary { font-size: 0.88rem; color: var(--text-muted); line-height: 1.45; }
+    .arrow-link { margin-top: 14px; font-size: 0.82rem; font-weight: 600; color: var(--accent-gold); }
+    .header-right { display: flex; align-items: center; gap: 10px; }
+    .btn-game {
+      font-size: 0.82rem;
+      color: var(--accent-gold);
+      text-decoration: none;
+      padding: 6px 12px;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      border-radius: 6px;
+      background-color: rgba(245, 158, 11, 0.08);
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+    .btn-game:hover { background-color: rgba(245, 158, 11, 0.2); }
 
-  <!-- 구조화 데이터 (Schema.org FAQPage: 애드센스 가치 판정 및 리치 스니펫 보강) -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {
-        "@type": "Question",
-        "name": "스마트 계산기 툴킷의 모든 도구는 최신 2026년 법령과 세법을 준수하나요?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "네, 2026년 최저시급(10,030원), 개정 공인중개사법 중개보수 상한 요율, 근속연수공제 및 환산급여 소득공제를 반영한 퇴직소득세, 최신 4대 보험 요율을 실시간 JSON 데이터베이스와 연동하여 정확하게 반영합니다."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "입력한 연봉이나 금융 데이터가 외부 서버에 기록되나요?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "아닙니다. 스마트 계산기 툴킷의 모든 연산은 사용자의 웹 브라우저(Client-side) 메모리 내부에서만 즉각 실행되며, 일체의 입력값이나 결과가 서버에 저장되거나 전송되지 않아 안심하고 이용하실 수 있습니다."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "별도의 회원가입이나 비용 결제가 필요한가요?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "아닙니다. 6대 전문 계산기와 단위 변환기, 브레인 퍼즐을 포함한 전 기능을 로그인 없이 영구히 무료로 무제한 이용하실 수 있습니다."
-        }
-      }
-    ]
-  }
-  </script>
-
-  <script src="https://cdn.tailwindcss.com"></script>
+    /* Feature 3-Grid */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      margin: 24px 0 32px 0;
+    }
+    @media (min-width: 768px) {
+      .feature-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    .feature-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 20px;
+    }
+    .feature-card h3 {
+      font-size: 1rem;
+      color: var(--text-main);
+      margin-bottom: 8px;
+    }
+    .feature-card p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+  </style>
 </head>
-<body class="bg-[#F1F5F9] text-slate-800 min-h-screen">
-  <div class="max-w-4xl mx-auto px-4 py-10 md:py-14">
-
-    <!-- 상단 헤더 영역 -->
-    <header class="text-center mb-10 relative">
-      <!-- 2048 미니 게임 우측 상단 배치 (체류시간 확보용 서브 버튼) -->
-      <div class="flex justify-end mb-3">
-        <a href="./game-2048.html" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold bg-white border border-slate-200 text-slate-600 shadow-sm hover:border-blue-400 hover:text-blue-600 transition-all">
-          <span>🎮</span> 머리 식히기 (2048 게임)
-        </a>
+<body>
+  <header>
+    <div class="container header-content">
+      <a href="/" class="logo"><span>★</span> Starsign16 <span>Toolkit</span></a>
+      <div class="header-right">
+        <a href="/tools/game-2048" class="btn-game">Play 2048 🎮</a>
+        <a href="/ko" class="lang-switch">한국어 (KR) 🇰🇷</a>
       </div>
+    </div>
+  </header>
 
-      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200 mb-4">
-        <span class="w-2 h-2 rounded-full bg-blue-600 animate-pulse"></span>
-        <span id="globalYearBadge">2026년 법령·세율 자동 반영</span>
-      </div>
+  <main class="container">
+    <h1 class="hub-title">Smart Utilities & Calculators</h1>
+    <p class="hub-desc">Zero-server, zero-latency micro tools running entirely in your browser.</p>
 
-      <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight">
-        스마트 계산기 툴킷
-      </h1>
-      <p class="mt-3 text-slate-600 text-sm md:text-base max-w-lg mx-auto leading-relaxed">
-        복잡한 법정 요율과 세법 개정을 실시간으로 반영하여 가장 정확한 실수령액과 비용을 산출합니다.
-      </p>
-    </header>
-
-    <!-- 핵심 6대 계산기 카드 그리드 (전문 유틸리티 집중 배치) -->
-    <main class="grid grid-cols-1 md:grid-cols-2 gap-5">
-
-      <!-- 카드 1: 예·적금 계산기 -->
-      <a href="./savings.html" class="block p-6 bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md hover:border-blue-400 transition-all group">
-        <div class="flex items-center justify-between mb-4">
-          <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 font-bold text-lg">₩</div>
-          <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">최신 세법 반영</span>
-        </div>
-        <h2 class="text-lg font-bold text-slate-800 group-hover:text-blue-600 transition-colors">예·적금 만기 이자 계산기</h2>
-        <p class="mt-2 text-xs text-slate-500 leading-relaxed">정기예금(단리/복리), 정기적금의 일반과세(15.4%), 세금우대, 비과세 조건별 세후 수령액을 비교합니다.</p>
-        <div class="mt-4 flex items-center text-xs font-semibold text-blue-600 group-hover:translate-x-1 transition-transform">계산기 바로가기 &rarr;</div>
-      </a>
-
-      <!-- 카드 2: 부동산 중개보수 계산기 -->
-      <a href="./real-estate.html" class="block p-6 bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md hover:border-blue-400 transition-all group">
-        <div class="flex items-center justify-between mb-4">
-          <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 font-bold text-lg">🏢</div>
-          <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">공인중개사법 개정안</span>
-        </div>
-        <h2 class="text-lg font-bold text-slate-800 group-hover:text-blue-600 transition-colors">부동산 중개보수 계산기</h2>
-        <p class="mt-2 text-xs text-slate-500 leading-relaxed">주택, 오피스텔, 토지 매매 및 전·월세 환산보증금 기준 법정 상한 복비와 부가세(VAT)를 산출합니다.</p>
-        <div class="mt-4 flex items-center text-xs font-semibold text-blue-600 group-hover:translate-x-1 transition-transform">계산기 바로가기 &rarr;</div>
-      </a>
-
-      <!-- 카드 3: 단위 변환기 -->
-      <a href="./converter.html" class="block p-6 bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md hover:border-blue-400 transition-all group">
-        <div class="flex items-center justify-between mb-4">
-          <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 font-bold text-lg">📐</div>
-          <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200">국제표준규격</span>
-        </div>
-        <h2 class="text-lg font-bold text-slate-800 group-hover:text-blue-600 transition-colors">스마트 단위 변환기 (평수·도량형)</h2>
-        <p class="mt-2 text-xs text-slate-500 leading-relaxed">아파트 전용 84㎡ ↔ 공급 평형 환산부터 해외 직구 파운드, 온스, 부피, 온도까지 실시간 일괄 변환합니다.</p>
-        <div class="mt-4 flex items-center text-xs font-semibold text-blue-600 group-hover:translate-x-1 transition-transform">변환기 바로가기 &rarr;</div>
-      </a>
-
-      <!-- 카드 4: 퇴직금 계산기 -->
-      <a href="./severance.html" class="block p-6 bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md hover:border-blue-400 transition-all group">
-        <div class="flex items-center justify-between mb-4">
-          <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 font-bold text-lg">💼</div>
-          <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">근로기준법 표준</span>
-        </div>
-        <h2 class="text-lg font-bold text-slate-800 group-hover:text-blue-600 transition-colors">퇴직금 & 실수령액 계산기</h2>
-        <p class="mt-2 text-xs text-slate-500 leading-relaxed">재직일수 자동 계산 및 2026년 개정 근속연수공제·환산급여 소득공제를 반영한 세후 실수령액을 산출합니다.</p>
-        <div class="mt-4 flex items-center text-xs font-semibold text-blue-600 group-hover:translate-x-1 transition-transform">퇴직금 계산하기 &rarr;</div>
-      </a>
-
-      <!-- 카드 5: 연봉 실수령액 계산기 -->
-      <a href="./salary.html" class="block p-6 bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md hover:border-blue-400 transition-all group">
-        <div class="flex items-center justify-between mb-4">
-          <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 font-bold text-lg">💰</div>
-          <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">4대보험 최신 요율</span>
-        </div>
-        <h2 class="text-lg font-bold text-slate-800 group-hover:text-blue-600 transition-colors">연봉 실수령액 & 4대보험 계산기</h2>
-        <p class="mt-2 text-xs text-slate-500 leading-relaxed">국민연금 상한액, 건보·장기요양·고용보험 및 근로소득 간이세액 공제 후 매월 통장에 입금되는 실급여를 계산합니다.</p>
-        <div class="mt-4 flex items-center text-xs font-semibold text-blue-600 group-hover:translate-x-1 transition-transform">실수령액 계산하기 &rarr;</div>
-      </a>
-
-      <!-- 카드 6: 시급 & 주휴수당 계산기 -->
-      <a href="./hourly.html" class="block p-6 bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md hover:border-blue-400 transition-all group">
-        <div class="flex items-center justify-between mb-4">
-          <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 font-bold text-lg">⏱️</div>
-          <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200">2026 최저 10,030원</span>
-        </div>
-        <h2 class="text-lg font-bold text-slate-800 group-hover:text-blue-600 transition-colors">시급 & 주휴수당 계산기 (알바 급여)</h2>
-        <p class="mt-2 text-xs text-slate-500 leading-relaxed">주 15시간 이상 주휴시간 자동 산정, 월 환산 급여, 프리랜서 3.3% 원천징수 및 4대보험 공제 후 실수령액을 산출합니다.</p>
-        <div class="mt-4 flex items-center text-xs font-semibold text-blue-600 group-hover:translate-x-1 transition-transform">시급 계산하기 &rarr;</div>
-      </a>
-
-    </main>
-
-    <!-- [애드센스 가치 보강] 도구 활용 안내 & 인덱싱용 상세 본문 섹션 -->
-    <section class="mt-14 pt-10 border-t border-slate-200">
-      <div class="bg-white rounded-2xl border border-slate-200 p-6 md:p-8 shadow-sm space-y-6">
+    <!-- Global Tools -->
+    <h2 class="section-title">🌐 Global Utility Suite</h2>
+    <div class="tool-grid">
+      <a href="/tools/loan-compound-calc" class="tool-card">
         <div>
-          <h2 class="text-xl font-bold text-slate-900 tracking-tight">
-            스마트 계산기 툴킷: 정확한 기준 데이터와 실생활 연산의 결합
-          </h2>
-          <p class="mt-2 text-xs md:text-sm text-slate-600 leading-relaxed">
-            본 툴킷은 일상에서 마주하는 복잡한 세법 규정과 법정 수수료를 한곳에서 쉽고 빠르게 검증할 수 있도록 제작된 무료 웹 유틸리티 모음입니다. 
-            매년 바뀌는 최저임금 기준부터 부동산 복비 상한 요율, 퇴직소득세 근속연수공제에 이르기까지 2026년 공시 데이터를 기반으로 정밀한 수식을 제공합니다.
-          </p>
+          <span class="tool-tag">Finance</span>
+          <h3 class="tool-name">Loan & Compound Engine</h3>
+          <p class="tool-summary">Fixed monthly amortizations and multi-year compound interest growth simulator.</p>
         </div>
+        <div class="arrow-link">Open Tool →</div>
+      </a>
+      <a href="/tools/percentage-calc" class="tool-card">
+        <div>
+          <span class="tool-tag">Finance</span>
+          <h3 class="tool-name">Percentage & Margin</h3>
+          <p class="tool-summary">Calculate proportions, price markups, and gross retail profit margins.</p>
+        </div>
+        <div class="arrow-link">Open Tool →</div>
+      </a>
+      <a href="/tools/word-counter" class="tool-card">
+        <div>
+          <span class="tool-tag">Productivity</span>
+          <h3 class="tool-name">Word & Character Counter</h3>
+          <p class="tool-summary">Live word, byte, character count with reading time estimates.</p>
+        </div>
+        <div class="arrow-link">Open Tool →</div>
+      </a>
+      <a href="/tools/unit-converter" class="tool-card">
+        <div>
+          <span class="tool-tag">Productivity</span>
+          <h3 class="tool-name">Universal Unit Converter</h3>
+          <p class="tool-summary">Real-time conversions for length, area, weight, and volume units.</p>
+        </div>
+        <div class="arrow-link">Open Tool →</div>
+      </a>
+      <a href="/tools/dday-calculator" class="tool-card">
+        <div>
+          <span class="tool-tag">Productivity</span>
+          <h3 class="tool-name">D-Day & Working Days</h3>
+          <p class="tool-summary">Event countdowns and business working day schedules without weekends.</p>
+        </div>
+        <div class="arrow-link">Open Tool →</div>
+      </a>
+      <a href="/tools/qr-generator" class="tool-card">
+        <div>
+          <span class="tool-tag">Productivity</span>
+          <h3 class="tool-name">Vector QR Code Generator</h3>
+          <p class="tool-summary">Instant high-res QR codes for links, plain text, and Wi-Fi networks.</p>
+        </div>
+        <div class="arrow-link">Open Tool →</div>
+      </a>
+      <a href="/tools/json-formatter" class="tool-card">
+        <div>
+          <span class="tool-tag">Developer</span>
+          <h3 class="tool-name">JSON Formatter & Validator</h3>
+          <p class="tool-summary">Beautify, inspect, and minify JSON payloads with live syntax detection.</p>
+        </div>
+        <div class="arrow-link">Open Tool →</div>
+      </a>
+      <a href="/tools/text-formatter" class="tool-card">
+        <div>
+          <span class="tool-tag">Developer</span>
+          <h3 class="tool-name">Text Formatter & Slugifier</h3>
+          <p class="tool-summary">Case conversions, line sorting, and clean URL slug generation.</p>
+        </div>
+        <div class="arrow-link">Open Tool →</div>
+      </a>
+      <a href="/tools/image-compressor" class="tool-card">
+        <div>
+          <span class="tool-tag">Media</span>
+          <h3 class="tool-name">Image Compressor & WebP</h3>
+          <p class="tool-summary">Compress JPG, PNG, and WebP images locally via client HTML5 Canvas.</p>
+        </div>
+        <div class="arrow-link">Open Tool →</div>
+      </a>
+      <a href="/tools/game-2048" class="tool-card">
+        <div>
+          <span class="tool-tag purple">Casual Brain</span>
+          <h3 class="tool-name">2048 Classic Web Puzzle</h3>
+          <p class="tool-summary">Slide identical numbers, merge powers of two, and reach the 2048 milestone in high-speed dark mode.</p>
+        </div>
+        <div class="arrow-link">Play Game →</div>
+      </a>
+    </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
-          <div class="p-4 rounded-xl bg-slate-50 border border-slate-100">
-            <h3 class="text-xs font-bold text-slate-800 mb-1">독립적 로직 분리</h3>
-            <p class="text-xs text-slate-500 leading-relaxed">
-              법정 요율과 세법 데이터를 JSON 기반으로 중앙 관리하여 법 개정 시 실시간으로 정확한 수치를 갱신합니다.
-            </p>
-          </div>
-          <div class="p-4 rounded-xl bg-slate-50 border border-slate-100">
-            <h3 class="text-xs font-bold text-slate-800 mb-1">철저한 개인정보 보호</h3>
-            <p class="text-xs text-slate-500 leading-relaxed">
-              모든 금융 및 급여 계산은 사용자의 기기 브라우저 메모리상에서만 연산되며 외부 서버에 전송되지 않습니다.
-            </p>
-          </div>
-          <div class="p-4 rounded-xl bg-slate-50 border border-slate-100">
-            <h3 class="text-xs font-bold text-slate-800 mb-1">크로스 플랫폼 최적화</h3>
-            <p class="text-xs text-slate-500 leading-relaxed">
-              모바일, 태블릿, PC 등 모든 디바이스에서 별도 앱 설치 없이 반응형 UI로 즉시 사용할 수 있습니다.
-            </p>
-          </div>
+    <!-- Korea Financial Suite Banner -->
+    <h2 class="section-title">🇰🇷 Korea Financial Suite</h2>
+    <div class="tool-grid">
+      <a href="/ko" class="tool-card featured">
+        <div>
+          <span class="tool-tag gold">Localized Hub</span>
+          <h3 class="tool-name">대한민국 스마트 금융 & 세무 허브 (/ko)</h3>
+          <p class="tool-summary">부동산 복비, 취득세, 2026 연봉 실수령액, 주휴수당, 퇴직금 등 한국 세법 맞춤형 툴킷 전체보기.</p>
         </div>
+        <div class="arrow-link">Explore Korean Tools →</div>
+      </a>
+    </div>
 
-        <!-- FAQ 아코디언/블록 영역 -->
-        <div class="pt-4 border-t border-slate-100">
-          <h3 class="text-sm font-bold text-slate-800 mb-3">자주 묻는 질문 (FAQ)</h3>
-          <div class="space-y-3">
-            <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-100 text-xs">
-              <p class="font-bold text-slate-700 mb-1">Q. 계산 공식과 적용 요율은 최신 기준인가요?</p>
-              <p class="text-slate-500 leading-relaxed">
-                네, 2026년 1월부터 적용되는 최저시급 10,030원, 공인중개사법 개정 상한 요율, 국민연금 및 건강보험 최신 부과 요율을 기준 데이터베이스에 직접 연동하여 상시 유지보수하고 있습니다.
-              </p>
-            </div>
-            <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-100 text-xs">
-              <p class="font-bold text-slate-700 mb-1">Q. 모든 도구를 제한 없이 무료로 이용할 수 있나요?</p>
-              <p class="text-slate-500 leading-relaxed">
-                별도의 유료 결제나 로그인 없이 누구나 자유롭게 모든 계산기와 단위 변환기를 무제한으로 사용하실 수 있습니다.
-              </p>
-            </div>
-            <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-100 text-xs">
-              <p class="font-bold text-slate-700 mb-1">Q. 계산 결과가 법적 효력을 갖나요?</p>
-              <p class="text-slate-500 leading-relaxed">
-                본 계산기는 공인된 법령과 고시를 준수하여 설계되었으나, 개인별 비과세 항목 차이나 특약 사항에 따라 실제 청구액과 미세한 차이가 발생할 수 있으므로 최종 결정 전 참고 지표로 활용하시기 바랍니다.
-              </p>
-            </div>
-          </div>
+    <!-- Architecture & SEO Value Section -->
+    <section class="seo-section">
+      <h2>Why Starsign16 Architecture Prioritizes Client-Side Execution</h2>
+      <p>Starsign16 Toolkit provides lightweight, privacy-focused computational tools. All operations run directly in your web browser with zero server data transfer, delivering private, instant, and offline-capable utilities.</p>
+
+      <div class="feature-grid">
+        <div class="feature-card">
+          <h3>🔒 100% Private Sandbox</h3>
+          <p>Your inputs, confidential code snippets, financial metrics, and photos never leave your device. All calculations run strictly in your browser's local sandbox memory.</p>
         </div>
+        <div class="feature-card">
+          <h3>⚡ Zero Server Latency</h3>
+          <p>By removing network upload delays and remote server queue times, computation executes at local hardware speed, delivering immediate results even on weak connections.</p>
+        </div>
+        <div class="feature-card">
+          <h3>✨ Zero Subscriptions or Quotas</h3>
+          <p>No paywalls, account registrations, or daily conversion caps. Unlimited utility access powered entirely by modern HTML5, Canvas, and WebAssembly standards.</p>
+        </div>
+      </div>
+
+      <h3 style="font-size: 1.15rem; color: var(--text-main); margin: 32px 0 16px 0;">Frequently Asked Questions</h3>
+      <div class="faq-item">
+        <div class="faq-question">Q. Are my uploaded files or text saved to any database?</div>
+        <div class="faq-answer">Never. Starsign16 Toolkit has no backend database for user content. Once you close or reload the browser tab, all processed data is completely discarded from temporary memory.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">Q. Does Starsign16 work offline?</div>
+        <div class="faq-answer">Yes. Once a tool's static assets are cached in your browser, all core calculation and client-side conversion logic run without an active internet connection.</div>
       </div>
     </section>
+  </main>
 
-    <!-- [순수 툴킷 최적화 푸터] 외부 블로그 연결 배제 및 4대 신뢰성 링크 일원화 -->
-    <footer class="mt-14 pt-8 pb-12 border-t border-slate-200 text-xs text-slate-500">
-      <div class="flex flex-col md:flex-row items-center justify-between gap-6">
-        
-        <div class="space-y-1.5 text-center md:text-left">
-          <p class="font-bold text-slate-700 text-sm">Calc Toolkit</p>
-          <p class="text-slate-400">데이터 출처: 대한민국 법제처 국가법령정보센터 및 국세청 고시 요율</p>
-          <p class="text-[11px] text-slate-400">© 2026 Calc Toolkit. 2026년 법정 기준 준수.</p>
-        </div>
-
-        <!-- 애드센스 심사용 필수 4대 신뢰성 내부 링크 -->
-        <nav class="flex items-center gap-3 font-semibold text-slate-600">
-          <a href="./about.html" class="hover:text-blue-600 underline-offset-4 hover:underline transition-colors">소개</a>
-          <span class="text-slate-300">|</span>
-          <a href="./contact.html" class="hover:text-blue-600 underline-offset-4 hover:underline transition-colors">문의</a>
-          <span class="text-slate-300">|</span>
-          <a href="./privacy.html" class="hover:text-blue-600 underline-offset-4 hover:underline transition-colors">개인정보처리방침</a>
-          <span class="text-slate-300">|</span>
-          <a href="./terms.html" class="hover:text-blue-600 underline-offset-4 hover:underline transition-colors">이용약관</a>
-        </nav>
-
-      </div>
-    </footer>
-
-  </div>
+  <footer>
+    <div class="container">
+      <p>© 2026 Starsign16. All rights reserved.</p>
+      <p style="margin-top: 8px;">
+        <a href="/legal/about" style="color: var(--text-muted); text-decoration: none; margin: 0 8px;">About</a> | 
+        <a href="/legal/privacy" style="color: var(--text-muted); text-decoration: none; margin: 0 8px;">Privacy Policy</a> | 
+        <a href="/legal/terms" style="color: var(--text-muted); text-decoration: none; margin: 0 8px;">Terms of Service</a> | 
+        <a href="/legal/contact" style="color: var(--text-muted); text-decoration: none; margin: 0 8px;">Contact</a>
+      </p>
+    </div>
+  </footer>
 </body>
 </html>

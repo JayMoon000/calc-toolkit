@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <!-- SEO: 최우선 검색어 'Unit Converter' 전진 배치 및 롱테일 결합 -->
+  <title>Free Unit Converter - Metric to Imperial & Precision Conversion | ToolLab</title>
+  <meta name="description" content="Fast, high-precision online unit converter. Easily convert units of measure between Metric and Imperial (Length, Weight, Area, Volume, Temperature) with 100% private client-side processing." />
+  <meta name="keywords" content="unit converter, metric to imperial converter, precision unit converter, converter units of measure, imperial system calculator, convert to imperial units, imperial converter, sqft to sqm, lbs to kg, feet to meters, fahrenheit to celsius, ToolLab" />
+  
+  <!-- Tailwind CDN & Config -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class'
+    }
+  </script>
+
+  <!-- Open Graph & Rich Snippets -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="ToolLab" />
+  <meta property="og:title" content="Free Unit Converter - Metric to Imperial & Precision Conversion" />
+  <meta property="og:description" content="Fast, high-precision online unit converter. Instant local browser calculation with zero server latency." />
+  <meta property="og:url" content="https://Starsign16 Toolkit/tools/unit-converter.html" />
+  <meta property="og:image" content="https://Starsign16 Toolkit/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Free Unit Converter - Metric to Imperial & Precision Conversion" />
+  <meta name="twitter:description" content="Fast, high-precision online unit converter. Instant local browser calculation with zero server latency." />
+  <meta name="twitter:image" content="https://Starsign16 Toolkit/og-image.png" />
+  <link rel="canonical" href="https://starsign16.com/tools/unit-converter">
+
+  <!-- Schema.org FAQ & SoftwareApplication JSON-LD (검색 리치 스니펫) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebApplication",
+        "name": "ToolLab Unit Converter",
+        "url": "https://Starsign16 Toolkit/tools/unit-converter.html",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "All",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "description": "Accurate, client-side online unit converter for metric and imperial measurement systems."
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "How do I accurately convert metric to imperial units?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Select your measurement category, enter the value, and select your target imperial unit. The calculator uses standardized international conversion ratios (e.g., 1 inch = 25.4 mm, 1 lb = 0.45359237 kg) to deliver exact results."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does this tool require data transmission to an external server?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. All calculations execute 100% locally inside your browser via client-side JavaScript. No data or input values are ever sent across a network, ensuring zero latency and total privacy."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What is the difference between an Acre and a Hectare?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "An acre (standard US/UK land unit) is approximately 4,046.86 m². A hectare (metric standard) is exactly 10,000 m² (about 2.471 acres), making a hectare roughly 2.5 times larger than an acre."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+  
+  <!-- ToolLab Analytics Tracker -->
+  <script src="/js/analytics.js"></script>
+
+</head>
+<body class="bg-slate-950 text-slate-200 min-h-screen py-6 px-4 font-sans antialiased">
+  <div class="max-w-2xl mx-auto">
+    
+    <!-- Main Converter Card -->
+    <div class="bg-slate-900 rounded-2xl shadow-xl border border-slate-800 p-5 md:p-7">
+      
+      <!-- Header Navigation -->
+      <div class="flex items-center justify-between pb-4 mb-6 border-b border-slate-800">
+        <div class="flex items-center gap-2.5">
+          <a href="../index.html" class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors" title="ToolLab Home">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+            </svg>
+          </a>
+          <div>
+            <span class="text-[10px] font-bold tracking-wider text-blue-400 uppercase block">Starsign16 Toolkit</span>
+            <h1 class="text-lg md:text-xl font-extrabold text-slate-100">Free Online Unit Converter</h1>
+          </div>
+        </div>
+        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-950/80 text-blue-400 border border-blue-800">
+          SI Standard
+        </span>
+      </div>
+
+      <!-- Category Tab Bar -->
+      <div class="grid grid-cols-5 gap-1 bg-slate-950 p-1 rounded-xl text-xs font-bold text-slate-400 mb-6 border border-slate-800/80">
+        <button class="cat-btn py-2 rounded-lg transition-colors bg-blue-600 text-white shadow" data-cat="area">Area</button>
+        <button class="cat-btn py-2 rounded-lg transition-colors hover:text-slate-200" data-cat="length">Length</button>
+        <button class="cat-btn py-2 rounded-lg transition-colors hover:text-slate-200" data-cat="weight">Weight</button>
+        <button class="cat-btn py-2 rounded-lg transition-colors hover:text-slate-200" data-cat="volume">Volume</button>
+        <button class="cat-btn py-2 rounded-lg transition-colors hover:text-slate-200" data-cat="temperature">Temp</button>
+      </div>
+
+      <!-- Conversion Interactive Inputs -->
+      <div class="space-y-4">
+        <!-- Input Value -->
+        <div class="p-4 bg-slate-950/70 border border-slate-800 rounded-xl space-y-2">
+          <div class="flex justify-between items-center text-xs font-semibold text-slate-400">
+            <span>From</span>
+            <select id="fromUnit" class="bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1 text-slate-200 font-bold outline-none focus:border-blue-500"></select>
+          </div>
+          <input type="number" id="fromValue" value="1000" class="w-full text-2xl font-black bg-transparent text-slate-100 outline-none focus:text-blue-400" placeholder="0" />
+        </div>
+
+        <!-- Swap Button -->
+        <div class="flex justify-center -my-2 relative z-10">
+          <button id="swapBtn" class="w-9 h-9 rounded-full bg-slate-800 border border-slate-700 shadow-md hover:border-blue-500 hover:text-blue-400 flex items-center justify-center text-slate-300 transition-all active:scale-95" title="Swap Units">
+            ⇅
+          </button>
+        </div>
+
+        <!-- Output Result -->
+        <div class="p-4 bg-blue-950/30 border border-blue-900/60 rounded-xl space-y-2">
+          <div class="flex justify-between items-center text-xs font-semibold text-blue-400">
+            <span>Result</span>
+            <select id="toUnit" class="bg-slate-900 border border-blue-800 rounded-lg px-2.5 py-1 text-blue-300 font-bold outline-none focus:border-blue-400"></select>
+          </div>
+          <div id="toValue" class="text-2xl font-black text-blue-400 truncate">0</div>
+        </div>
+      </div>
+
+      <!-- Multiple Unit Overview Grid -->
+      <div class="mt-6 pt-5 border-t border-slate-800">
+        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2.5">Instant Multi-Unit Comparison</h3>
+        <div id="multiResults" class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs"></div>
+      </div>
+
+    </div>
+
+    <!-- SEO / Reference Article Section -->
+    <article class="mt-8 space-y-6 text-xs md:text-sm text-slate-400 leading-relaxed">
+      
+      <!-- 0. Comprehensive Measurement Overview (SEO Boost) -->
+      <section class="bg-slate-900 rounded-2xl border border-slate-800 p-5 md:p-6 shadow-md space-y-3">
+        <h2 class="text-base font-extrabold text-slate-100 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-blue-400"></span>
+          Precision Multi-Unit Conversion Engine
+        </h2>
+        <p class="text-xs text-slate-300 leading-relaxed">
+          ToolLab provides an instant, universal converter for all standard units of measure. Whether you need to convert imperial units to metric equivalents for engineering, calculate room floor plans (sq ft to m²), or check international baking temperatures, our calculator computes high-precision conversions instantly in your browser with zero latency.
+        </p>
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 pt-2 text-[11px] text-slate-400">
+          <div class="bg-slate-950/50 p-2 rounded border border-slate-800/60">• <strong>Length:</strong> mm, cm, m, km, in, ft, yd, mi</div>
+          <div class="bg-slate-950/50 p-2 rounded border border-slate-800/60">• <strong>Weight:</strong> mg, g, kg, oz, lb, ton</div>
+          <div class="bg-slate-950/50 p-2 rounded border border-slate-800/60">• <strong>Area:</strong> sq ft, sq m, acre, hectare</div>
+          <div class="bg-slate-950/50 p-2 rounded border border-slate-800/60">• <strong>Volume:</strong> mL, L, gal, fl oz, cup</div>
+          <div class="bg-slate-950/50 p-2 rounded border border-slate-800/60">• <strong>Temperature:</strong> °C, °F, Kelvin</div>
+          <div class="bg-slate-950/50 p-2 rounded border border-slate-800/60">• <strong>Privacy:</strong> 100% Client-side JS</div>
+        </div>
+      </section>
+
+      <!-- 1. Real Estate & Floor Space Reference Table -->
+      <section class="bg-slate-900 rounded-2xl border border-slate-800 p-5 md:p-6 shadow-md">
+        <h2 class="text-base font-extrabold text-slate-100 mb-3 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+          Standard Area & Real Estate Conversion Reference
+        </h2>
+        <p class="text-xs text-slate-400 mb-4">Quick lookup guide for architectural, residential, and commercial floor plans across international standards.</p>
+        
+        <div class="overflow-x-auto">
+          <table class="w-full text-xs text-left border-collapse">
+            <thead>
+              <tr class="bg-slate-950 border-b border-slate-800 text-slate-300 font-bold">
+                <th class="p-2.5">Square Feet (sq ft)</th>
+                <th class="p-2.5">Square Meters (m²)</th>
+                <th class="p-2.5">Square Yards (yd²)</th>
+                <th class="p-2.5">Typical Context</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-800/60 text-slate-300">
+              <tr>
+                <td class="p-2.5 font-bold text-slate-100">500 sq ft</td>
+                <td class="p-2.5 text-blue-400 font-medium">46.45 m²</td>
+                <td class="p-2.5 text-slate-200">55.56 yd²</td>
+                <td class="p-2.5 text-slate-400">Studio / 1-Bedroom Apartment</td>
+              </tr>
+              <tr>
+                <td class="p-2.5 font-bold text-slate-100">800 sq ft</td>
+                <td class="p-2.5 text-blue-400 font-medium">74.32 m²</td>
+                <td class="p-2.5 text-slate-200">88.89 yd²</td>
+                <td class="p-2.5 text-slate-400">Standard 2-Bedroom Condo</td>
+              </tr>
+              <tr>
+                <td class="p-2.5 font-bold text-slate-100">1,200 sq ft</td>
+                <td class="p-2.5 text-blue-400 font-medium">111.48 m²</td>
+                <td class="p-2.5 text-slate-200">133.33 yd²</td>
+                <td class="p-2.5 text-slate-400">Spacious 3-Bedroom Family Home</td>
+              </tr>
+              <tr>
+                <td class="p-2.5 font-bold text-slate-100">2,500 sq ft</td>
+                <td class="p-2.5 text-blue-400 font-medium">232.26 m²</td>
+                <td class="p-2.5 text-slate-200">277.78 yd²</td>
+                <td class="p-2.5 text-slate-400">Large Single-Family Detached Residence</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 2. Essential Cross-Border Conversion Guide -->
+      <section class="bg-slate-900 rounded-2xl border border-slate-800 p-5 md:p-6 shadow-md space-y-3">
+        <h2 class="text-base font-extrabold text-slate-100 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+          Essential Practical Conversion Guides
+        </h2>
+        
+        <div class="space-y-2.5 text-xs leading-relaxed">
+          <div class="p-3 bg-slate-950/60 rounded-xl border border-slate-800/80">
+            <h3 class="font-bold text-slate-200 mb-1">1. Weight & Mass: Pounds (lb) vs. Kilograms (kg)</h3>
+            <p>One pound corresponds to exactly 0.45359237 kg. When shipping internationally or traveling, multiply kilograms by 2.2 for an approximate weight in pounds (e.g., a 23 kg airline check-in allowance is roughly 50.7 lbs).</p>
+          </div>
+
+          <div class="p-3 bg-slate-950/60 rounded-xl border border-slate-800/80">
+            <h3 class="font-bold text-slate-200 mb-1">2. Culinary Temperature: Fahrenheit (°F) vs. Celsius (°C)</h3>
+            <p>Baking instructions in US recipes use Fahrenheit, while European standards use Celsius. Common benchmarks include 350°F (177°C moderate oven), 400°F (204°C hot oven), and 450°F (232°C high-heat roasting).</p>
+          </div>
+
+          <div class="p-3 bg-slate-950/60 rounded-xl border border-slate-800/80">
+            <h3 class="font-bold text-slate-200 mb-1">3. Liquid Measures: US Fluid Ounces vs. Metric Milliliters</h3>
+            <p>One US fluid ounce equals 29.57 mL. Beverage sizes, skincare packaging, and cooking oils regularly rely on this measurement (e.g., 16 US fl oz is roughly 473 mL, standard US pint).</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. Frequently Asked Questions -->
+      <section class="bg-slate-900 rounded-2xl border border-slate-800 p-5 md:p-6 shadow-md">
+        <h2 class="text-base font-extrabold text-slate-100 mb-4 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-indigo-400"></span>
+          Frequently Asked Questions (FAQ)
+        </h2>
+
+        <div class="space-y-3.5 text-xs">
+          <div>
+            <h3 class="font-bold text-slate-200 mb-1">Q. Does this tool require data transmission to an external server?</h3>
+            <p class="text-slate-400">No. All calculations execute 100% locally inside your browser via client-side JavaScript. No data or input values are ever sent across a network, ensuring zero latency and total privacy.</p>
+          </div>
+          <div class="border-t border-slate-800 pt-3">
+            <h3 class="font-bold text-slate-200 mb-1">Q. How accurate are the conversion coefficients used here?</h3>
+            <p class="text-slate-400">The conversion rates strictly adhere to international definitions set by the General Conference on Weights and Measures (CGPM) and the National Institute of Standards and Technology (NIST).</p>
+          </div>
+          <div class="border-t border-slate-800 pt-3">
+            <h3 class="font-bold text-slate-200 mb-1">Q. What is the difference between an Acre and a Hectare?</h3>
+            <p class="text-slate-400">An acre (standard US/UK land unit) is approximately 4,046.86 m². A hectare (metric standard) is exactly 10,000 m² (about 2.471 acres), making a hectare roughly 2.5 times larger than an acre.</p>
+          </div>
+        </div>
+      </section>
+
+    </article>
+
+    <!-- Standard Minimal Footer -->
+    
+      <!-- ToolLab Clean Ad Unit -->
+
+      <footer class="mt-12 pt-6 pb-8 border-t border-slate-800 text-xs text-slate-500">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-3 text-center md:text-left">
+        <div class="space-y-0.5">
+          <p class="font-bold text-slate-400">Starsign16 Toolkit · Ultra-lightweight Utility Toolkit</p>
+          <p class="text-[11px]">Compliant with CGPM International System of Units (SI) & NIST conversion standards.</p>
+        </div>
+        <div class="flex items-center gap-3 font-semibold text-slate-400">
+          <a href="../about.html" class="hover:text-emerald-400 transition-colors">About</a>
+        <span>·</span>
+        <a href="../contact.html" class="hover:text-emerald-400 transition-colors">Contact</a>
+        <span>·</span>
+        <a href="../privacy.html" class="hover:text-emerald-400 transition-colors">Privacy</a>
+        <span>·</span>
+        <a href="../terms.html" class="hover:text-emerald-400 transition-colors">Terms</a>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- Decoupled Pure Engine -->
+  <script src="../js/utils/unitConverter.js"></script>
+
+  <!-- UI Event Binding -->
+  <script>
+    let currentCat = "area";
+
+    function populateSelects() {
+      const data = UNIT_DATA[currentCat];
+      const fromSel = document.getElementById("fromUnit");
+      const toSel = document.getElementById("toUnit");
+      fromSel.innerHTML = "";
+      toSel.innerHTML = "";
+
+      Object.entries(data.labels).forEach(([k, label]) => {
+        fromSel.add(new Option(label, k));
+        toSel.add(new Option(label, k));
+      });
+
+      fromSel.value = data.defaultFrom;
+      toSel.value = data.defaultTo;
+      document.getElementById("fromValue").value = data.defaultVal;
+    }
+
+    function calculate() {
+      const val = parseFloat(document.getElementById("fromValue").value);
+      const from = document.getElementById("fromUnit").value;
+      const to = document.getElementById("toUnit").value;
+      const toEl = document.getElementById("toValue");
+      const multiEl = document.getElementById("multiResults");
+
+      if (isNaN(val)) {
+        toEl.textContent = "0";
+        multiEl.innerHTML = "";
+        return;
+      }
+
+      const res = UnitConverter.convert(currentCat, val, from, to);
+      toEl.textContent = Number(res.toFixed(6)).toLocaleString(undefined, { maximumFractionDigits: 4 });
+
+      multiEl.innerHTML = "";
+      const labels = UNIT_DATA[currentCat].labels;
+      Object.keys(labels).forEach(k => {
+        if (k !== from) {
+          const v = UnitConverter.convert(currentCat, val, from, k);
+          const item = document.createElement("div");
+          item.className = "bg-slate-950/80 p-2.5 rounded-lg border border-slate-800/80 flex justify-between items-center";
+          item.innerHTML = `
+            <span class="text-slate-400 text-[11px]">${labels[k]}</span>
+            <span class="font-bold text-slate-200 text-xs">${Number(v.toFixed(6)).toLocaleString(undefined, { maximumFractionDigits: 4 })}</span>
+          `;
+          multiEl.appendChild(item);
+        }
+      });
+    }
+
+    document.querySelectorAll(".cat-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".cat-btn").forEach(b => {
+          b.className = "cat-btn py-2 rounded-lg transition-colors hover:text-slate-200";
+        });
+        btn.className = "cat-btn py-2 rounded-lg transition-colors bg-blue-600 text-white shadow";
+        currentCat = btn.dataset.cat;
+        populateSelects();
+        calculate();
+      });
+    });
+
+    document.getElementById("swapBtn").addEventListener("click", () => {
+      const fromSel = document.getElementById("fromUnit");
+      const toSel = document.getElementById("toUnit");
+      const temp = fromSel.value;
+      fromSel.value = toSel.value;
+      toSel.value = temp;
+      calculate();
+    });
+
+    document.getElementById("fromValue").addEventListener("input", calculate);
+    document.getElementById("fromUnit").addEventListener("change", calculate);
+    document.getElementById("toUnit").addEventListener("change", calculate);
+
+    populateSelects();
+    calculate();
+  </script>
+  <script src="../js/related-tools.js"></script>
+</body>
+</html>

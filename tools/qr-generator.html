@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Free QR Code Generator | SVG & High-Res PNG - ToolLab</title>
+  <meta name="description" content="Instant client-side QR code generator. Create custom QR codes for URLs, Wi-Fi passwords, digital vCards, and text with vector SVG and HD PNG download. 100% private." />
+  <meta name="keywords" content="qr code generator, wifi qr code, vcard qr code, vector qr svg, free qr code online, client side qr, ToolLab" />
+  
+      <!-- Tailwind CDN & Config -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class'
+    }
+  </script>
+
+  <!-- Open Graph & Rich Snippets -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="ToolLab" />
+  <meta property="og:title" content="Vector QR Code Generator | ToolLab" />
+  <meta property="og:description" content="Generate permanent static QR codes for links, Wi-Fi, and contacts with SVG and HD PNG downloads." />
+  <meta property="og:url" content="https://Starsign16 Toolkit/tools/qr-generator.html" />
+  <meta property="og:image" content="https://Starsign16 Toolkit/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Vector QR Code Generator | ToolLab" />
+  <meta name="twitter:description" content="Generate permanent static QR codes for links, Wi-Fi, and contacts with SVG and HD PNG downloads." />
+  <meta name="twitter:image" content="https://Starsign16 Toolkit/og-image.png" />
+  <link rel="canonical" href="https://starsign16.com/tools/qr-generator">
+
+  <!-- ToolLab Analytics Tracker -->
+  <script src="/js/analytics.js"></script>
+
+</head>
+<body class="bg-slate-950 text-slate-200 min-h-screen py-6 px-4 font-sans antialiased">
+  <div class="max-w-4xl mx-auto">
+    
+    <!-- Main Card -->
+    <div class="bg-slate-900 rounded-2xl shadow-xl border border-slate-800 p-5 md:p-7">
+      
+      <!-- Top Navigation -->
+      <div class="flex items-center justify-between pb-4 mb-5 border-b border-slate-800">
+        <div class="flex items-center gap-2.5">
+          <a href="../index.html" class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors" title="ToolLab Home">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+            </svg>
+          </a>
+          <div>
+            <span class="text-[10px] font-bold tracking-wider text-blue-400 uppercase block">Starsign16 Toolkit</span>
+            <h1 class="text-lg md:text-xl font-extrabold text-slate-100">Vector QR Code Generator</h1>
+          </div>
+        </div>
+        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-950/80 text-blue-400 border border-blue-800">
+          Static & Permanent
+        </span>
+      </div>
+
+      <!-- Mode Selector Tabs -->
+      <div class="grid grid-cols-4 gap-1 bg-slate-950 p-1 rounded-xl text-xs font-bold text-slate-400 mb-6 border border-slate-800/80">
+        <button class="tab-btn py-2 rounded-lg transition-colors bg-blue-600 text-white shadow" data-tab="url">URL Link</button>
+        <button class="tab-btn py-2 rounded-lg transition-colors hover:text-slate-200" data-tab="wifi">Wi-Fi Access</button>
+        <button class="tab-btn py-2 rounded-lg transition-colors hover:text-slate-200" data-tab="vcard">vCard Contact</button>
+        <button class="tab-btn py-2 rounded-lg transition-colors hover:text-slate-200" data-tab="text">Plain Text</button>
+      </div>
+
+      <!-- Main Dual Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
+        
+        <!-- Left: Dynamic Inputs Form -->
+        <div class="md:col-span-7 space-y-4">
+          
+          <!-- URL Form -->
+          <div id="formUrl" class="space-y-3">
+            <div class="space-y-1">
+              <label class="block text-xs font-semibold text-slate-400">Destination Website URL</label>
+              <input type="text" id="inputUrl" value="https://Starsign16 Toolkit" placeholder="https://yourwebsite.com" 
+                class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl text-slate-100 placeholder-slate-600 focus:outline-none focus:border-blue-500 font-mono text-xs md:text-sm" />
+            </div>
+          </div>
+
+          <!-- Wi-Fi Form -->
+          <div id="formWifi" class="space-y-3 hidden">
+            <div class="space-y-1">
+              <label class="block text-xs font-semibold text-slate-400">Network Name (SSID)</label>
+              <input type="text" id="wifiSsid" placeholder="Office-Guest-WiFi" 
+                class="w-full p-2.5 bg-slate-950 border border-slate-800 rounded-xl text-slate-100 placeholder-slate-600 focus:outline-none focus:border-blue-500 font-mono text-xs" />
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div class="space-y-1">
+                <label class="block text-xs font-semibold text-slate-400">Password</label>
+                <input type="text" id="wifiPass" placeholder="Network password" 
+                  class="w-full p-2.5 bg-slate-950 border border-slate-800 rounded-xl text-slate-100 placeholder-slate-600 focus:outline-none focus:border-blue-500 font-mono text-xs" />
+              </div>
+              <div class="space-y-1">
+                <label class="block text-xs font-semibold text-slate-400">Security Type</label>
+                <select id="wifiAuth" class="w-full p-2.5 bg-slate-950 border border-slate-800 rounded-xl text-slate-200 font-bold text-xs outline-none focus:border-blue-500">
+                  <option value="WPA">WPA / WPA2 / WPA3</option>
+                  <option value="WEP">WEP</option>
+                  <option value="nopass">None (Open)</option>
+                </select>
+              </div>
+            </div>
+            <label class="cursor-pointer flex items-center gap-2 text-xs text-slate-400 select-none">
+              <input type="checkbox" id="wifiHidden" class="rounded bg-slate-900 border-slate-700 text-blue-600 focus:ring-0">
+              Hidden Network SSID
+            </label>
+          </div>
+
+          <!-- vCard Form -->
+          <div id="formVcard" class="space-y-3 hidden">
+            <div class="grid grid-cols-2 gap-3">
+              <div class="space-y-1">
+                <label class="block text-xs font-semibold text-slate-400">First Name</label>
+                <input type="text" id="vcardFirst" placeholder="Jane" 
+                  class="w-full p-2.5 bg-slate-950 border border-slate-800 rounded-xl text-slate-100 placeholder-slate-600 focus:outline-none focus:border-blue-500 text-xs" />
+              </div>
+              <div class="space-y-1">
+                <label class="block text-xs font-semibold text-slate-400">Last Name</label>
+                <input type="text" id="vcardLast" placeholder="Doe" 
+                  class="w-full p-2.5 bg-slate-950 border border-slate-800 rounded-xl text-slate-100 placeholder-slate-600 focus:outline-none focus:border-blue-500 text-xs" />
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <div class="space-y-1">
+                <label class="block text-xs font-semibold text-slate-400">Phone</label>
+                <input type="tel" id="vcardPhone" placeholder="+1 555-0199" 
+                  class="w-full p-2.5 bg-slate-950 border border-slate-800 rounded-xl text-slate-100 placeholder-slate-600 focus:outline-none focus:border-blue-500 text-xs font-mono" />
+              </div>
+              <div class="space-y-1">
+                <label class="block text-xs font-semibold text-slate-400">Email</label>
+                <input type="email" id="vcardEmail" placeholder="jane@company.com" 
+                  class="w-full p-2.5 bg-slate-950 border border-slate-800 rounded-xl text-slate-100 placeholder-slate-600 focus:outline-none focus:border-blue-500 text-xs font-mono" />
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <div class="space-y-1">
+                <label class="block text-xs font-semibold text-slate-400">Company</label>
+                <input type="text" id="vcardOrg" placeholder="Acme Labs" 
+                  class="w-full p-2.5 bg-slate-950 border border-slate-800 rounded-xl text-slate-100 placeholder-slate-600 focus:outline-none focus:border-blue-500 text-xs" />
+              </div>
+              <div class="space-y-1">
+                <label class="block text-xs font-semibold text-slate-400">Job Title</label>
+                <input type="text" id="vcardTitle" placeholder="Lead Architect" 
+                  class="w-full p-2.5 bg-slate-950 border border-slate-800 rounded-xl text-slate-100 placeholder-slate-600 focus:outline-none focus:border-blue-500 text-xs" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Plain Text Form -->
+          <div id="formText" class="space-y-3 hidden">
+            <div class="space-y-1">
+              <label class="block text-xs font-semibold text-slate-400">Raw Text Content</label>
+              <textarea id="inputText" rows="5" placeholder="Enter notes, alphanumeric tokens, or cryptographic keys..." 
+                class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl text-slate-100 placeholder-slate-600 focus:outline-none focus:border-blue-500 font-mono text-xs resize-y"></textarea>
+            </div>
+          </div>
+
+          <!-- Design & Correction Options -->
+          <div class="p-3 bg-slate-950/60 border border-slate-800 rounded-xl space-y-3 pt-3">
+            <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Render Settings</span>
+            <div class="grid grid-cols-2 gap-3 text-xs">
+              <div>
+                <label class="block text-slate-400 text-[11px] mb-1">Error Correction</label>
+                <select id="correctionLevel" class="w-full p-1.5 bg-slate-900 border border-slate-700 rounded-lg text-slate-200 font-bold outline-none">
+                  <option value="H">High (30% recovery)</option>
+                  <option value="Q">Quartile (25%)</option>
+                  <option value="M" selected>Medium (15%)</option>
+                  <option value="L">Low (7%)</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-slate-400 text-[11px] mb-1">Pixel Size</label>
+                <select id="pixelSize" class="w-full p-1.5 bg-slate-900 border border-slate-700 rounded-lg text-slate-200 font-bold outline-none">
+                  <option value="256">256 × 256 px</option>
+                  <option value="512" selected>512 × 512 px (HD)</option>
+                  <option value="1024">1024 × 1024 px (Print)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right: Live QR Visual Canvas & Export -->
+        <div class="md:col-span-5 flex flex-col items-center justify-center p-6 bg-slate-950/80 border border-slate-800 rounded-2xl text-center">
+          <div class="p-4 bg-white rounded-2xl shadow-lg border-4 border-slate-800 mb-4 transition-all" id="qrWrapper">
+            <div id="qrCanvas"></div>
+          </div>
+
+          <!-- Download Action Bar -->
+          <div class="flex items-center gap-2 w-full max-w-xs">
+            <button id="downloadPngBtn" class="flex-1 py-2 px-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs transition-colors shadow-sm">
+              Download PNG
+            </button>
+            <button id="downloadSvgBtn" class="flex-1 py-2 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs border border-slate-700 transition-colors">
+              Download SVG
+            </button>
+          </div>
+          <span class="text-[11px] text-slate-500 mt-2">Zero tracking · Instant direct download</span>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- SEO & Technical Documentation -->
+    <article class="mt-8 space-y-6 text-xs md:text-sm text-slate-400 leading-relaxed">
+      
+      <!-- Error Correction Reference Matrix -->
+      <section class="bg-slate-900 rounded-2xl border border-slate-800 p-5 md:p-6 shadow-md">
+        <h2 class="text-base font-extrabold text-slate-100 mb-3 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+          Reed-Solomon Error Correction Capability Matrix
+        </h2>
+        <p class="text-xs text-slate-400 mb-4">Trade-offs between optical damage resistance and QR code density as defined by ISO/IEC 18004.</p>
+        
+        <div class="overflow-x-auto">
+          <table class="w-full text-xs text-left border-collapse">
+            <thead>
+              <tr class="bg-slate-950 border-b border-slate-800 text-slate-300 font-bold">
+                <th class="p-2.5">Level</th>
+                <th class="p-2.5">Recovery Capacity</th>
+                <th class="p-2.5">Data Density</th>
+                <th class="p-2.5">Recommended Deployment Context</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-800/60 text-slate-300">
+              <tr>
+                <td class="p-2.5 font-bold text-blue-400 font-mono">Level L</td>
+                <td class="p-2.5 text-slate-200">~7% restoration</td>
+                <td class="p-2.5 text-emerald-400 font-medium">Lowest (Cleanest)</td>
+                <td class="p-2.5 text-slate-400">Clean digital screen displays, mobile presentations</td>
+              </tr>
+              <tr>
+                <td class="p-2.5 font-bold text-blue-400 font-mono">Level M</td>
+                <td class="p-2.5 text-slate-200">~15% restoration</td>
+                <td class="p-2.5 text-slate-300">Moderate</td>
+                <td class="p-2.5 text-slate-400">Standard business cards, packaging, digital flyers</td>
+              </tr>
+              <tr>
+                <td class="p-2.5 font-bold text-blue-400 font-mono">Level Q</td>
+                <td class="p-2.5 text-slate-200">~25% restoration</td>
+                <td class="p-2.5 text-slate-300">Dense</td>
+                <td class="p-2.5 text-slate-400">Outdoor stickers, delivery labels prone to smudges</td>
+              </tr>
+              <tr>
+                <td class="p-2.5 font-bold text-blue-400 font-mono">Level H</td>
+                <td class="p-2.5 text-slate-200">~30% restoration</td>
+                <td class="p-2.5 text-rose-400 font-medium">Highest (Complex)</td>
+                <td class="p-2.5 text-slate-400">Industrial machinery, central logo overlays</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Practical Strategy Guides -->
+      <section class="bg-slate-900 rounded-2xl border border-slate-800 p-5 md:p-6 shadow-md space-y-3">
+        <h2 class="text-base font-extrabold text-slate-100 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+          QR Code Deployment Best Practices
+        </h2>
+        
+        <div class="space-y-2.5 text-xs leading-relaxed">
+          <div class="p-3 bg-slate-950/60 rounded-xl border border-slate-800/80">
+            <h3 class="font-bold text-slate-200 mb-1">1. Static Codes vs. Dynamic Shortlinks</h3>
+            <p>Static QR codes encode actual strings into the matrix. They never expire, require no subscription renewals, and cannot be intercepted by redirect services.</p>
+          </div>
+
+          <div class="p-3 bg-slate-950/60 rounded-xl border border-slate-800/80">
+            <h3 class="font-bold text-slate-200 mb-1">2. Contrast & Quiet Zone Rules</h3>
+            <p>Maintain a minimum 4-module quiet zone (white border) around the outer edges of the code matrix. Optical scanner cameras require this margin to detect positioning landmarks.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ToolLab Clean Ad Unit -->
+
+      <!-- FAQ -->
+      <section class="bg-slate-900 rounded-2xl border border-slate-800 p-5 md:p-6 shadow-md">
+        <h2 class="text-base font-extrabold text-slate-100 mb-4 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-indigo-400"></span>
+          Frequently Asked Questions
+        </h2>
+
+        <div class="space-y-3.5 text-xs">
+          <div>
+            <h3 class="font-bold text-slate-200 mb-1">Q. Can Wi-Fi QR codes connect iOS and Android devices without typing?</h3>
+            <p class="text-slate-400">Yes. Native camera applications on modern iOS and Android parse <code>WIFI:S:...</code> strings directly, prompting an instant "Join Network" dialog with zero manual password entry.</p>
+          </div>
+          <div class="border-t border-slate-800 pt-3">
+            <h3 class="font-bold text-slate-200 mb-1">Q. Are my contact details or URLs saved to a database?</h3>
+            <p class="text-slate-400">Never. All calculations run strictly in your browser runtime memory. No data is transmitted across an external network.</p>
+          </div>
+        </div>
+      </section>
+
+    </article>
+
+    <!-- Standard Minimal Footer -->
+    <footer class="mt-12 pt-6 pb-8 border-t border-slate-800 text-xs text-slate-500">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-3 text-center md:text-left">
+        <div class="space-y-0.5">
+          <p class="font-bold text-slate-400">Starsign16 Toolkit · Smart Web Utilities</p>
+          <p class="text-[11px]">Zero server latency · Client-side computational execution</p>
+        </div>
+        <div class="flex items-center gap-3 font-semibold text-slate-400">
+          <a href="../about.html" class="hover:text-emerald-400 transition-colors">About</a>
+        <span>·</span>
+        <a href="../contact.html" class="hover:text-emerald-400 transition-colors">Contact</a>
+        <span>·</span>
+        <a href="../privacy.html" class="hover:text-emerald-400 transition-colors">Privacy</a>
+        <span>·</span>
+        <a href="../terms.html" class="hover:text-emerald-400 transition-colors">Terms</a>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="../js/utils/qrGenerator.js"></script>
+  <script>
+    let activeTab = "url";
+    let qrcodeInstance = null;
+
+    const qrCanvas = document.getElementById("qrCanvas");
+    const downloadPngBtn = document.getElementById("downloadPngBtn");
+    const downloadSvgBtn = document.getElementById("downloadSvgBtn");
+    const correctionLevel = document.getElementById("correctionLevel");
+    const pixelSize = document.getElementById("pixelSize");
+
+    const forms = {
+      url: document.getElementById("formUrl"),
+      wifi: document.getElementById("formWifi"),
+      vcard: document.getElementById("formVcard"),
+      text: document.getElementById("formText")
+    };
+
+    function getCorrectionConstant(level) {
+      if (typeof QRCode === "undefined") return 0;
+      switch (level) {
+        case "L": return QRCode.CorrectLevel.L;
+        case "M": return QRCode.CorrectLevel.M;
+        case "Q": return QRCode.CorrectLevel.Q;
+        case "H": return QRCode.CorrectLevel.H;
+        default: return QRCode.CorrectLevel.M;
+      }
+    }
+
+    function getCurrentPayload() {
+      switch (activeTab) {
+        case "url":
+          return QrGenerator.formatPayload("url", {
+            url: document.getElementById("inputUrl").value
+          });
+
+        case "wifi":
+          return QrGenerator.formatPayload("wifi", {
+            ssid: document.getElementById("wifiSsid").value,
+            password: document.getElementById("wifiPass").value,
+            auth: document.getElementById("wifiAuth").value,
+            hidden: document.getElementById("wifiHidden").checked
+          });
+
+        case "vcard":
+          return QrGenerator.formatPayload("vcard", {
+            firstName: document.getElementById("vcardFirst").value,
+            lastName: document.getElementById("vcardLast").value,
+            phone: document.getElementById("vcardPhone").value,
+            email: document.getElementById("vcardEmail").value,
+            org: document.getElementById("vcardOrg").value,
+            title: document.getElementById("vcardTitle").value
+          });
+
+        case "text":
+          return QrGenerator.formatPayload("text", {
+            text: document.getElementById("inputText").value
+          });
+
+        default:
+          return "";
+      }
+    }
+
+    function renderQr() {
+      const text = getCurrentPayload();
+      if (!text || typeof QRCode === "undefined") return;
+
+      const size = parseInt(pixelSize.value, 10);
+      const level = getCorrectionConstant(correctionLevel.value);
+
+      qrCanvas.innerHTML = "";
+      qrcodeInstance = new QRCode(qrCanvas, {
+        text: text,
+        width: 180,
+        height: 180,
+        colorDark: "#000000",
+        colorLight: "#ffffff",
+        correctLevel: level
+      });
+    }
+
+    // Tab Switching
+    document.querySelectorAll(".tab-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".tab-btn").forEach((b) => {
+          b.className = "tab-btn py-2 rounded-lg transition-colors hover:text-slate-200";
+        });
+        btn.className = "tab-btn py-2 rounded-lg transition-colors bg-blue-600 text-white shadow";
+        activeTab = btn.dataset.tab;
+
+        Object.keys(forms).forEach((k) => {
+          if (k === activeTab) {
+            forms[k].classList.remove("hidden");
+          } else {
+            forms[k].classList.add("hidden");
+          }
+        });
+
+        renderQr();
+      });
+    });
+
+    // Inputs dynamic rendering
+    const allInputs = document.querySelectorAll("input, select, textarea");
+    allInputs.forEach((el) => {
+      el.addEventListener("input", renderQr);
+      el.addEventListener("change", renderQr);
+    });
+
+    // PNG Download (High-Res Offscreen Canvas)
+    downloadPngBtn.addEventListener("click", () => {
+      const text = getCurrentPayload();
+      if (!text) return;
+
+      const targetDim = parseInt(pixelSize.value, 10);
+      const tempDiv = document.createElement("div");
+      const tempQr = new QRCode(tempDiv, {
+        text: text,
+        width: targetDim,
+        height: targetDim,
+        colorDark: "#000000",
+        colorLight: "#ffffff",
+        correctLevel: getCorrectionConstant(correctionLevel.value)
+      });
+
+      setTimeout(() => {
+        const canvas = tempDiv.querySelector("canvas");
+        if (canvas) {
+          QrGenerator.downloadPng(canvas, `toollab-qrcode-${activeTab}.png`);
+        }
+      }, 50);
+    });
+
+    // SVG Vector Download
+    downloadSvgBtn.addEventListener("click", () => {
+      const canvas = qrCanvas.querySelector("canvas");
+      if (!canvas) return;
+
+      const ctx = canvas.getContext("2d");
+      const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const width = canvas.width;
+      const height = canvas.height;
+
+      // Construct SVG vector elements from pixel data
+      let svgContent = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" shape-rendering="crispEdges">`;
+      svgContent += `<rect width="${width}" height="${height}" fill="#ffffff"/>`;
+
+      for (let y = 0; y < height; y++) {
+        for (let x = 0; x < width; x++) {
+          const idx = (y * width + x) * 4;
+          const r = imgData.data[idx];
+          const g = imgData.data[idx + 1];
+          const b = imgData.data[idx + 2];
+          if (r < 128 && g < 128 && b < 128) {
+            svgContent += `<rect x="${x}" y="${y}" width="1" height="1" fill="#000000"/>`;
+          }
+        }
+      }
+      svgContent += `</svg>`;
+
+      const svgBlob = new Blob([svgContent], { type: "image/svg+xml;charset=utf-8" });
+      const url = URL.createObjectURL(svgBlob);
+      const link = document.createElement("a");
+      link.download = `toollab-qrcode-${activeTab}.svg`;
+      link.href = url;
+      link.click();
+      URL.revokeObjectURL(url);
+    });
+
+    window.addEventListener("load", renderQr);
+  </script>
+  <script src="../js/related-tools.js"></script>
+</body>
+</html>

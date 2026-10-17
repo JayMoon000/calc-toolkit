@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <!-- SEO: 타깃 키워드(Margin Percentage, Markup, Percent Change) 전진 배치 -->
+  <title>Percentage & Margin Calculator - Profit Margin, Markup & Change | ToolLab</title>
+  <meta name="description" content="Free online percentage and margin calculator. Calculate percentage increase, decrease, proportion share, retail markup, and calculating margin percentage with instant private results." />
+  <meta name="keywords" content="percentage calculator, calculating margin percentage, percent margin, profit margin calculator, gross margin, markup calculator, percent change, discount calculator, ToolLab" />
+  
+  <!-- Tailwind CDN & Config -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class'
+    }
+  </script>
+
+  <!-- Open Graph & Rich Snippets -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="ToolLab" />
+  <meta property="og:title" content="Percentage & Margin Calculator - Profit Margin & Percent Change" />
+  <meta property="og:description" content="Calculate percentages, proportion share, percentage changes, and retail gross margins instantly." />
+  <meta property="og:url" content="https://Starsign16 Toolkit/tools/percentage-calc.html" />
+  <meta property="og:image" content="https://Starsign16 Toolkit/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Percentage & Margin Calculator - Profit Margin & Percent Change" />
+  <meta name="twitter:description" content="Calculate percentages, proportion share, percentage changes, and retail gross margins instantly." />
+  <meta name="twitter:image" content="https://Starsign16 Toolkit/og-image.png" />
+  <link rel="canonical" href="https://starsign16.com/tools/percentage-calc">
+
+  <!-- Schema.org WebApplication & FAQ JSON-LD (검색 리치 스니펫) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebApplication",
+        "name": "ToolLab Percentage and Profit Margin Calculator",
+        "url": "https://Starsign16 Toolkit/tools/percentage-calc.html",
+        "applicationCategory": "FinancialApplication",
+        "operatingSystem": "All",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "description": "Multi-purpose percentage, profit margin, markup, and percentage change calculator for business and everyday math."
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "How do you calculate profit margin percentage?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Gross Margin Percentage is calculated using the formula: Margin (%) = ((Selling Price - Cost) / Selling Price) * 100. It measures the portion of sales revenue remaining after direct costs."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What is the difference between profit margin and retail markup?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Gross Margin is the percentage of selling price that is profit, whereas Markup is the percentage added directly to the cost price to determine the selling price. Margin can never exceed 100%, but markup can exceed 100%."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can a profit margin ever exceed 100%?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. Gross margin is bound by sales revenue. Even if production cost is zero, the profit equals revenue, yielding an upper limit of 100%."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Are my financial pricing inputs stored or tracked?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Never. All calculations execute locally inside your browser memory with zero network requests."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <!-- ToolLab Analytics Tracker -->
+  <script src="/js/analytics.js"></script>
+
+</head>
+<body class="bg-slate-950 text-slate-200 min-h-screen py-6 px-4 font-sans antialiased">
+  <div class="max-w-2xl mx-auto">
+    
+    <!-- Calculator Wrapper -->
+    <div class="bg-slate-900 rounded-2xl shadow-xl border border-slate-800 p-5 md:p-7">
+      
+      <!-- Top Navigation -->
+      <div class="flex items-center justify-between pb-4 mb-6 border-b border-slate-800">
+        <div class="flex items-center gap-2.5">
+          <a href="../index.html" class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors" title="Back to Tools">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+            </svg>
+          </a>
+          <div>
+            <span class="text-[10px] font-bold tracking-wider text-blue-400 uppercase block">Starsign16 Toolkit</span>
+            <h1 class="text-lg md:text-xl font-extrabold text-slate-100">Percentage & Margin Calculator</h1>
+          </div>
+        </div>
+        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-950/80 text-emerald-400 border border-emerald-800">
+          Client-Side Engine
+        </span>
+      </div>
+
+      <!-- Mode Switcher -->
+      <div class="grid grid-cols-4 gap-1 bg-slate-950 p-1 rounded-xl text-xs font-bold text-slate-400 mb-6 border border-slate-800/80">
+        <button class="mode-btn py-2 rounded-lg transition-colors bg-blue-600 text-white shadow" data-mode="basic">Percent Of</button>
+        <button class="mode-btn py-2 rounded-lg transition-colors hover:text-slate-200" data-mode="share">Proportion</button>
+        <button class="mode-btn py-2 rounded-lg transition-colors hover:text-slate-200" data-mode="change">Change</button>
+        <button class="mode-btn py-2 rounded-lg transition-colors hover:text-slate-200" data-mode="margin">Margin & Markup</button>
+      </div>
+
+      <!-- Interactive Inputs -->
+      <div id="calculatorInputs" class="space-y-4">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <!-- Result Card -->
+      <div class="mt-6 p-4 bg-blue-950/30 border border-blue-900/60 rounded-xl space-y-2">
+        <span class="text-xs font-semibold text-blue-400 block" id="resultLabel">Calculated Value</span>
+        <div id="primaryResult" class="text-3xl font-black text-blue-400 truncate">0</div>
+        <div id="secondaryResult" class="text-xs text-slate-400 pt-1 border-t border-blue-900/40 hidden"></div>
+      </div>
+
+    </div>
+
+    <!-- SEO & Technical Documentation -->
+    <article class="mt-8 space-y-6 text-xs md:text-sm text-slate-400 leading-relaxed">
+      
+      <!-- 0. SEO Overview Card -->
+      <section class="bg-slate-900 rounded-2xl border border-slate-800 p-5 md:p-6 shadow-md space-y-3">
+        <h2 class="text-base font-extrabold text-slate-100 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-blue-400"></span>
+          Multi-Purpose Percentage & Profit Margin Calculator
+        </h2>
+        <p class="text-xs text-slate-300 leading-relaxed">
+          Whether you need to calculate retail discounts, evaluate gross profit margins for e-commerce pricing, determine keystone markups, or measure month-over-month percentage growth, the ToolLab Percentage Calculator performs all standard commercial math formulas instantly with zero latency.
+        </p>
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 pt-2 text-[11px] text-slate-400">
+          <div class="bg-slate-950/50 p-2 rounded border border-slate-800/60">• <strong>Margin:</strong> Gross Profit Margin %</div>
+          <div class="bg-slate-950/50 p-2 rounded border border-slate-800/60">• <strong>Markup:</strong> Cost-based Markup %</div>
+          <div class="bg-slate-950/50 p-2 rounded border border-slate-800/60">• <strong>Change:</strong> Percent Growth / Decrease</div>
+          <div class="bg-slate-950/50 p-2 rounded border border-slate-800/60">• <strong>Share:</strong> Proportional Part of Total</div>
+          <div class="bg-slate-950/50 p-2 rounded border border-slate-800/60">• <strong>Execution:</strong> 100% Client-side JS</div>
+          <div class="bg-slate-950/50 p-2 rounded border border-slate-800/60">• <strong>Security:</strong> Zero Financial Data Stored</div>
+        </div>
+      </section>
+
+      <!-- 1. Comparison Table -->
+      <section class="bg-slate-900 rounded-2xl border border-slate-800 p-5 md:p-6 shadow-md">
+        <h2 class="text-base font-extrabold text-slate-100 mb-3 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+          Gross Margin vs. Markup Conversion Matrix
+        </h2>
+        <p class="text-xs text-slate-400 mb-4">A retail reference mapping the relationship between cost-based markup and final gross profit margins.</p>
+        
+        <div class="overflow-x-auto">
+          <table class="w-full text-xs text-left border-collapse">
+            <thead>
+              <tr class="bg-slate-950 border-b border-slate-800 text-slate-300 font-bold">
+                <th class="p-2.5">Markup on Cost</th>
+                <th class="p-2.5">Gross Margin</th>
+                <th class="p-2.5">Cost ($100 basis)</th>
+                <th class="p-2.5">Sale Price</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-800/60 text-slate-300">
+              <tr>
+                <td class="p-2.5 font-bold text-slate-100">15.0%</td>
+                <td class="p-2.5 text-blue-400 font-medium">13.0%</td>
+                <td class="p-2.5 text-slate-400">$100.00</td>
+                <td class="p-2.5 text-slate-200 font-bold">$115.00</td>
+              </tr>
+              <tr>
+                <td class="p-2.5 font-bold text-slate-100">25.0%</td>
+                <td class="p-2.5 text-blue-400 font-medium">20.0%</td>
+                <td class="p-2.5 text-slate-400">$100.00</td>
+                <td class="p-2.5 text-slate-200 font-bold">$125.00</td>
+              </tr>
+              <tr>
+                <td class="p-2.5 font-bold text-slate-100">50.0%</td>
+                <td class="p-2.5 text-blue-400 font-medium">33.3%</td>
+                <td class="p-2.5 text-slate-400">$100.00</td>
+                <td class="p-2.5 text-slate-200 font-bold">$150.00</td>
+              </tr>
+              <tr>
+                <td class="p-2.5 font-bold text-slate-100">100.0% (Keystone)</td>
+                <td class="p-2.5 text-blue-400 font-medium">50.0%</td>
+                <td class="p-2.5 text-slate-400">$100.00</td>
+                <td class="p-2.5 text-slate-200 font-bold">$200.00</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 2. Practical Formulas -->
+      <section class="bg-slate-900 rounded-2xl border border-slate-800 p-5 md:p-6 shadow-md space-y-3">
+        <h2 class="text-base font-extrabold text-slate-100 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+          Standard Financial & Business Formulas
+        </h2>
+        
+        <div class="space-y-2.5 text-xs leading-relaxed">
+          <div class="p-3 bg-slate-950/60 rounded-xl border border-slate-800/80">
+            <h3 class="font-bold text-slate-200 mb-1">1. Gross Margin Percentage</h3>
+            <p>Calculated as: <strong>Gross Margin = [(Revenue - Cost) / Revenue] × 100</strong>. It highlights the direct operational efficiency of sales before general administrative overhead.</p>
+          </div>
+
+          <div class="p-3 bg-slate-950/60 rounded-xl border border-slate-800/80">
+            <h3 class="font-bold text-slate-200 mb-1">2. Retail Markup Percentage</h3>
+            <p>Calculated as: <strong>Markup = [(Revenue - Cost) / Cost] × 100</strong>. Wholesale and manufacturing environments use markup to set end-consumer list pricing.</p>
+          </div>
+
+          <div class="p-3 bg-slate-950/60 rounded-xl border border-slate-800/80">
+            <h3 class="font-bold text-slate-200 mb-1">3. Percentage Growth Rate</h3>
+            <p>Calculated as: <strong>Growth (%) = [(Final - Initial) / |Initial|] × 100</strong>. Useful for month-over-month (MoM) revenue monitoring and performance tracking.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ToolLab Clean Ad Unit -->
+
+      <!-- 3. FAQ -->
+      <section class="bg-slate-900 rounded-2xl border border-slate-800 p-5 md:p-6 shadow-md">
+        <h2 class="text-base font-extrabold text-slate-100 mb-4 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-indigo-400"></span>
+          Frequently Asked Questions
+        </h2>
+
+        <div class="space-y-3.5 text-xs">
+          <div>
+            <h3 class="font-bold text-slate-200 mb-1">Q. Can a profit margin ever exceed 100%?</h3>
+            <p class="text-slate-400">No. Gross margin is bound by sales revenue. Even if production cost is zero, the profit equals revenue, yielding an upper limit of 100%. Markup, conversely, can exceed 100% without limitation.</p>
+          </div>
+          <div class="border-t border-slate-800 pt-3">
+            <h3 class="font-bold text-slate-200 mb-1">Q. Are my pricing inputs stored or tracked?</h3>
+            <p class="text-slate-400">Never. All inputs execute locally inside your browser memory. No backend network requests are dispatched, ensuring proprietary business metrics remain secure.</p>
+          </div>
+        </div>
+      </section>
+
+    </article>
+
+    <!-- Standard Footer -->
+    <footer class="mt-12 pt-6 pb-8 border-t border-slate-800 text-xs text-slate-500">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-3 text-center md:text-left">
+        <div class="space-y-0.5">
+          <p class="font-bold text-slate-400">Starsign16 Toolkit · Smart Web Utilities</p>
+          <p class="text-[11px]">Zero server latency · Client-side computational execution</p>
+        </div>
+        <div class="flex items-center gap-3 font-semibold text-slate-400">
+          <a href="../about.html" class="hover:text-emerald-400 transition-colors">About</a>
+        <span>·</span>
+        <a href="../contact.html" class="hover:text-emerald-400 transition-colors">Contact</a>
+        <span>·</span>
+        <a href="../privacy.html" class="hover:text-emerald-400 transition-colors">Privacy</a>
+        <span>·</span>
+        <a href="../terms.html" class="hover:text-emerald-400 transition-colors">Terms</a>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="../js/utils/percentageCalc.js"></script>
+  <script>
+    let activeMode = "basic";
+
+    const UI_CONFIG = {
+      basic: {
+        inputs: [
+          { id: "val1", label: "What is (%)", default: 15, placeholder: "15" },
+          { id: "val2", label: "Of total value", default: 200, placeholder: "200" }
+        ],
+        resultLabel: "Calculated Share",
+        calc: (v1, v2) => ({
+          primary: PercentageCalc.percentOf(v1, v2).toLocaleString(undefined, { maximumFractionDigits: 4 }),
+          secondary: `${v1}% of ${v2} is ${PercentageCalc.percentOf(v1, v2)}`
+        })
+      },
+      share: {
+        inputs: [
+          { id: "val1", label: "Value portion", default: 25, placeholder: "25" },
+          { id: "val2", label: "Out of total", default: 100, placeholder: "100" }
+        ],
+        resultLabel: "Percentage Share (%)",
+        calc: (v1, v2) => {
+          const res = PercentageCalc.percentageShare(v1, v2);
+          return {
+            primary: `${res.toLocaleString(undefined, { maximumFractionDigits: 4 })}%`,
+            secondary: `${v1} is ${res.toFixed(2)}% of total ${v2}`
+          };
+        }
+      },
+      change: {
+        inputs: [
+          { id: "val1", label: "Original Value", default: 80, placeholder: "80" },
+          { id: "val2", label: "New Value", default: 120, placeholder: "120" }
+        ],
+        resultLabel: "Net Percentage Change (%)",
+        calc: (v1, v2) => {
+          const change = PercentageCalc.percentageChange(v1, v2);
+          const direction = change >= 0 ? "+" : "";
+          return {
+            primary: `${direction}${change.toLocaleString(undefined, { maximumFractionDigits: 4 })}%`,
+            secondary: `Difference: ${v2 - v1 >= 0 ? "+" : ""}${(v2 - v1).toFixed(2)} (${change >= 0 ? "Increase" : "Decrease"})`
+          };
+        }
+      },
+      margin: {
+        inputs: [
+          { id: "val1", label: "Unit Cost ($)", default: 60, placeholder: "60" },
+          { id: "val2", label: "Selling Price / Revenue ($)", default: 100, placeholder: "100" }
+        ],
+        resultLabel: "Gross Profit Margin (%)",
+        calc: (v1, v2) => {
+          const { profit, margin, markup } = PercentageCalc.marginAndMarkup(v1, v2);
+          return {
+            primary: `${margin.toLocaleString(undefined, { maximumFractionDigits: 2 })}%`,
+            secondary: `Gross Profit: $${profit.toFixed(2)} | Retail Markup: ${markup.toFixed(2)}%`
+          };
+        }
+      }
+    };
+
+    function renderInputs() {
+      const container = document.getElementById("calculatorInputs");
+      const config = UI_CONFIG[activeMode];
+      
+      container.innerHTML = config.inputs.map(input => `
+        <div class="p-4 bg-slate-950/70 border border-slate-800 rounded-xl space-y-1.5">
+          <label class="block text-xs font-semibold text-slate-400">${input.label}</label>
+          <input type="number" id="${input.id}" value="${input.default}" placeholder="${input.placeholder}"
+            class="w-full text-2xl font-black bg-transparent text-slate-100 outline-none focus:text-blue-400" />
+        </div>
+      `).join("");
+
+      document.getElementById("resultLabel").textContent = config.resultLabel;
+
+      config.inputs.forEach(input => {
+        document.getElementById(input.id).addEventListener("input", executeCalculation);
+      });
+
+      executeCalculation();
+    }
+
+    function executeCalculation() {
+      const config = UI_CONFIG[activeMode];
+      const v1 = parseFloat(document.getElementById("val1")?.value);
+      const v2 = parseFloat(document.getElementById("val2")?.value);
+
+      const primaryEl = document.getElementById("primaryResult");
+      const secondaryEl = document.getElementById("secondaryResult");
+
+      if (isNaN(v1) || isNaN(v2)) {
+        primaryEl.textContent = "0";
+        secondaryEl.classList.add("hidden");
+        return;
+      }
+
+      const { primary, secondary } = config.calc(v1, v2);
+      primaryEl.textContent = primary;
+      
+      if (secondary) {
+        secondaryEl.textContent = secondary;
+        secondaryEl.classList.remove("hidden");
+      } else {
+        secondaryEl.classList.add("hidden");
+      }
+    }
+
+    document.querySelectorAll(".mode-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".mode-btn").forEach(b => {
+          b.className = "mode-btn py-2 rounded-lg transition-colors hover:text-slate-200";
+        });
+        btn.className = "mode-btn py-2 rounded-lg transition-colors bg-blue-600 text-white shadow";
+        activeMode = btn.dataset.mode;
+        renderInputs();
+      });
+    });
+
+    renderInputs();
+  </script>
+  <script src="../js/related-tools.js"></script>
+</body>
+</html>
