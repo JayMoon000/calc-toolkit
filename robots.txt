@@ -1,5 +1,6 @@
-# robots.txt
+# User-Agent: All Robots
 User-agent: *
 Allow: /
 
+# Sitemaps
 Sitemap: https://starsign16.com/sitemap.xml
