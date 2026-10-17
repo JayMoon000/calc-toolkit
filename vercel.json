@@ -52,6 +52,11 @@
       "destination": "/tools/converter",
       "permanent": true
     },
+	{
+      "source": "/tools/converter",
+      "destination": "/tools/unit-converter",
+      "permanent": true
+    },
     {
       "source": "/game-2048",
       "destination": "/tools/game-2048",
