@@ -14,6 +14,9 @@ TARGET_KEYWORDS = ["최저임금", "부동산 중개", "중개보수", "소득�
 FEED_URL = "https://www.moleg.go.kr/board.es?mid=a10501000000&bid=0028&act=rss"
 
 def send_telegram(msg: str):
+    if not TELEGRAM_BOT_TOKEN or not TELEGRAM_CHAT_ID:
+        print("텔레그램 설정값 부재")
+        return
     url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
     payload = {"chat_id": TELEGRAM_CHAT_ID, "text": msg, "parse_mode": "Markdown"}
     try:
@@ -22,7 +25,6 @@ def send_telegram(msg: str):
         print(f"텔레그램 발송 실패: {e}")
 
 def call_gemini_with_retry(model, prompt: str, max_retries: int = 3) -> str:
-    """타임아웃(120s) 및 지수 백오프 재시도 로직"""
     for attempt in range(1, max_retries + 1):
         try:
             response = model.generate_content(
@@ -34,7 +36,7 @@ def call_gemini_with_retry(model, prompt: str, max_retries: int = 3) -> str:
             if attempt == max_retries:
                 raise e
             wait_time = attempt * 5
-            print(f"[재시도 {attempt}/{max_retries}] 에러 발생: {e} -> {wait_time}초 후 재시도")
+            print(f"[재시도 {attempt}/{max_retries}] 에러: {e} -> {wait_time}초 후 재시도")
             time.sleep(wait_time)
 
 def check_law_updates():
@@ -43,10 +45,15 @@ def check_law_updates():
         with open("config/rates.json", "r", encoding="utf-8") as f:
             current_rates = json.load(f)
 
-        # 2. 공공 피드 파싱 (feedparser 사용으로 깨진 XML 완벽 대응)
-        feed = feedparser.parse(FEED_URL)
-        if feed.bozo and not feed.entries:
-            raise Exception(f"RSS 피드 수집 실패: {feed.bozo_exception}")
+        # 2. 공공 피드 가져오기 (User-Agent 명시 및 requests 사용)
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+        }
+        res = requests.get(FEED_URL, headers=headers, timeout=20)
+        res.raise_for_status()
+
+        # feedparser로 파싱 (XML 문법 오류 무시하고 읽을 수 있는 항목만 최대한 수집)
+        feed = feedparser.parse(res.content)
 
         collected_notices = []
         for entry in feed.entries:
@@ -56,7 +63,7 @@ def check_law_updates():
                 collected_notices.append(f"- 제목: {title}\n  링크: {link}")
 
         if not collected_notices:
-            print("관련 법 개정 안건 없음.")
+            print(f"수집된 전체 안건 수: {len(feed.entries)}건 (관련 법 개정 안건 없음)")
             return
 
         # 3. Gemini API 분석 호출
