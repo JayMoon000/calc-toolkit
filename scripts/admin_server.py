@@ -6,6 +6,7 @@ from http.server import HTTPServer, SimpleHTTPRequestHandler
 
 PORT = 4040
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_ROOT = os.path.dirname(CURRENT_DIR)
 CONFIG_DIR = os.path.join(BASE_DIR, "config")
 CONFIG_PATH = os.path.join(CONFIG_DIR, "rates.json")
 
