@@ -40,6 +40,7 @@ def call_gemini_with_retry(model, prompt: str, max_retries: int = 3) -> str:
             time.sleep(wait_time)
 
 def check_law_updates():
+    send_telegram("🧪 *[Calc Toolkit]* 법률 모니터링 정상 가동 테스트")
     try:
         # 1. 기준 데이터 로드
         with open("config/rates.json", "r", encoding="utf-8") as f:
