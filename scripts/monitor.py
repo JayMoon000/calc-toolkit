@@ -1,9 +1,8 @@
 import os
 import json
 import time
-import urllib.request
-import xml.etree.ElementTree as ET
 import requests
+import feedparser
 import google.generativeai as genai
 
 # 환경변수 로드 (GitHub Secrets 관리)
@@ -26,7 +25,6 @@ def call_gemini_with_retry(model, prompt: str, max_retries: int = 3) -> str:
     """타임아웃(120s) 및 지수 백오프 재시도 로직"""
     for attempt in range(1, max_retries + 1):
         try:
-            # 유지보수 포인트: 기본 60초 -> 120초로 타임아웃 명시적 확장
             response = model.generate_content(
                 prompt,
                 request_options={"timeout": 120}
@@ -35,7 +33,7 @@ def call_gemini_with_retry(model, prompt: str, max_retries: int = 3) -> str:
         except Exception as e:
             if attempt == max_retries:
                 raise e
-            wait_time = attempt * 5  # 5초, 10초 대기
+            wait_time = attempt * 5
             print(f"[재시도 {attempt}/{max_retries}] 에러 발생: {e} -> {wait_time}초 후 재시도")
             time.sleep(wait_time)
 
@@ -45,15 +43,15 @@ def check_law_updates():
         with open("config/rates.json", "r", encoding="utf-8") as f:
             current_rates = json.load(f)
 
-        # 2. 공공 피드 파싱
-        req = urllib.request.Request(FEED_URL, headers={'User-Agent': 'Mozilla/5.0'})
-        xml_data = urllib.request.urlopen(req, timeout=15).read()
-        root = ET.fromstring(xml_data)
+        # 2. 공공 피드 파싱 (feedparser 사용으로 깨진 XML 완벽 대응)
+        feed = feedparser.parse(FEED_URL)
+        if feed.bozo and not feed.entries:
+            raise Exception(f"RSS 피드 수집 실패: {feed.bozo_exception}")
 
         collected_notices = []
-        for item in root.findall(".//item"):
-            title = item.find("title").text or ""
-            link = item.find("link").text or ""
+        for entry in feed.entries:
+            title = entry.get("title", "")
+            link = entry.get("link", "")
             if any(kw in title for kw in TARGET_KEYWORDS):
                 collected_notices.append(f"- 제목: {title}\n  링크: {link}")
 
@@ -90,7 +88,7 @@ def check_law_updates():
             print("특이사항 없음.")
 
     except Exception as e:
-        error_msg = f"⚠️ *[Calc Toolkit] 파이프라인 확인 요망*\n\n• 결과: Gemini 분석 중 오류 발생: {e}"
+        error_msg = f"⚠️ *[Calc Toolkit] 파이프라인 확인 요망*\n\n• 결과: {e}"
         send_telegram(error_msg)
         print(error_msg)
 
