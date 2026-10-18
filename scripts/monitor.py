@@ -5,12 +5,17 @@ import requests
 import feedparser
 import google.generativeai as genai
 
-# 환경변수 로드 (GitHub Secrets 관리)
+# 환경변수 로드 (GitHub Secrets)
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
 TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
 TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
 
-TARGET_KEYWORDS = ["최저임금", "부동산 중개", "중개보수", "소득세법", "퇴직급여", "건강보험료율", "국민연금"]
+# 계산기 실제 데이터셋에 맞춘 정밀 키워드
+TARGET_KEYWORDS = [
+    "최저임금", "중개보수", "부동산 중개", 
+    "소득세법", "조세특례제한법", "간이세액", 
+    "건강보험료율", "국민연금", "기준소득월액", "퇴직급여"
+]
 FEED_URL = "https://www.moleg.go.kr/board.es?mid=a10501000000&bid=0028&act=rss"
 
 def send_telegram(msg: str):
@@ -40,21 +45,22 @@ def call_gemini_with_retry(model, prompt: str, max_retries: int = 3) -> str:
             time.sleep(wait_time)
 
 def check_law_updates():
-    send_telegram("🧪 *[Calc Toolkit]* 법률 모니터링 정상 가동 테스트")
     try:
         # 1. 기준 데이터 로드
         with open("config/rates.json", "r", encoding="utf-8") as f:
             current_rates = json.load(f)
 
-        # 2. 공공 피드 가져오기 (User-Agent 명시 및 requests 사용)
+        base_year = current_rates.get("baseYear", "2026")
+
+        # 2. 공공 피드 가져오기
         headers = {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
         }
         res = requests.get(FEED_URL, headers=headers, timeout=20)
         res.raise_for_status()
 
-        # feedparser로 파싱 (XML 문법 오류 무시하고 읽을 수 있는 항목만 최대한 수집)
         feed = feedparser.parse(res.content)
+        total_notices = len(feed.entries)
 
         collected_notices = []
         for entry in feed.entries:
@@ -63,8 +69,16 @@ def check_law_updates():
             if any(kw in title for kw in TARGET_KEYWORDS):
                 collected_notices.append(f"- 제목: {title}\n  링크: {link}")
 
+        # 관련 안건이 하나도 없을 때 -> 정기 이상 무 보고 발송 후 종료
         if not collected_notices:
-            print(f"수집된 전체 안건 수: {len(feed.entries)}건 (관련 법 개정 안건 없음)")
+            normal_msg = (
+                f"🟢 *[Calc Toolkit] 법률 요율 정기 모니터링*\n\n"
+                f"• 상태: 정상 (변동 없음)\n"
+                f"• 수집 공고: {total_notices}건 검토 완료\n"
+                f"• 기준: {base_year}년 요율 체계 유지 중"
+            )
+            send_telegram(normal_msg)
+            print("변동 안건 없음 (정기 알림 발송 완료).")
             return
 
         # 3. Gemini API 분석 호출
@@ -78,7 +92,7 @@ def check_law_updates():
 [현재 계산기 기준 데이터 (config/rates.json)]:
 {json.dumps(current_rates, ensure_ascii=False, indent=2)}
 
-[새로 감지된 공고]:
+[새로 감지된 공고 ({len(collected_notices)}건)]:
 {chr(10).join(collected_notices)}
 
 만약 실제 요율/수치 변경이 수반되는 안건이라면:
@@ -90,10 +104,19 @@ def check_law_updates():
         report = call_gemini_with_retry(model, prompt)
 
         if "수정 불필요" not in report:
+            # 실제 개정 수치 변동 감지 시 경보
             send_telegram(f"🚨 *[Calc Toolkit 법 개정 감지]*\n\n{report}")
-            print("알림 발송 완료.")
+            print("개정 감지 알림 발송 완료.")
         else:
-            print("특이사항 없음.")
+            # 키워드는 걸렸으나 분석 결과 수치 변경 없는 경우
+            normal_msg = (
+                f"🟢 *[Calc Toolkit] 법률 요율 정기 모니터링*\n\n"
+                f"• 상태: 정상 (수치 변동 없음)\n"
+                f"• 검토 안건: {len(collected_notices)}건 (Gemini 검토: 수정 불필요)\n"
+                f"• 기준: {base_year}년 요율 체계 유지 중"
+            )
+            send_telegram(normal_msg)
+            print("수치 변동 없음 (정기 알림 발송 완료).")
 
     except Exception as e:
         error_msg = f"⚠️ *[Calc Toolkit] 파이프라인 확인 요망*\n\n• 결과: {e}"
