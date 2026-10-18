@@ -18,6 +18,11 @@ jobs:
         with:
           python-version: '3.11'
 
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests google-generativeai
+          
       - name: Run Legal Monitor
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
