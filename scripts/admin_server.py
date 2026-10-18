@@ -5,9 +5,14 @@ import threading
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 
 PORT = 4040
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-PROJECT_ROOT = os.path.dirname(CURRENT_DIR)
-CONFIG_DIR = os.path.join(BASE_DIR, "config")
+
+# scripts 폴더 절대경로
+SCRIPTS_DIR = os.path.dirname(os.path.abspath(__file__))
+# 루트 폴더 (scripts의 상위 디렉토리)
+PROJECT_ROOT = os.path.dirname(SCRIPTS_DIR)
+
+# 루트 아래 config/rates.json 지정
+CONFIG_DIR = os.path.join(PROJECT_ROOT, "config")
 CONFIG_PATH = os.path.join(CONFIG_DIR, "rates.json")
 
 class RateAdminHandler(SimpleHTTPRequestHandler):
@@ -46,12 +51,12 @@ def open_browser():
     webbrowser.open_new(f"http://localhost:{PORT}/admin.html")
 
 if __name__ == "__main__":
-    # 서버 실행 0.8초 후 브라우저 자동 오픈
     threading.Timer(0.8, open_browser).start()
-    print(f"==================================================")
+    print("==================================================")
     print(f" Rates Admin Server running: http://localhost:{PORT}/admin.html")
-    print(f" 종료하려면 터미널에서 Ctrl + C 를 누르세요.")
-    print(f"==================================================")
+    print(f" Config file: {CONFIG_PATH}")
+    print(" 종료하려면 터미널에서 Ctrl + C 를 누르세요.")
+    print("==================================================")
     
     server = HTTPServer(("localhost", PORT), RateAdminHandler)
     try:
