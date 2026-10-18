@@ -9,6 +9,8 @@ import google.generativeai as genai
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
 TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
 TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+CONFIG_PATH = os.path.join(BASE_DIR, "config", "rates.json")
 
 # 계산기 실제 데이터셋에 맞춘 정밀 키워드
 TARGET_KEYWORDS = [
@@ -47,7 +49,7 @@ def call_gemini_with_retry(model, prompt: str, max_retries: int = 3) -> str:
 def check_law_updates():
     try:
         # 1. 기준 데이터 로드
-        with open("config/rates.json", "r", encoding="utf-8") as f:
+        with open(CONFIG_PATH, "r", encoding="utf-8") as f:
             current_rates = json.load(f)
 
         base_year = current_rates.get("baseYear", "2026")
