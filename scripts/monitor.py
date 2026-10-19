@@ -2,6 +2,8 @@ import os
 import json
 import time
 import requests
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 import feedparser
 import google.generativeai as genai
 
@@ -46,6 +48,27 @@ def call_gemini_with_retry(model, prompt: str, max_retries: int = 3) -> str:
             print(f"[재시도 {attempt}/{max_retries}] 에러: {e} -> {wait_time}초 후 재시도")
             time.sleep(wait_time)
 
+def fetch_feed_with_retry(url: str):
+    """법제처 RSS 요청: 재시도 2회 및 Connect/Read 타임아웃 분리"""
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        "Accept": "application/rss+xml, application/xml, text/xml, */*"
+    }
+    
+    session = requests.Session()
+    retry_strategy = Retry(
+        total=2,
+        backoff_factor=3,
+        status_forcelist=[429, 500, 502, 503, 504],
+        raise_on_status=False
+    )
+    adapter = HTTPAdapter(max_retries=retry_strategy)
+    session.mount("https://", adapter)
+    session.mount("http://", adapter)
+
+    # connect timeout은 7초로 짧게 끊고, read timeout은 15초 부여
+    return session.get(url, headers=headers, timeout=(7, 15))
+
 def check_law_updates():
     try:
         # 1. 기준 데이터 로드
@@ -55,13 +78,22 @@ def check_law_updates():
         base_year = current_rates.get("baseYear", "2026")
 
         # 2. 공공 피드 가져오기
-        headers = {
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
-        }
-        res = requests.get(FEED_URL, headers=headers, timeout=20)
-        res.raise_for_status()
+        try:
+            res = fetch_feed_with_retry(FEED_URL)
+            res.raise_for_status()
+            feed_content = res.content
+        except (requests.exceptions.ConnectTimeout, requests.exceptions.ConnectionError) as conn_err:
+            # 해외 IP 차단 또는 일시 지연 시 파이프라인 에러 대신 안내 메시지 처리 후 안전 종료
+            warning_msg = (
+                f"🟡 *[Calc Toolkit] 법제처 피드 일시 스킵*\n\n"
+                f"• 사유: 법제처 서버 연결 지연(Timeout / IP 필터링)\n"
+                f"• 조치: 이번 회차는 스킵하며, 기존 {base_year}년 요율 유지"
+            )
+            print(f"법제처 피드 연결 실패 (스킵 처리): {conn_err}")
+            send_telegram(warning_msg)
+            return
 
-        feed = feedparser.parse(res.content)
+        feed = feedparser.parse(feed_content)
         total_notices = len(feed.entries)
 
         collected_notices = []
