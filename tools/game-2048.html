@@ -56,8 +56,8 @@
       gap: 10px;
     }
     .score-box {
-      background-color: var(--bg-input);
-      border: 1px solid var(--border-color);
+      background-color: var(--bg-input, #1e293b);
+      border: 1px solid var(--border-color, #334155);
       border-radius: 8px;
       padding: 6px 14px;
       text-align: center;
@@ -65,14 +65,14 @@
     }
     .score-label {
       font-size: 0.72rem;
-      color: var(--text-muted);
+      color: var(--text-muted, #94a3b8);
       text-transform: uppercase;
       font-weight: 600;
     }
     .score-val {
       font-size: 1.2rem;
       font-weight: 700;
-      color: var(--accent-gold);
+      color: var(--accent-gold, #f59e0b);
     }
     .game-actions {
       display: flex;
@@ -81,7 +81,7 @@
       margin-bottom: 16px;
     }
     .restart-btn {
-      background-color: var(--accent-blue);
+      background-color: var(--accent-blue, #2563eb);
       color: #fff;
       border: none;
       border-radius: 6px;
@@ -92,17 +92,18 @@
       transition: background 0.2s;
     }
     .restart-btn:hover {
-      background-color: #2563eb;
+      background-color: #1d4ed8;
     }
-.grid-board {
+
+    .grid-board {
       width: 100%;
       max-width: 400px;
-      aspect-ratio: 1 / 1; /* 가로폭에 맞춰 1:1 완벽 유지 */
-      height: auto;        /* 고정 400px 해제 */
+      aspect-ratio: 1 / 1;
+      height: auto;
       box-sizing: border-box;
       margin: 0 auto;
       background-color: #0E1522;
-      border: 2px solid var(--border-color);
+      border: 2px solid var(--border-color, #334155);
       border-radius: 12px;
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -118,14 +119,14 @@
       align-items: center;
       justify-content: center;
       border-radius: 6px;
-      font-size: clamp(1.1rem, 5vw, 1.6rem); /* 작은 모바일 화면에서도 글자 넘침 방지 */
+      font-size: clamp(1.1rem, 5vw, 1.6rem);
       font-weight: 700;
       user-select: none;
       transition: transform 0.1s ease;
-      aspect-ratio: 1 / 1; /* 타일 자체도 1:1 정사각형 유지 */
+      aspect-ratio: 1 / 1;
     }
 	
-	@media (max-width: 440px) {
+    @media (max-width: 440px) {
       .grid-board {
         gap: 6px;
         padding: 6px;
@@ -141,9 +142,9 @@
       }
     }
 	
-    .tile-empty { background-color: var(--bg-input); opacity: 0.4; }
-    .tile-2 { background-color: #1E293B; color: var(--text-main); }
-    .tile-4 { background-color: #334155; color: var(--text-main); }
+    .tile-empty { background-color: var(--bg-input, #1e293b); opacity: 0.4; }
+    .tile-2 { background-color: #1E293B; color: var(--text-main, #f8fafc); }
+    .tile-4 { background-color: #334155; color: var(--text-main, #f8fafc); }
     .tile-8 { background-color: #D97706; color: #FFF; }
     .tile-16 { background-color: #EA580C; color: #FFF; }
     .tile-32 { background-color: #DC2626; color: #FFF; }
@@ -164,6 +165,7 @@
       justify-content: center;
       border-radius: 10px;
       display: none;
+      z-index: 10;
     }
     .game-over-title {
       font-size: 1.8rem;
@@ -173,7 +175,7 @@
     }
     .strategy-list {
       padding-left: 20px;
-      color: var(--text-muted);
+      color: var(--text-muted, #94a3b8);
       line-height: 1.8;
       font-size: 0.92rem;
       margin-top: 10px;
@@ -192,8 +194,8 @@
     <div class="card" style="max-width: 480px; margin: 0 auto 32px auto;">
       <div class="game-header">
         <div>
-          <h1 style="font-size: 1.5rem; color: var(--text-main); margin-bottom: 4px;">2048 Puzzle Game</h1>
-          <p style="color: var(--text-muted); font-size: 0.85rem;">Merge identical numbers and unlock the legendary 2048 tile!</p>
+          <h1 style="font-size: 1.5rem; color: var(--text-main, #f8fafc); margin-bottom: 4px;">2048 Puzzle Game</h1>
+          <p style="color: var(--text-muted, #94a3b8); font-size: 0.85rem;">Merge identical numbers and unlock the legendary 2048 tile!</p>
         </div>
         <div class="score-container">
           <div class="score-box">
@@ -208,7 +210,7 @@
       </div>
 
       <div class="game-actions">
-        <span style="font-size: 0.85rem; color: var(--text-muted);">Controls: <strong>Arrow Keys</strong> or <strong>Touch Swipe</strong></span>
+        <span style="font-size: 0.85rem; color: var(--text-muted, #94a3b8);">Controls: <strong>Arrow Keys</strong> or <strong>Touch Swipe</strong></span>
         <button class="restart-btn" onclick="initGame()">New Game</button>
       </div>
 
@@ -225,7 +227,7 @@
       <h2>Rules & Master Strategy Guide for 2048</h2>
       <p>2048 is an algorithmic sliding block puzzle played on an uncluttered 4×4 grid. Your objective is to slide numbered tiles horizontally and vertically to combine pairs of matching numbers (2, 4, 8, 16, 32, 64, 128, 256, 512, 1024) until reaching 2048.</p>
       
-      <h3 style="font-size: 1.1rem; color: var(--text-main); margin: 20px 0 8px;">Key Tactics for Consistent Victory (Corner Anchor Method)</h3>
+      <h3 style="font-size: 1.1rem; color: var(--text-main, #f8fafc); margin: 20px 0 8px;">Key Tactics for Consistent Victory (Corner Anchor Method)</h3>
       <ul class="strategy-list">
         <li><strong>Corner Anchor:</strong> Designate a single corner (bottom-left is highly recommended) and anchor your highest-value tile there throughout the entire session.</li>
         <li><strong>Restricted Direction:</strong> Once your anchor corner is established at the bottom, <strong>never press the Up Arrow (↑)</strong> unless you have zero legal alternatives. Moving upward allows small "2" and "4" tiles to spawn underneath your primary block, paralyzing your board.</li>
@@ -247,10 +249,10 @@
     <div class="container">
       <p>© 2026 Starsign16. All rights reserved.</p>
       <p style="margin-top: 8px;">
-        <a href="/legal/about" style="color: var(--text-muted); text-decoration: none; margin: 0 8px;">About</a> | 
-        <a href="/legal/privacy" style="color: var(--text-muted); text-decoration: none; margin: 0 8px;">Privacy Policy</a> | 
-        <a href="/legal/terms" style="color: var(--text-muted); text-decoration: none; margin: 0 8px;">Terms of Service</a> | 
-        <a href="/legal/contact" style="color: var(--text-muted); text-decoration: none; margin: 0 8px;">Contact</a>
+        <a href="/legal/about" style="color: var(--text-muted, #94a3b8); text-decoration: none; margin: 0 8px;">About</a> | 
+        <a href="/legal/privacy" style="color: var(--text-muted, #94a3b8); text-decoration: none; margin: 0 8px;">Privacy Policy</a> | 
+        <a href="/legal/terms" style="color: var(--text-muted, #94a3b8); text-decoration: none; margin: 0 8px;">Terms of Service</a> | 
+        <a href="/legal/contact" style="color: var(--text-muted, #94a3b8); text-decoration: none; margin: 0 8px;">Contact</a>
       </p>
     </div>
   </footer>
@@ -258,5 +260,191 @@
   <script>
     let board = [];
     let score = 0;
-    let bestScore = localStorage.getItem('2048_best') || 0;
+    let bestScore = parseInt(localStorage.getItem('2048_best')) || 0;
     document.getElementById('best-score').innerText = bestScore;
+
+    function initGame() {
+      board = [
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0]
+      ];
+      score = 0;
+      updateScore(0);
+      document.getElementById('game-over').style.display = 'none';
+      spawnTile();
+      spawnTile();
+      renderBoard();
+    }
+
+    function spawnTile() {
+      const emptyCells = [];
+      for (let r = 0; r < 4; r++) {
+        for (let c = 0; c < 4; c++) {
+          if (board[r][c] === 0) emptyCells.push({ r, c });
+        }
+      }
+      if (emptyCells.length > 0) {
+        const rand = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+        board[rand.r][rand.c] = Math.random() < 0.9 ? 2 : 4;
+      }
+    }
+
+    function renderBoard() {
+      const boardElement = document.getElementById('board');
+      // game-over 오버레이를 유지하고 타일만 다시 그리기
+      const overlay = document.getElementById('game-over');
+      boardElement.innerHTML = '';
+      boardElement.appendChild(overlay);
+
+      for (let r = 0; r < 4; r++) {
+        for (let c = 0; c < 4; c++) {
+          const val = board[r][c];
+          const tile = document.createElement('div');
+          tile.className = 'tile ' + (val > 0 ? `tile-${val}` : 'tile-empty');
+          tile.innerText = val > 0 ? val : '';
+          boardElement.appendChild(tile);
+        }
+      }
+    }
+
+    function updateScore(add) {
+      score += add;
+      document.getElementById('score').innerText = score;
+      if (score > bestScore) {
+        bestScore = score;
+        document.getElementById('best-score').innerText = bestScore;
+        localStorage.setItem('2048_best', bestScore);
+      }
+    }
+
+    function slide(row) {
+      let arr = row.filter(val => val !== 0);
+      for (let i = 0; i < arr.length - 1; i++) {
+        if (arr[i] === arr[i + 1]) {
+          arr[i] *= 2;
+          updateScore(arr[i]);
+          arr[i + 1] = 0;
+        }
+      }
+      arr = arr.filter(val => val !== 0);
+      while (arr.length < 4) {
+        arr.push(0);
+      }
+      return arr;
+    }
+
+    function moveLeft() {
+      let changed = false;
+      for (let r = 0; r < 4; r++) {
+        const original = [...board[r]];
+        const next = slide(board[r]);
+        board[r] = next;
+        if (original.some((val, idx) => val !== next[idx])) changed = true;
+      }
+      return changed;
+    }
+
+    function moveRight() {
+      let changed = false;
+      for (let r = 0; r < 4; r++) {
+        const original = [...board[r]];
+        const reversed = [...board[r]].reverse();
+        const next = slide(reversed).reverse();
+        board[r] = next;
+        if (original.some((val, idx) => val !== next[idx])) changed = true;
+      }
+      return changed;
+    }
+
+    function moveUp() {
+      let changed = false;
+      for (let c = 0; c < 4; c++) {
+        const col = [board[0][c], board[1][c], board[2][c], board[3][c]];
+        const next = slide(col);
+        for (let r = 0; r < 4; r++) {
+          if (board[r][c] !== next[r]) changed = true;
+          board[r][c] = next[r];
+        }
+      }
+      return changed;
+    }
+
+    function moveDown() {
+      let changed = false;
+      for (let c = 0; c < 4; c++) {
+        const col = [board[0][c], board[1][c], board[2][c], board[3][c]].reverse();
+        const next = slide(col).reverse();
+        for (let r = 0; r < 4; r++) {
+          if (board[r][c] !== next[r]) changed = true;
+          board[r][c] = next[r];
+        }
+      }
+      return changed;
+    }
+
+    function checkGameOver() {
+      for (let r = 0; r < 4; r++) {
+        for (let c = 0; c < 4; c++) {
+          if (board[r][c] === 0) return false;
+          if (r < 3 && board[r][c] === board[r + 1][c]) return false;
+          if (c < 3 && board[r][c] === board[r][c + 1]) return false;
+        }
+      }
+      return true;
+    }
+
+    function handleAction(actionFn) {
+      if (actionFn()) {
+        spawnTile();
+        renderBoard();
+        if (checkGameOver()) {
+          document.getElementById('game-over').style.display = 'flex';
+        }
+      }
+    }
+
+    // 키보드 방향키 제어
+    window.addEventListener('keydown', (e) => {
+      if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+        e.preventDefault();
+      }
+      if (e.key === 'ArrowLeft') handleAction(moveLeft);
+      if (e.key === 'ArrowRight') handleAction(moveRight);
+      if (e.key === 'ArrowUp') handleAction(moveUp);
+      if (e.key === 'ArrowDown') handleAction(moveDown);
+    });
+
+    // 모바일 터치 스와이프 제어
+    let touchStartX = 0;
+    let touchStartY = 0;
+    const boardElement = document.getElementById('board');
+
+    boardElement.addEventListener('touchstart', (e) => {
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+    }, { passive: true });
+
+    boardElement.addEventListener('touchend', (e) => {
+      const touchEndX = e.changedTouches[0].clientX;
+      const touchEndY = e.changedTouches[0].clientY;
+      const diffX = touchEndX - touchStartX;
+      const diffY = touchEndY - touchStartY;
+
+      if (Math.max(Math.abs(diffX), Math.abs(diffY)) > 30) {
+        if (Math.abs(diffX) > Math.abs(diffY)) {
+          if (diffX > 0) handleAction(moveRight);
+          else handleAction(moveLeft);
+        } else {
+          if (diffY > 0) handleAction(moveDown);
+          else handleAction(moveUp);
+        }
+      }
+    }, { passive: true });
+
+    // 초기 실행
+    window.onload = initGame;
+  </script>
+</body>
+</html>
