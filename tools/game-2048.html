@@ -94,10 +94,12 @@
     .restart-btn:hover {
       background-color: #2563eb;
     }
-    .grid-board {
+.grid-board {
       width: 100%;
       max-width: 400px;
-      height: 400px;
+      aspect-ratio: 1 / 1; /* 가로폭에 맞춰 1:1 완벽 유지 */
+      height: auto;        /* 고정 400px 해제 */
+      box-sizing: border-box;
       margin: 0 auto;
       background-color: #0E1522;
       border: 2px solid var(--border-color);
@@ -110,16 +112,35 @@
       touch-action: none;
       position: relative;
     }
+
     .tile {
       display: flex;
       align-items: center;
       justify-content: center;
       border-radius: 6px;
-      font-size: 1.6rem;
+      font-size: clamp(1.1rem, 5vw, 1.6rem); /* 작은 모바일 화면에서도 글자 넘침 방지 */
       font-weight: 700;
       user-select: none;
       transition: transform 0.1s ease;
+      aspect-ratio: 1 / 1; /* 타일 자체도 1:1 정사각형 유지 */
     }
+	
+	@media (max-width: 440px) {
+      .grid-board {
+        gap: 6px;
+        padding: 6px;
+      }
+      .tile {
+        font-size: clamp(0.9rem, 4.5vw, 1.3rem);
+      }
+      .tile-128, .tile-256, .tile-512 {
+        font-size: clamp(0.8rem, 3.8vw, 1.1rem) !important;
+      }
+      .tile-1024, .tile-2048 {
+        font-size: clamp(0.7rem, 3.2vw, 0.95rem) !important;
+      }
+    }
+	
     .tile-empty { background-color: var(--bg-input); opacity: 0.4; }
     .tile-2 { background-color: #1E293B; color: var(--text-main); }
     .tile-4 { background-color: #334155; color: var(--text-main); }
