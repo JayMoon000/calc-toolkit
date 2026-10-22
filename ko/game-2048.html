@@ -404,3 +404,45 @@
         spawnTile();
         renderBoard();
         if (checkGameOver()) {
+          document.getElementById('game-over').style.display = 'flex';
+        }
+      }
+    }
+
+    window.addEventListener('keydown', e => {
+      if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+        e.preventDefault();
+        let moved = false;
+        if (e.key === 'ArrowLeft') moved = moveLeft();
+        else if (e.key === 'ArrowRight') moved = moveRight();
+        else if (e.key === 'ArrowUp') moved = moveUp();
+        else if (e.key === 'ArrowDown') moved = moveDown();
+        handleInput(moved);
+      }
+    });
+
+    let touchStartX = 0, touchStartY = 0;
+    const boardEl = document.getElementById('board');
+    boardEl.addEventListener('touchstart', e => {
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+    }, {passive: true});
+
+    boardEl.addEventListener('touchend', e => {
+      let dx = e.changedTouches[0].clientX - touchStartX;
+      let dy = e.changedTouches[0].clientY - touchStartY;
+      if (Math.abs(dx) < 30 && Math.abs(dy) < 30) return;
+
+      let moved = false;
+      if (Math.abs(dx) > Math.abs(dy)) {
+        moved = dx > 0 ? moveRight() : moveLeft();
+      } else {
+        moved = dy > 0 ? moveDown() : moveUp();
+      }
+      handleInput(moved);
+    }, {passive: true});
+
+    initGame();
+  </script>
+</body>
+</html>
