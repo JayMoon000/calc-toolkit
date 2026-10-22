@@ -55,8 +55,8 @@
       gap: 10px;
     }
     .score-box {
-      background-color: var(--bg-input);
-      border: 1px solid var(--border-color);
+      background-color: var(--bg-input, #1e293b);
+      border: 1px solid var(--border-color, #334155);
       border-radius: 8px;
       padding: 6px 14px;
       text-align: center;
@@ -64,14 +64,14 @@
     }
     .score-label {
       font-size: 0.72rem;
-      color: var(--text-muted);
+      color: var(--text-muted, #94a3b8);
       text-transform: uppercase;
       font-weight: 600;
     }
     .score-val {
       font-size: 1.2rem;
       font-weight: 700;
-      color: var(--accent-gold);
+      color: var(--accent-gold, #f59e0b);
     }
     .game-actions {
       display: flex;
@@ -80,7 +80,7 @@
       margin-bottom: 16px;
     }
     .restart-btn {
-      background-color: var(--accent-blue);
+      background-color: var(--accent-blue, #2563eb);
       color: #fff;
       border: none;
       border-radius: 6px;
@@ -91,15 +91,19 @@
       transition: background 0.2s;
     }
     .restart-btn:hover {
-      background-color: #2563eb;
+      background-color: #1d4ed8;
     }
+
+    /* 1:1 종횡비 보장 반응형 보드 */
     .grid-board {
       width: 100%;
       max-width: 400px;
-      height: 400px;
+      aspect-ratio: 1 / 1;
+      height: auto;
+      box-sizing: border-box;
       margin: 0 auto;
       background-color: #0E1522;
-      border: 2px solid var(--border-color);
+      border: 2px solid var(--border-color, #334155);
       border-radius: 12px;
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -109,19 +113,38 @@
       touch-action: none;
       position: relative;
     }
+
     .tile {
       display: flex;
       align-items: center;
       justify-content: center;
       border-radius: 6px;
-      font-size: 1.6rem;
+      font-size: clamp(1.1rem, 5vw, 1.6rem);
       font-weight: 700;
       user-select: none;
       transition: transform 0.1s ease;
+      aspect-ratio: 1 / 1;
     }
-    .tile-empty { background-color: var(--bg-input); opacity: 0.4; }
-    .tile-2 { background-color: #1E293B; color: var(--text-main); }
-    .tile-4 { background-color: #334155; color: var(--text-main); }
+
+    @media (max-width: 440px) {
+      .grid-board {
+        gap: 6px;
+        padding: 6px;
+      }
+      .tile {
+        font-size: clamp(0.9rem, 4.5vw, 1.3rem);
+      }
+      .tile-128, .tile-256, .tile-512 {
+        font-size: clamp(0.8rem, 3.8vw, 1.1rem) !important;
+      }
+      .tile-1024, .tile-2048 {
+        font-size: clamp(0.7rem, 3.2vw, 0.95rem) !important;
+      }
+    }
+
+    .tile-empty { background-color: var(--bg-input, #1e293b); opacity: 0.4; }
+    .tile-2 { background-color: #1E293B; color: var(--text-main, #f8fafc); }
+    .tile-4 { background-color: #334155; color: var(--text-main, #f8fafc); }
     .tile-8 { background-color: #D97706; color: #FFF; }
     .tile-16 { background-color: #EA580C; color: #FFF; }
     .tile-32 { background-color: #DC2626; color: #FFF; }
@@ -142,6 +165,7 @@
       justify-content: center;
       border-radius: 10px;
       display: none;
+      z-index: 10;
     }
     .game-over-title {
       font-size: 1.8rem;
@@ -151,7 +175,7 @@
     }
     .strategy-list {
       padding-left: 20px;
-      color: var(--text-muted);
+      color: var(--text-muted, #94a3b8);
       line-height: 1.8;
       font-size: 0.92rem;
       margin-top: 10px;
@@ -170,8 +194,8 @@
     <div class="card" style="max-width: 480px; margin: 0 auto 32px auto;">
       <div class="game-header">
         <div>
-          <h1 style="font-size: 1.5rem; color: var(--text-main); margin-bottom: 4px;">2048 클래식 퍼즐</h1>
-          <p style="color: var(--text-muted); font-size: 0.85rem;">동일한 숫자를 합쳐 전설의 2048 타일을 완성하세요!</p>
+          <h1 style="font-size: 1.5rem; color: var(--text-main, #f8fafc); margin-bottom: 4px;">2048 클래식 퍼즐</h1>
+          <p style="color: var(--text-muted, #94a3b8); font-size: 0.85rem;">동일한 숫자를 합쳐 전설의 2048 타일을 완성하세요!</p>
         </div>
         <div class="score-container">
           <div class="score-box">
@@ -186,7 +210,7 @@
       </div>
 
       <div class="game-actions">
-        <span style="font-size: 0.85rem; color: var(--text-muted);">조작: <strong>키보드 방향키</strong> 또는 <strong>터치 스와이프</strong></span>
+        <span style="font-size: 0.85rem; color: var(--text-muted, #94a3b8);">조작: <strong>키보드 방향키</strong> 또는 <strong>터치 스와이프</strong></span>
         <button class="restart-btn" onclick="initGame()">새 게임</button>
       </div>
 
@@ -203,7 +227,7 @@
       <h2>2048 퍼즐 규칙 및 고득점 전략 가이드</h2>
       <p>2048은 4×4 격자판 위에서 상하좌우로 타일을 밀어 동일한 숫자를 결합해 나가는 수학 기반 두뇌 트레이닝 게임입니다. 2에서 시작해 4, 8, 16, 32, 64, 128, 256, 512, 1024를 거쳐 최종 2048 타일을 만드는 것이 목표입니다.</p>
       
-      <h3 style="font-size: 1.1rem; color: var(--text-main); margin: 20px 0 8px;">핵심 필승 공략법 (모서리 고정 공식)</h3>
+      <h3 style="font-size: 1.1rem; color: var(--text-main, #f8fafc); margin: 20px 0 8px;">핵심 필승 공략법 (모서리 고정 공식)</h3>
       <ul class="strategy-list">
         <li><strong>모서리 고정:</strong> 가장 큰 수의 타일을 격자판의 4개 모서리 중 한 곳(보통 좌측 하단 추천)에 배치하고, 가능한 한 해당 위치를 벗어나지 않도록 유지합니다.</li>
         <li><strong>금지 방향 설정:</strong> 모서리를 좌측 하단으로 정했다면, <strong>'위쪽 방향키(↑)'는 위급한 상황이 아니면 절대 누르지 마세요.</strong> 위로 움직이는 순간 가장 큰 타일 밑으로 2나 4가 끼어들어 판이 꼬이게 됩니다.</li>
@@ -225,10 +249,10 @@
     <div class="container">
       <p>© 2026 Starsign16. All rights reserved.</p>
       <p style="margin-top: 8px;">
-        <a href="/legal/ko/about" style="color: var(--text-muted); text-decoration: none; margin: 0 8px;">소개</a> | 
-        <a href="/legal/ko/privacy" style="color: var(--text-muted); text-decoration: none; margin: 0 8px;">개인정보처리방침</a> | 
-        <a href="/legal/ko/terms" style="color: var(--text-muted); text-decoration: none; margin: 0 8px;">이용약관</a> | 
-        <a href="/legal/ko/contact" style="color: var(--text-muted); text-decoration: none; margin: 0 8px;">문의</a>
+        <a href="/legal/ko/about" style="color: var(--text-muted, #94a3b8); text-decoration: none; margin: 0 8px;">소개</a> | 
+        <a href="/legal/ko/privacy" style="color: var(--text-muted, #94a3b8); text-decoration: none; margin: 0 8px;">개인정보처리방침</a> | 
+        <a href="/legal/ko/terms" style="color: var(--text-muted, #94a3b8); text-decoration: none; margin: 0 8px;">이용약관</a> | 
+        <a href="/legal/ko/contact" style="color: var(--text-muted, #94a3b8); text-decoration: none; margin: 0 8px;">문의</a>
       </p>
     </div>
   </footer>
@@ -236,7 +260,7 @@
   <script>
     let board = [];
     let score = 0;
-    let bestScore = localStorage.getItem('2048_best') || 0;
+    let bestScore = parseInt(localStorage.getItem('2048_best')) || 0;
     document.getElementById('best-score').innerText = bestScore;
 
     function initGame() {
@@ -380,45 +404,3 @@
         spawnTile();
         renderBoard();
         if (checkGameOver()) {
-          document.getElementById('game-over').style.display = 'flex';
-        }
-      }
-    }
-
-    window.addEventListener('keydown', e => {
-      if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
-        e.preventDefault();
-        let moved = false;
-        if (e.key === 'ArrowLeft') moved = moveLeft();
-        else if (e.key === 'ArrowRight') moved = moveRight();
-        else if (e.key === 'ArrowUp') moved = moveUp();
-        else if (e.key === 'ArrowDown') moved = moveDown();
-        handleInput(moved);
-      }
-    });
-
-    let touchStartX = 0, touchStartY = 0;
-    const boardEl = document.getElementById('board');
-    boardEl.addEventListener('touchstart', e => {
-      touchStartX = e.touches[0].clientX;
-      touchStartY = e.touches[0].clientY;
-    }, {passive: true});
-
-    boardEl.addEventListener('touchend', e => {
-      let dx = e.changedTouches[0].clientX - touchStartX;
-      let dy = e.changedTouches[0].clientY - touchStartY;
-      if (Math.abs(dx) < 30 && Math.abs(dy) < 30) return;
-
-      let moved = false;
-      if (Math.abs(dx) > Math.abs(dy)) {
-        moved = dx > 0 ? moveRight() : moveLeft();
-      } else {
-        moved = dy > 0 ? moveDown() : moveUp();
-      }
-      handleInput(moved);
-    }, {passive: true});
-
-    initGame();
-  </script>
-</body>
-</html>
