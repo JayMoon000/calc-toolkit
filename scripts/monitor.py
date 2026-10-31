@@ -14,12 +14,18 @@ TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CONFIG_PATH = os.path.join(BASE_DIR, "config", "rates.json")
 
-# 계산기 실제 데이터셋에 맞춘 정밀 키워드
+# 1. 감시 타깃 키워드 (기존 금융 계산기 + ToolLab ETF 및 자본시장 세법)
 TARGET_KEYWORDS = [
-    "최저임금", "중개보수", "부동산 중개", 
-    "소득세법", "조세특례제한법", "간이세액", 
-    "건강보험료율", "국민연금", "기준소득월액", "퇴직급여"
+    # Starsign16 금융 계산기 도메인
+    "최저임금", "중개보수", "부동산 중개", "간이세액", 
+    "건강보험료율", "국민연금", "기준소득월액", "퇴직급여",
+    # 공통 및 ToolLab ETF / 절세계좌 도메인
+    "소득세법", "조세특례제한법",
+    "개인종합자산관리계좌",  # ISA
+    "집합투자기구",          # ETF, 펀드 과세 체계
+    "배당소득", "금융투자소득", "증권거래세"
 ]
+
 FEED_URL = "https://www.moleg.go.kr/board.es?mid=a10501000000&bid=0028&act=rss"
 
 def send_telegram(msg: str):
@@ -66,7 +72,6 @@ def fetch_feed_with_retry(url: str):
     session.mount("https://", adapter)
     session.mount("http://", adapter)
 
-    # connect timeout은 7초로 짧게 끊고, read timeout은 15초 부여
     return session.get(url, headers=headers, timeout=(7, 15))
 
 def check_law_updates():
@@ -83,10 +88,9 @@ def check_law_updates():
             res.raise_for_status()
             feed_content = res.content
         except (requests.exceptions.ConnectTimeout, requests.exceptions.ConnectionError) as conn_err:
-            # 해외 IP 차단 또는 일시 지연 시 파이프라인 에러 대신 안내 메시지 처리 후 안전 종료
             warning_msg = (
-                f"🟡 *[Calc Toolkit] 법제처 피드 일시 스킵*\n\n"
-                f"• 사유: 법제처 서버 연결 지연(Timeout / IP 필터링)\n"
+                f"🟡 *[통합 모니터링] 법제처 피드 일시 스킵*\n\n"
+                f"• 사유: 법제처 서버 연결 지연(Timeout / 해외 IP 필터링)\n"
                 f"• 조치: 이번 회차는 스킵하며, 기존 {base_year}년 요율 유지"
             )
             print(f"법제처 피드 연결 실패 (스킵 처리): {conn_err}")
@@ -103,10 +107,11 @@ def check_law_updates():
             if any(kw in title for kw in TARGET_KEYWORDS):
                 collected_notices.append(f"- 제목: {title}\n  링크: {link}")
 
-        # 관련 안건이 하나도 없을 때 -> 정기 이상 무 보고 발송 후 종료
+        # 관련 안건이 하나도 없을 때
         if not collected_notices:
             normal_msg = (
-                f"🟢 *[Calc Toolkit] 법률 요율 정기 모니터링*\n\n"
+                f"🟢 *[통합 모니터링] 법률·세율 정기 점검*\n\n"
+                f"• 감시 영역: Starsign16 금융 / ToolLab ETF\n"
                 f"• 상태: 정상 (변동 없음)\n"
                 f"• 수집 공고: {total_notices}건 검토 완료\n"
                 f"• 기준: {base_year}년 요율 체계 유지 중"
@@ -120,31 +125,41 @@ def check_law_updates():
         model = genai.GenerativeModel("gemini-1.5-flash")
 
         prompt = f"""
-당신은 대한민국 세법/노무/부동산 법률 변경 분석가입니다.
-아래 수집된 법제처 공고 목록을 검토하고, 현재 계산기 웹사이트의 기준 데이터(JSON)에 변경이 필요한지 분석하세요.
+당신은 대한민국 금융·세법·자본시장 법률 개정 전문 분석가입니다.
+아래 수집된 법제처 공고 목록을 검토하고, 운영 중인 서비스의 기준 데이터나 로직에 변경이 필요한지 분석하세요.
 
-[현재 계산기 기준 데이터 (config/rates.json)]:
+[운영 중인 서비스 및 점검 항목]
+1. Starsign16 금융 계산기:
+   - 최저임금, 4대보험 요율, 국민연금 기준소득월액, 부동산 중개보수, 퇴직금, 근로소득 간이세액표
+   - 현재 기준 데이터 (config/rates.json):
 {json.dumps(current_rates, ensure_ascii=False, indent=2)}
 
-[새로 감지된 공고 ({len(collected_notices)}건)]:
+2. ToolLab ETF & 절세계좌 시뮬레이터:
+   - ISA(개인종합자산관리계좌): 연간 납입한도, 비과세 한도, 분리과세 세율
+   - 연금저축/IRP: 연간 세액공제 한도 및 소득 구간별 세액공제율(16.5% / 13.2%)
+   - 배당소득세율(15.4%) 및 금융소득종합과세 기준금액(2,000만 원)
+   - 금융투자소득세(금투세) 시행/유예/폐지 및 증권거래세율 변동
+
+[새로 감지된 법제처 공고 ({len(collected_notices)}건)]:
 {chr(10).join(collected_notices)}
 
-만약 실제 요율/수치 변경이 수반되는 안건이라면:
-1. 영향받는 계산기 항목
-2. 개정 내용 요약 및 시행일자
-3. config/rates.json 에서 수정해야 할 필드명을 Markdown 형태로 보고하세요.
-단순 용어 개정이나 무관한 내용이면 "수정 불필요"라고만 답하세요.
+[분석 요구사항]:
+- 실제 요율/한도/과세 체계 수치 변경이 수반되는 안건이 있다면:
+  1. 영향 대상: [Starsign16], [ToolLab ETF], [공통] 중 명시
+  2. 개정 요약 및 법적 시행일자
+  3. 수정이 필요한 항목 또는 파일(config/rates.json 등)
+- 단순 문구 정비나 무관한 안건이면 반드시 "수정 불필요"라는 단어를 포함하여 답변하세요.
 """
         report = call_gemini_with_retry(model, prompt)
 
         if "수정 불필요" not in report:
-            # 실제 개정 수치 변동 감지 시 경보
-            send_telegram(f"🚨 *[Calc Toolkit 법 개정 감지]*\n\n{report}")
+            # 실제 요율/한도 개정 발생 시 경보
+            send_telegram(f"🚨 *[법률·세율 개정 감지]*\n\n{report}")
             print("개정 감지 알림 발송 완료.")
         else:
-            # 키워드는 걸렸으나 분석 결과 수치 변경 없는 경우
             normal_msg = (
-                f"🟢 *[Calc Toolkit] 법률 요율 정기 모니터링*\n\n"
+                f"🟢 *[통합 모니터링] 법률·세율 정기 점검*\n\n"
+                f"• 감시 영역: Starsign16 금융 / ToolLab ETF\n"
                 f"• 상태: 정상 (수치 변동 없음)\n"
                 f"• 검토 안건: {len(collected_notices)}건 (Gemini 검토: 수정 불필요)\n"
                 f"• 기준: {base_year}년 요율 체계 유지 중"
@@ -153,7 +168,7 @@ def check_law_updates():
             print("수치 변동 없음 (정기 알림 발송 완료).")
 
     except Exception as e:
-        error_msg = f"⚠️ *[Calc Toolkit] 파이프라인 확인 요망*\n\n• 결과: {e}"
+        error_msg = f"⚠️ *[통합 모니터링] 파이프라인 확인 요망*\n\n• 결과: {e}"
         send_telegram(error_msg)
         print(error_msg)
 
