@@ -23,46 +23,6 @@
       "permanent": true
     },
     {
-      "source": "/real-estate",
-      "destination": "/ko/real-estate",
-      "permanent": true
-    },
-    {
-      "source": "/salary",
-      "destination": "/ko/salary",
-      "permanent": true
-    },
-    {
-      "source": "/hourly",
-      "destination": "/ko/hourly",
-      "permanent": true
-    },
-    {
-      "source": "/severance",
-      "destination": "/ko/severance",
-      "permanent": true
-    },
-    {
-      "source": "/savings",
-      "destination": "/ko/savings",
-      "permanent": true
-    },
-    {
-      "source": "/converter",
-      "destination": "/tools/converter",
-      "permanent": true
-    },
-	{
-      "source": "/tools/converter",
-      "destination": "/tools/unit-converter",
-      "permanent": true
-    },
-    {
-      "source": "/game-2048",
-      "destination": "/tools/game-2048",
-      "permanent": true
-    },
-    {
       "source": "/about",
       "destination": "/legal/about",
       "permanent": true
