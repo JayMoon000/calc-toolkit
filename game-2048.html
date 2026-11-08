@@ -1,16 +1,15 @@
 <!-- File: tools/game-2048.html -->
-<!-- Action: 글로벌 영문 2048 - 심층 공략 가이드 및 FAQ Schema.org 탑재 -->
+<!-- Action: 2048 퍼즐 완전 한글화 및 심층 가이드/FAQ JSON-LD 탑재 -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>2048 Classic Web Puzzle | Starsign16 Toolkit</title>
-  <meta name="description" content="Play the free online 2048 puzzle game with zero lag. Responsive controls for keyboard arrows and touch swipe, smooth dark mode UI, and step-by-step master strategies.">
+  <title>2048 퍼즐 게임 | 스타사인16 무설치 웹 브레인 게임</title>
+  <meta name="description" content="설치 없이 브라우저에서 바로 즐기는 클래식 2048 숫자 퍼즐. 키보드 방향키 및 모바일 터치 스와이프 지원, 다크모드 최적화.">
   <link rel="canonical" href="https://starsign16.com/tools/game-2048">
-  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="./assets/css/style.css">
 
-  <!-- Schema.org FAQPage JSON-LD -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -18,26 +17,26 @@
     "mainEntity": [
       {
         "@type": "Question",
-        "name": "What is the optimal strategy to reach the 2048 tile?",
+        "name": "2048 게임을 클리어하기 위한 핵심 전략은 무엇인가요?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "The most effective technique is the 'Corner Anchor Strategy'. Choose one permanent corner (typically bottom-left) to hold your highest-value tile. Keep tiles ordered in descending sequence along that edge, and avoid pressing the opposite directional key (e.g., Up arrow) to prevent smaller tiles from trapping your anchor."
+          "text": "가장 큰 숫자의 타일을 한쪽 구석(예: 좌측 하단 모서리)에 고정해 두고 절대 움직이지 않는 '코너 전략'이 가장 효과적입니다. 상하좌우 무작위로 이동하지 않고 세 방향(예: 아래, 왼쪽, 오른쪽)만 주로 활용하여 블록의 크기순 정렬을 유지해야 합니다."
         }
       },
       {
         "@type": "Question",
-        "name": "Does the game end immediately when the 2048 tile is created?",
+        "name": "모바일 스마트폰에서도 플레이할 수 있나요?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "No. Once you combine two 1024 tiles into 2048, you can continue playing indefinitely to achieve 4096, 8192, and beyond until no valid moves remain on the 4x4 grid."
+          "text": "네, 스마트폰 및 태블릿 브라우저에서 화면을 손가락으로 상하좌우 스와이프(터치 드래그)하면 방향키와 동일하게 타일이 이동합니다."
         }
       },
       {
         "@type": "Question",
-        "name": "Is game progress or high score sent to any remote server?",
+        "name": "새로운 게임을 시작하면 최고 점수(Best)는 초기화되나요?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Never. All computational moves and high scores are processed and retained 100% locally within your browser's memory and localStorage."
+          "text": "아닙니다. 달성한 최고 점수는 사용자의 웹 브라우저 로컬 저장소(localStorage)에 안전하게 보존되므로 페이지를 새로고침하거나 창을 닫아도 유지됩니다."
         }
       }
     ]
@@ -95,6 +94,7 @@
       background-color: #1d4ed8;
     }
 
+    /* 1:1 종횡비 보장 반응형 보드 */
     .grid-board {
       width: 100%;
       max-width: 400px;
@@ -125,7 +125,7 @@
       transition: transform 0.1s ease;
       aspect-ratio: 1 / 1;
     }
-	
+
     @media (max-width: 440px) {
       .grid-board {
         gap: 6px;
@@ -141,7 +141,7 @@
         font-size: clamp(0.7rem, 3.2vw, 0.95rem) !important;
       }
     }
-	
+
     .tile-empty { background-color: var(--bg-input, #1e293b); opacity: 0.4; }
     .tile-2 { background-color: #1E293B; color: var(--text-main, #f8fafc); }
     .tile-4 { background-color: #334155; color: var(--text-main, #f8fafc); }
@@ -185,8 +185,8 @@
 <body>
   <header>
     <div class="container header-content">
-      <a href="/" class="logo"><span>★</span> Starsign16 <span>Toolkit</span></a>
-      <a href="/" class="lang-switch">← Global Hub</a>
+      <a href="/ko" class="logo"><span>★</span> Starsign16 <span>Toolkit</span></a>
+      <a href="/ko" class="lang-switch">← 한국어 허브</a>
     </div>
   </header>
 
@@ -194,53 +194,53 @@
     <div class="card" style="max-width: 480px; margin: 0 auto 32px auto;">
       <div class="game-header">
         <div>
-          <h1 style="font-size: 1.5rem; color: var(--text-main, #f8fafc); margin-bottom: 4px;">2048 Puzzle Game</h1>
-          <p style="color: var(--text-muted, #94a3b8); font-size: 0.85rem;">Merge identical numbers and unlock the legendary 2048 tile!</p>
+          <h1 style="font-size: 1.5rem; color: var(--text-main, #f8fafc); margin-bottom: 4px;">2048 클래식 퍼즐</h1>
+          <p style="color: var(--text-muted, #94a3b8); font-size: 0.85rem;">동일한 숫자를 합쳐 전설의 2048 타일을 완성하세요!</p>
         </div>
         <div class="score-container">
           <div class="score-box">
-            <div class="score-label">Score</div>
+            <div class="score-label">현재 점수</div>
             <div class="score-val" id="score">0</div>
           </div>
           <div class="score-box">
-            <div class="score-label">Best</div>
+            <div class="score-label">최고 기록</div>
             <div class="score-val" id="best-score">0</div>
           </div>
         </div>
       </div>
 
       <div class="game-actions">
-        <span style="font-size: 0.85rem; color: var(--text-muted, #94a3b8);">Controls: <strong>Arrow Keys</strong> or <strong>Touch Swipe</strong></span>
-        <button class="restart-btn" onclick="initGame()">New Game</button>
+        <span style="font-size: 0.85rem; color: var(--text-muted, #94a3b8);">조작: <strong>키보드 방향키</strong> 또는 <strong>터치 스와이프</strong></span>
+        <button class="restart-btn" onclick="initGame()">새 게임</button>
       </div>
 
       <div class="grid-board" id="board">
         <div class="game-over-overlay" id="game-over">
-          <div class="game-over-title">Game Over!</div>
-          <button class="restart-btn" onclick="initGame()">Try Again</button>
+          <div class="game-over-title">게임 오버!</div>
+          <button class="restart-btn" onclick="initGame()">다시 도전하기</button>
         </div>
       </div>
     </div>
 
-    <!-- SEO & Detailed Strategy Guide -->
+    <!-- SEO & 심층 전략 가이드 -->
     <section class="seo-section" style="max-width: 680px; margin: 0 auto;">
-      <h2>Rules & Master Strategy Guide for 2048</h2>
-      <p>2048 is an algorithmic sliding block puzzle played on an uncluttered 4×4 grid. Your objective is to slide numbered tiles horizontally and vertically to combine pairs of matching numbers (2, 4, 8, 16, 32, 64, 128, 256, 512, 1024) until reaching 2048.</p>
+      <h2>2048 퍼즐 규칙 및 고득점 전략 가이드</h2>
+      <p>2048은 4×4 격자판 위에서 상하좌우로 타일을 밀어 동일한 숫자를 결합해 나가는 수학 기반 두뇌 트레이닝 게임입니다. 2에서 시작해 4, 8, 16, 32, 64, 128, 256, 512, 1024를 거쳐 최종 2048 타일을 만드는 것이 목표입니다.</p>
       
-      <h3 style="font-size: 1.1rem; color: var(--text-main, #f8fafc); margin: 20px 0 8px;">Key Tactics for Consistent Victory (Corner Anchor Method)</h3>
+      <h3 style="font-size: 1.1rem; color: var(--text-main, #f8fafc); margin: 20px 0 8px;">핵심 필승 공략법 (모서리 고정 공식)</h3>
       <ul class="strategy-list">
-        <li><strong>Corner Anchor:</strong> Designate a single corner (bottom-left is highly recommended) and anchor your highest-value tile there throughout the entire session.</li>
-        <li><strong>Restricted Direction:</strong> Once your anchor corner is established at the bottom, <strong>never press the Up Arrow (↑)</strong> unless you have zero legal alternatives. Moving upward allows small "2" and "4" tiles to spawn underneath your primary block, paralyzing your board.</li>
-        <li><strong>Descending Monotonic Rows:</strong> Organize tiles in descending numerical order along your anchored edge (e.g., 512, 256, 128, 64) to trigger effortless cascade combinations.</li>
+        <li><strong>모서리 고정:</strong> 가장 큰 수의 타일을 격자판의 4개 모서리 중 한 곳(보통 좌측 하단 추천)에 배치하고, 가능한 한 해당 위치를 벗어나지 않도록 유지합니다.</li>
+        <li><strong>금지 방향 설정:</strong> 모서리를 좌측 하단으로 정했다면, <strong>'위쪽 방향키(↑)'는 위급한 상황이 아니면 절대 누르지 마세요.</strong> 위로 움직이는 순간 가장 큰 타일 밑으로 2나 4가 끼어들어 판이 꼬이게 됩니다.</li>
+        <li><strong>내림차순 지그재그 배치:</strong> 큰 타일부터 순서대로 모서리 라인에 나란히 배치해야 연속 합체가 매끄럽게 이어집니다.</li>
       </ul>
 
       <div class="faq-item" style="margin-top: 24px;">
-        <div class="faq-question">Q. Does the puzzle terminate immediately upon reaching 2048?</div>
-        <div class="faq-answer">No. 2048 represents the primary milestone, but you can continue playing toward 4096 and 8192 until no open spaces or adjacent identical tiles remain.</div>
+        <div class="faq-question">Q. 2048 타일을 완성하면 게임이 바로 끝나나요?</div>
+        <div class="faq-answer">아닙니다. 2048 타일을 만든 이후에도 격자판이 가득 차서 더 이상 움직일 수 없을 때까지 계속해서 4096, 8192 이상의 초고득점에 도전할 수 있습니다.</div>
       </div>
-      <div class="faq-item" style="margin-top: 24px;">
-        <div class="faq-question">Q. Are my movements or personal scores transmitted to external servers?</div>
-        <div class="faq-answer">No. All game computations and high scores reside entirely within your browser sandbox via localStorage, ensuring absolute privacy and instant offline response.</div>
+      <div class="faq-item">
+        <div class="faq-question">Q. 게임 진행 중 데이터가 서버로 전송되나요?</div>
+        <div class="faq-answer">전혀 전송되지 않습니다. 모든 연산과 점수 저장은 사용자의 브라우저 메모리 및 로컬 스토리지 내에서 100% 독립적으로 처리됩니다.</div>
       </div>
     </section>
   </main>
@@ -249,10 +249,10 @@
     <div class="container">
       <p>© 2026 Starsign16. All rights reserved.</p>
       <p style="margin-top: 8px;">
-        <a href="/legal/about" style="color: var(--text-muted, #94a3b8); text-decoration: none; margin: 0 8px;">About</a> | 
-        <a href="/legal/privacy" style="color: var(--text-muted, #94a3b8); text-decoration: none; margin: 0 8px;">Privacy Policy</a> | 
-        <a href="/legal/terms" style="color: var(--text-muted, #94a3b8); text-decoration: none; margin: 0 8px;">Terms of Service</a> | 
-        <a href="/legal/contact" style="color: var(--text-muted, #94a3b8); text-decoration: none; margin: 0 8px;">Contact</a>
+        <a href="/legal/ko/about" style="color: var(--text-muted, #94a3b8); text-decoration: none; margin: 0 8px;">소개</a> | 
+        <a href="/legal/ko/privacy" style="color: var(--text-muted, #94a3b8); text-decoration: none; margin: 0 8px;">개인정보처리방침</a> | 
+        <a href="/legal/ko/terms" style="color: var(--text-muted, #94a3b8); text-decoration: none; margin: 0 8px;">이용약관</a> | 
+        <a href="/legal/ko/contact" style="color: var(--text-muted, #94a3b8); text-decoration: none; margin: 0 8px;">문의</a>
       </p>
     </div>
   </footer>
@@ -293,7 +293,6 @@
 
     function renderBoard() {
       const boardElement = document.getElementById('board');
-      // game-over 오버레이를 유지하고 타일만 다시 그리기
       const overlay = document.getElementById('game-over');
       boardElement.innerHTML = '';
       boardElement.appendChild(overlay);
