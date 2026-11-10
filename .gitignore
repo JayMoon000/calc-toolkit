@@ -10,7 +10,14 @@ secrets/
 config/local.json
 
 # ==========================================
-# 2. Python & Monitor Service Cache
+# 2. Local Workspaces & AI Session Logs (로컬 전용 문서)
+# ==========================================
+Session Summary and next session pro*/
+History/
+# Instructions/   # <- 깃허브에 올리지 않고 로컬에서만 볼 지침이라면 주석 해제
+
+# ==========================================
+# 3. Python & Monitor Service Cache
 # ==========================================
 __pycache__/
 *.py[cod]
@@ -19,21 +26,28 @@ __pycache__/
 venv/
 .venv/
 env/
+*.log
 
 # ==========================================
-# 3. Node.js & Web Bundler (Vercel / Vite / Next.js)
+# 4. Node.js & Web Bundler (Vercel / Vite)
 # ==========================================
 node_modules/
 .next/
 dist/
 build/
 .npm
-*.log
+.vercel
 
 # ==========================================
-# 4. OS & IDE System Files
+# 5. OS & IDE System Files & Backups
 # ==========================================
 .DS_Store
 Thumbs.db
+ehthumbs.db
+desktop.ini
 .vscode/
 .idea/
+*.bak
+*.tmp
+*.swp
+*~
